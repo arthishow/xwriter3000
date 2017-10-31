@@ -5,8 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>A33</groupId>
-    <artifactId>Xwriter3000 Client</artifactId>
+    <artifactId>Xwriter3000Client</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-
+    <properties>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
 </project>
