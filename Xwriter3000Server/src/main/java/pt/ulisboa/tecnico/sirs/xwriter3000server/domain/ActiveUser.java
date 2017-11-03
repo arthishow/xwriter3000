@@ -1,7 +1,6 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
 import java.util.Date;
-import java.text.SimpleDateFormat;
 
 public class ActiveUser {
 
@@ -17,4 +16,15 @@ public class ActiveUser {
         timestamp = new Date();
     }
 
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public int getAuthorID() {
+        return authorID;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
 }
