@@ -10,6 +10,8 @@ public class ActiveUser {
 
     private Date timestamp;
 
+    //README: this class might need something like the ip from the user
+
     public ActiveUser(String sessionID, int authorID) {
         this.sessionID = sessionID;
         this.authorID = authorID;

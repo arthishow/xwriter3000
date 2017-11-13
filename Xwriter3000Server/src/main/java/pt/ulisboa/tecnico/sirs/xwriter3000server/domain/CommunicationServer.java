@@ -1,47 +1,19 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class CommunicationServer {
 
-    private int port;
-
     private List<ActiveUser> activeUsers = Collections.synchronizedList(new ArrayList<ActiveUser>());
 
-    public CommunicationServer(int port){
-        this.port = port;
+    public CommunicationServer(){
     }
 
-
-    public void run() throws InterruptedException{
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-        try {
-            ServerBootstrap writerServer = new ServerBootstrap();
-            writerServer.group(bossGroup, workerGroup);
-            writerServer.channel(NioServerSocketChannel.class);
-            writerServer.childHandler(new xwriterServerChannel());
-
-            ChannelFuture future = writerServer.bind(port).sync();
-
-            future.channel().closeFuture().sync();
-
-        } finally {
-            workerGroup.shutdownGracefully();
-            bossGroup.shutdownGracefully();
-        }
-    }
-
-    public void receiveBookChanges(String book, String sessionID){
-
+    //todo: implement this methods
+    public boolean receiveBookChanges(String book, String sessionID){
+        return true;
     }
 
     public String sendBook(String bookID, String sessionID){
@@ -53,11 +25,12 @@ public class CommunicationServer {
         return "Fail";
     }
 
-    public void authentificateUser(){
-
+    public String authenticateUser(String username, String password){
+        return "good sessionID";
     }
 
-    public void forwardSymKey(){
-
+    //TODO: fix this method
+    public Boolean forwardSymKey(){
+        return true;
     }
 }
