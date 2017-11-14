@@ -12,13 +12,21 @@
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
     <dependencies>
-
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>4.1.15.Final</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.hynnet</groupId>
+            <artifactId>sqljdbc4-chs</artifactId>
+            <version>4.0.2206.100</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.44</version>
+        </dependency>
     </dependencies>
 </project>
