@@ -13,12 +13,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.15.Final</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.hynnet</groupId>
             <artifactId>sqljdbc4-chs</artifactId>
             <version>4.0.2206.100</version>

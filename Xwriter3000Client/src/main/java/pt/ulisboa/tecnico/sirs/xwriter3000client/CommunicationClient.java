@@ -74,6 +74,40 @@ public class CommunicationClient {
         }
     }
 
+    public void createUser(String username, String password){
+        String messageContent;
+        messageContent = "type:" + "createUser" + "username:" + username + "password:" + password;
+        //ciphermessage
+        Message message = new Message(messageContent, "");
+        try {
+            Message replay = sendMessageReplay(message);
+            //add decipher
+            //add some more important stuff
+            System.out.println(replay.getMessage());
+        } catch (IOException e){
+            System.out.println("Server has problems");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Server got problems");
+        }
+    }
+
+    public void createBook(String title, String text){
+        String messageContent;
+        messageContent = "type:" + "sessionID:" + sessionID + "createBook" + "title:" + title + "text:" + text;
+        //add cypher
+        Message message = new Message(messageContent, "");
+        try {
+            Message replay = sendMessageReplay(message);
+            //add a decipher function
+            //add some more stuff
+            System.out.println(replay.getMessage());
+        } catch (IOException e){
+            System.out.println("Server has problems");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Server  problems");
+        }
+    }
+
     public boolean forwardSymKey() {
         return true;
     }

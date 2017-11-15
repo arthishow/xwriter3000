@@ -11,6 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: io.netty:netty-all:4.1.15.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.hynnet:sqljdbc4-chs:4.0.2206.100" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.44" level="project" />
   </component>
 </module>
