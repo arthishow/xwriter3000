@@ -1,8 +1,6 @@
-package xwriter3000;
+package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
