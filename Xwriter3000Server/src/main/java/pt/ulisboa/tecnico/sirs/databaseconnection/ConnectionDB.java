@@ -35,13 +35,13 @@ public class ConnectionDB {
           System.out.println("Creating statement...");
           stmt = conn.createStatement();
           String sql;
-          sql = "SELECT userName FROM USER";        //Exemplo para ir buscar o nome de todos os USERS
+          sql = "SELECT authorName FROM user";        //Exemplo para ir buscar o nome de todos os USERS
           ResultSet rs = stmt.executeQuery(sql);
 
           while(rs.next()){
-             String userName = rs.getString("userName");
+             String userName = rs.getString("authorName");
 
-             System.out.print("userName: " + userName + "\n");
+             System.out.print("authorName: " + userName + "\n");
           }
           rs.close();
           stmt.close();
@@ -83,7 +83,7 @@ public class ConnectionDB {
             String sql;
 
             //add protection from sqli
-            sql = "select id from author where userName = '" + username + "' AND userPass = '"+ password +"'";
+            sql = "select id from author where authorName = '" + username + "' AND authorPass = '"+ password +"'";
 
             System.out.println(sql);
 
@@ -118,7 +118,7 @@ public class ConnectionDB {
             stmt = conn.createStatement();
 
             String sql;
-            sql = "INSERT INTO author(id, userName, userPass) VALUES ("
+            sql = "INSERT INTO author(id, authorName, authorPass) VALUES ("
                     + author.getAuthorID() + "," + "'" + author.getName() + "'" + "," + "'" + author.getPassword() + "'" + ")" ;
 
             System.out.println(sql);
