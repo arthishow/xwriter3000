@@ -38,11 +38,11 @@ public class ConnectionDB {
           System.out.println("Creating statement...");
           stmt = conn.createStatement();
           String sql;
-          sql = "SELECT userName FROM USER";        //Exemplo para ir buscar o nome de todos os USERS
+          sql = "SELECT authorName FROM user";        //Exemplo para ir buscar o nome de todos os USERS
           ResultSet rs = stmt.executeQuery(sql);
 
           while(rs.next()){
-             String userName = rs.getString("userName");
+             String userName = rs.getString("authorName");
 
              System.out.print("userName: " + userName + "\n");
           }

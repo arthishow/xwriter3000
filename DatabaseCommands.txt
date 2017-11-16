@@ -1,23 +1,23 @@
-CREATE TABLE BOOK(
-    id INT NOT NULL,
+CREATE TABLE book(
+    id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
     content VARCHAR(65000),
     PRIMARY KEY(id)
 );
 
-CREATE TABLE USER(
-    id INT NOT NULL,
-    userName VARCHAR(100) NOT NULL,
-    userPass VARCHAR(100) NOT NULL,
-    mail VARCHAR(100) NOT NULL,
-    UNIQUE (mail),
+CREATE TABLE author(
+    id INT NOT NULL AUTO_INCREMENT,
+    authorName VARCHAR(100) NOT NULL,
+    authorPass VARCHAR(100) NOT NULL,
+    UNIQUE (authorName),
     PRIMARY KEY(id)
 );
 
-CREATE TABLE USERBOOK(
+CREATE TABLE userbook(
     bookId INT NOT NULL,
-    userId INT NOT NULL,
-    PRIMARY KEY(bookId, userId),
-    FOREIGN KEY (bookId) REFERENCES BOOK(id),
-    FOREIGN KEY (userId) REFERENCES USER(id)    
+    authorId INT NOT NULL,
+    authLvl INT NOT NULL,
+    PRIMARY KEY(bookId, authorId),
+    FOREIGN KEY (bookId) REFERENCES book(id),
+    FOREIGN KEY (authorId) REFERENCES author(id)    
 );
