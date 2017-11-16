@@ -7,6 +7,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
+import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 public class CypherUtil {
@@ -34,7 +35,17 @@ public class CypherUtil {
             KeyPair kp = kpg.generateKeyPair();
             privateKey = kp.getPrivate();
             publicKey = kp.getPublic();
-            //GlobalVar.getSessaoChavePublica().privateKey(privateKey);
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    /* gera uma chave necessaria para a cifra simetrica */
+    private void generateKeys(String client) {
+        try {
+            KeyGenerator hg = KeyGenerator.getInstance(algoritmoSimetricaAES);
+            SecretKey key = hg.generateKey();
+            bookKeyMap.put(client, key);
         } catch (NoSuchAlgorithmException ex) {
             System.out.println(ex.getMessage());
         }
@@ -54,7 +65,5 @@ public class CypherUtil {
     
     private void decypherBook(String encrypedBook, int bookId){
     
-    }
-    
-    
+    }   
 }
