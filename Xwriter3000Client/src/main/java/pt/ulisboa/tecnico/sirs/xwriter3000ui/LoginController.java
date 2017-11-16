@@ -1,4 +1,4 @@
-package xwriter3000;
+package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
 public class LoginController {
 

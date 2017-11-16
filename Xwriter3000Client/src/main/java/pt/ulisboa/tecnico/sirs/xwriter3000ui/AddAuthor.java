@@ -1,4 +1,4 @@
-package xwriter3000;
+package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

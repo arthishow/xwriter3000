@@ -1,4 +1,4 @@
-package xwriter3000;
+package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
 import java.util.ArrayList;
 import java.util.List;

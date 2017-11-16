@@ -1,8 +1,6 @@
-package xwriter3000;
+package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ public class Main extends Application{
         Book b = new Book("yo part 2", currentUser);
         currentUserBooks.add(a);
         currentUserBooks.add(b);
-
         Application.launch(Main.class, args);
     }
 
