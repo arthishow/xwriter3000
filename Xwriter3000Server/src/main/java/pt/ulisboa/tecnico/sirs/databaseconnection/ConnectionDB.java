@@ -44,7 +44,7 @@ public class ConnectionDB {
           while(rs.next()){
              String userName = rs.getString("authorName");
 
-             System.out.print("userName: " + userName + "\n");
+             System.out.print("authorName: " + userName + "\n");
           }
           rs.close();
           stmt.close();
