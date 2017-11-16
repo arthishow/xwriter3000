@@ -1,4 +1,4 @@
-package pt.tecnico.ulisboa.sirs.xwriter3000client;
+package pt.ulisboa.tecnico.sirs.xwriter3000client;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

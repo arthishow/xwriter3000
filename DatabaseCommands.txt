@@ -1,0 +1,47 @@
+CREATE TABLE BOOK(
+    id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    content VARCHAR(65000),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE USER(
+    id INT NOT NULL,
+    userName VARCHAR(100) NOT NULL,
+    userPass VARCHAR(100) NOT NULL,
+    mail VARCHAR(100) NOT NULL,
+    UNIQUE (mail),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE USERBOOK(
+    bookId INT NOT NULL,
+    userId INT NOT NULL,
+    PRIMARY KEY(bookId, userId),
+    FOREIGN KEY (bookId) REFERENCES BOOK(id),
+    FOREIGN KEY (userId) REFERENCES USER(id)    
+);
+
+CREATE TABLE author(
+    id INT NOT NULL,
+    userName VARCHAR(100) NOT NULL,
+    userPass VARCHAR(100) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE book(
+    id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    content VARCHAR(65000),
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE userbook(
+    bookId INT NOT NULL,
+    authorId INT NOT NULL,
+	authorization INT NOT NULL,
+    PRIMARY KEY(bookId, authorId),
+    FOREIGN KEY (bookId) REFERENCES book(id),
+    FOREIGN KEY (authorId) REFERENCES author(id)    
+);
