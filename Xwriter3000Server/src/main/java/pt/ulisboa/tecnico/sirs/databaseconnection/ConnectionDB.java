@@ -322,7 +322,7 @@ public class ConnectionDB {
     }
 
 
-    public Boolean changeBook(int bookID, int authorID, String content){
+    public Boolean changeBook(int authorID, int bookID, String content){
 
         try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
             Class.forName("com.mysql.jdbc.Driver");
@@ -332,21 +332,26 @@ public class ConnectionDB {
             String sql = "SELECT authorization FROM userbook WHERE bookId = " + bookID +
                             " AND authorId = " + authorID;
 
+            System.out.println(sql);
+
             ResultSet rs = stmt.executeQuery(sql);
 
             rs.next();
 
             int authorization = rs.getInt("authorization");
 
-            conn.close();
-
-            stmt.close();
 
             if (authorization <= 1){
                 String update = "UPDATE book SET content = '" + content +
-                                "' WHERE bookId =" + bookID;
+                                "' WHERE id=" + bookID;
+
+                System.out.println(update);
 
                 int result = stmt.executeUpdate(update);
+
+                conn.close();
+
+                stmt.close();
 
                 return true;
 

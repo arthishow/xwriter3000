@@ -58,7 +58,7 @@ public class CommunicationClient {
 
     public Boolean createBook(String title, String text){
         String messageContent;
-        messageContent = "type:" + "createBook:" + "sessionID:" + sessionID  + "title:" + title + "text:" + text;
+        messageContent = "type:" + "createBook:" + "sessionID:" + sessionID  + "bookTitle:" + title + "bookText:" + text;
         //add cypher
         Message message = new Message(messageContent, "");
         try {
@@ -99,12 +99,13 @@ public class CommunicationClient {
     //think this is better a boolean
     public Boolean sendBookChanges(String bookID, String bookContent) {
         String messageContent;
-        messageContent = "type:" + "receiveBookChanges" + "sessionID:" + sessionID + "book:" + bookID + "bookContent:" + bookContent;
+        messageContent = "type:" + "receiveBookChanges" + "sessionID:" + sessionID + "bookID:" + bookID + "bookContent:" + bookContent;
         Message message = new Message(messageContent, "");
         try {
             Message replay = sendMessageReplay(message);
             //add decipher
             //add some verification
+            System.out.println(replay.getMessage());
             return true;
         } catch (IOException e) {
             System.out.println("ServerProblems");
@@ -130,9 +131,9 @@ public class CommunicationClient {
             for (Iterator<String> bookIterator = badBookList.iterator(); bookIterator.hasNext();){
                 book.clear();
                 String bookID = bookIterator.next();
-                book.add(bookID);
+                System.out.println(book.add(bookID));
                 String bookTitle = bookIterator.next();
-                book.add(bookTitle);
+                System.out.println(book.add(bookTitle));
                 bookList.add(book);
             }
 

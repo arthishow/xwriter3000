@@ -10,9 +10,8 @@ public class xwriterClientApp {
 
         System.out.println(communicationClient.authenticateUser("test", "goodPass"));
 
-        communicationClient.createBook("test","goodBook");
 
-        communicationClient.createBook("test","excelent");
+        communicationClient.getBookList();
 
     }
 

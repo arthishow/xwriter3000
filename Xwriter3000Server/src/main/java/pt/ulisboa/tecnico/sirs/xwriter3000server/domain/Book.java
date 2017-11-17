@@ -3,8 +3,8 @@ package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Book {
-
-    private static final AtomicInteger count = new AtomicInteger(1);
+    //fixme
+    private static final AtomicInteger count = new AtomicInteger(3);
 
     private int bookID;
 

@@ -38,6 +38,7 @@ public class CommunicationServer {
                 sessionID[i] = symbols.toCharArray()[random.nextInt(symbols.toCharArray().length)];
             }
             ActiveUser user = new ActiveUser(new String(sessionID), authorID);
+            activeUsers.add(user);
             return new String(sessionID);
         }
         return null;

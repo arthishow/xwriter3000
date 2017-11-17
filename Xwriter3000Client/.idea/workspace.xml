@@ -13,23 +13,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="xwriterClientApp.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="xwriterClientApp.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="14" column="55" lean-forward="false" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
+            <state relative-caret-position="270">
+              <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommunicationClient.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CommunicationClient.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="58" column="29" lean-forward="false" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="29" />
+            <state relative-caret-position="226">
+              <caret line="136" column="35" lean-forward="true" selection-start-line="136" selection-start-column="35" selection-end-line="136" selection-end-column="35" />
               <folding>
-                <element signature="e#4562#4581#0" expanded="true" />
+                <element signature="e#4625#4644#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -89,8 +89,8 @@
         <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000/Message.java" />
         <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/BookCreation.java" />
         <option value="$PROJECT_DIR$/Xwriter3000Client.iml" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java" />
         <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java" />
       </list>
     </option>
   </component>
@@ -351,12 +351,12 @@
       <workItem from="1510567380949" duration="2145000" />
       <workItem from="1510765287097" duration="7098000" />
       <workItem from="1510853265578" duration="183000" />
-      <workItem from="1510855411529" duration="7470000" />
+      <workItem from="1510855411529" duration="9930000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39042000" />
+    <option name="totallyTimeSpent" value="41502000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1375" height="904" extended-state="6" />
@@ -537,21 +537,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="58" column="29" lean-forward="false" selection-start-line="58" selection-start-column="19" selection-end-line="58" selection-end-column="29" />
-          <folding>
-            <element signature="e#4562#4581#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="270">
+          <caret line="15" column="5" lean-forward="true" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="14" column="55" lean-forward="false" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
-          <folding />
+        <state relative-caret-position="226">
+          <caret line="136" column="35" lean-forward="true" selection-start-line="136" selection-start-column="35" selection-end-line="136" selection-end-column="35" />
+          <folding>
+            <element signature="e#4625#4644#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

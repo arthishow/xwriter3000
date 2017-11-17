@@ -42,7 +42,7 @@ public class MessageParser {
             }
             else if(messageInside.indexOf("createBook") == 5){
                 message.setType("createBook");
-                message.setMessage(messageInside.substring(15));
+                message.setMessage(messageInside.substring(16));
                 return message;
             }
         }
@@ -84,15 +84,12 @@ public class MessageParser {
         String sessionID;
         String bookID;
         String bookContent;
-        if (message.startsWith("sessionID:") && message.contains("bookID:") && message.contains("bookContent:")){
-            sessionID = message.substring(9, message.indexOf("bookID:"));
-            message = message.substring(message.indexOf("bookID:"));
-            bookID = message.substring(5, message.indexOf("bookContent:"));
-            bookContent = message.substring(message.indexOf("bookContent:") + 12).toString();
+        String[] array = message.split("(sessionID:|bookID:|bookContent:)");
+        if (array.length == 4){
             List<String> info = new ArrayList<>();
-            info.add(sessionID);
-            info.add(bookID);
-            info.add(bookContent);
+            info.add(array[1]);
+            info.add(array[2]);
+            info.add(array[3]);
             return info;
         }
         return null;
@@ -102,14 +99,14 @@ public class MessageParser {
         String sessionID;
         String title;
         String text;
-        if (message.startsWith("sessionID:") && message.contains("title:") && message.contains("text:")){
-            sessionID = message.substring(9, message.indexOf("title:"));
-            message = message.substring(message.indexOf("title:"));
-            title = message.substring(5, message.indexOf("title:"));
-            text = message.substring(message.indexOf("title:") + 10).toString();
+        String[] array = message.split("(sessionID:|bookTitle:|bookText:)");
+        if (array.length == 4){
             List<String> info = new ArrayList<>();
+            sessionID = array[1];
             info.add(sessionID);
+            title = array[2];
             info.add(title);
+            text = array[3];
             info.add(text);
             return info;
         }

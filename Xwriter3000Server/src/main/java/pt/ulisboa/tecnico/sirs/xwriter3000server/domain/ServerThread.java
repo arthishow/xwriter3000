@@ -104,6 +104,9 @@ public class ServerThread extends Thread {
 
     public void receiveBookChanges(Message message){
         List<String> info = parser.parseReceiveBookChanges(message.getMessage());
+        System.out.println(info.get(0));
+        System.out.println(info.get(1));
+        System.out.println(info.get(2));
         if (info != null){
             Boolean success = communicationServer.receiveBookChanges(info.get(0), info.get(1), info.get(2));
             //add cypher
@@ -114,6 +117,7 @@ public class ServerThread extends Thread {
 
     public void getBookList(Message message){
         String sessionID = parser.parseGetBookList(message.getMessage());
+        System.out.println(sessionID);
         if (sessionID != null){
             List<ArrayList<String>> bookList = communicationServer.getBookList(sessionID);
             String replayMessage = "";
