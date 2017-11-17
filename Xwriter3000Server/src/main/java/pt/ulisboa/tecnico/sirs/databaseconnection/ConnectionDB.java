@@ -5,12 +5,11 @@
  */
 package pt.ulisboa.tecnico.sirs.databaseconnection;
 
-import pt.ulisboa.tecnico.sirs.xwriter3000server.domain.Author;
 import pt.ulisboa.tecnico.sirs.xwriter3000server.domain.Book;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -85,7 +84,7 @@ public class ConnectionDB {
             String sql;
 
             //add protection from sqli
-            sql = "select id from author where authorName = '" + username + "' AND authorPass = '"+ password +"'";
+            sql = "select id, authorName, authorPass from author where authorName = '" + username + "' AND authorPass = '"+ password +"'";
 
             System.out.println(sql);
 
@@ -93,10 +92,18 @@ public class ConnectionDB {
 
             rs.next();
 
-            int authorID = rs.getInt("id");
+            int authorID = rs.getInt("authorId");
 
+            String dataUsername = rs.getString("authorName");
 
-            return authorID;
+            String dataPassword = rs.getString("authorPass");
+
+            if (username == dataUsername &&  password == dataPassword){
+                return authorID;
+            }
+            else{
+                return -1;
+            }
 
         } catch(SQLException e){
             e.printStackTrace();
@@ -106,7 +113,7 @@ public class ConnectionDB {
         return -1;
     }
 
-    public Boolean createAuthor(Author author){
+    public Boolean createAuthor(String username, String password){
         Connection conn = null;
         Statement stmt = null;
 
@@ -120,8 +127,8 @@ public class ConnectionDB {
             stmt = conn.createStatement();
 
             String sql;
-            sql = "INSERT INTO author(id, authorName, authorPass) VALUES ("
-                    + author.getAuthorID() + "," + "'" + author.getName() + "'" + "," + "'" + author.getPassword() + "'" + ")" ;
+            sql = "INSERT INTO author(authorName, authorPass) VALUES ("
+                     + "'" + username + "'" + "," + "'" + password + "'" + ")" ;
 
             System.out.println(sql);
 
@@ -132,7 +139,7 @@ public class ConnectionDB {
             stmt.close();
             conn.close();
 
-            if (result > 0){
+            if (result == 1){
                 return true;
             } else {
                 return false;
@@ -146,7 +153,7 @@ public class ConnectionDB {
         return false;
     }
 
-    public Boolean createBook(Book book, Author author){
+    public Boolean createBook(Book book, int authorID){
         Connection conn = null;
         Statement stmt = null;
 
@@ -165,7 +172,7 @@ public class ConnectionDB {
 
             String authrizationLevel;
             authrizationLevel = "INSERT INTO userbook(bookId, authorId, authorization) VALUES ("
-                            + book.getBookID() + "," + author.getAuthorID() + ",0)";
+                            + book.getBookID() + "," + authorID + ",0)";
 
 
             System.out.println(bookSql);
@@ -244,7 +251,7 @@ public class ConnectionDB {
 
             }
             else {
-                return "";
+                return null;
             }
 
         } catch(SQLException e){
@@ -253,10 +260,10 @@ public class ConnectionDB {
             e.printStackTrace();
         }
 
-        return "";
+        return null;
     }
 
-    public Map<String, String> getBookList(int authorID){
+    public List<ArrayList<String>> getBookList(int authorID){
 
         try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
             Class.forName("com.mysql.jdbc.Driver");
@@ -268,20 +275,28 @@ public class ConnectionDB {
 
             ResultSet rs = stmt.executeQuery(sql);
 
-            Map<String, String> bookInfo = new HashMap<String, String>();
+            ArrayList<ArrayList<String>> bookList = new ArrayList<ArrayList<String>>();
+
+            ArrayList<String> book = new ArrayList<>();
 
             while(rs.next()){
-                int bookId = rs.getInt("bookId");
+                book.clear();
+
+                int bookID = rs.getInt("bookId");
+
+                book.add(String.valueOf(bookID));
 
                 String title = rs.getString("title");
 
-                System.out.print(bookId + title);
+                book.add(title);
 
-                bookInfo.put(String.valueOf(bookId), title);
+                bookList.add(book);
+
+                System.out.print(bookID + title);
 
             }
 
-            return bookInfo;
+            return bookList;
 
         } catch(SQLException e){
             e.printStackTrace();

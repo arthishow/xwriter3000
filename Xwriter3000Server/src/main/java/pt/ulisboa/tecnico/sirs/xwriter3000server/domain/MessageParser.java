@@ -30,14 +30,20 @@ public class MessageParser {
                 message.setMessage(messageInside.substring(20));
                 return message;
             }
-            //TODO: think this methods will be needed
             else if(messageInside.indexOf("createUser") == 5){
                 message.setType("createUser");
                 message.setMessage(messageInside.substring(15));
                 return message;
             }
-            else if(messageInside.indexOf("getBookIDList") == 5){
-                //TODO
+            else if(messageInside.indexOf("getBookList") == 5){
+                message.setType("getBookList");
+                message.setMessage(messageInside.substring(16));
+                return message;
+            }
+            else if(messageInside.indexOf("createBook") == 5){
+                message.setType("createBook");
+                message.setMessage(messageInside.substring(15));
+                return message;
             }
         }
         return null;
@@ -75,15 +81,45 @@ public class MessageParser {
 
     //untested
     public List<String> parseReceiveBookChanges(String message){
-        String book;
         String sessionID;
-        if (message.startsWith("book:") && message.contains("sessionID:")){
-            book = message.substring(5, message.indexOf("sessionID:") - 1);
-            sessionID = message.substring(message.indexOf("sessionID:") + 10).toString();
+        String bookID;
+        String bookContent;
+        if (message.startsWith("sessionID:") && message.contains("bookID:") && message.contains("bookContent:")){
+            sessionID = message.substring(9, message.indexOf("bookID:"));
+            message = message.substring(message.indexOf("bookID:"));
+            bookID = message.substring(5, message.indexOf("bookContent:"));
+            bookContent = message.substring(message.indexOf("bookContent:") + 12).toString();
             List<String> info = new ArrayList<>();
-            info.add(book);
             info.add(sessionID);
+            info.add(bookID);
+            info.add(bookContent);
             return info;
+        }
+        return null;
+    }
+
+    public List<String> parseNewBook(String message){
+        String sessionID;
+        String title;
+        String text;
+        if (message.startsWith("sessionID:") && message.contains("title:") && message.contains("text:")){
+            sessionID = message.substring(9, message.indexOf("title:"));
+            message = message.substring(message.indexOf("title:"));
+            title = message.substring(5, message.indexOf("title:"));
+            text = message.substring(message.indexOf("title:") + 10).toString();
+            List<String> info = new ArrayList<>();
+            info.add(sessionID);
+            info.add(title);
+            info.add(text);
+            return info;
+        }
+        return null;
+    }
+
+    public String parseGetBookList(String message){
+        String sessionID;
+        if (message.startsWith("sessionID")){
+            sessionID =  message.substring(9);
         }
         return null;
     }
