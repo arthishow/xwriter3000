@@ -32,7 +32,7 @@ public class ServerThread extends Thread {
             message = parser.parseType(message);
             switch (message.getType()) {
                 case "authenticateUser":
-                    List<String> credentials = parser.parseAuthenticateUser(message.getMessage());
+                    List<String> credentials = parser.parseUserInfo(message.getMessage());
                     if (credentials != null) {
                         String sessionID = communicationServer.authenticateUser(credentials.get(0), credentials.get(1));
                         //add cypher
@@ -64,8 +64,11 @@ public class ServerThread extends Thread {
                 case "forwardSymKey":
                     //server.forwardSymKey();
                     break;
-                //todo: think this will be needed
-                case "register":
+                case "createUser":
+                    List<String> userInfo = parser.parseUserInfo(message.getMessage());
+                    if (userInfo != null){
+                        Boolean success = communicationServer.createUser(userInfo.get(0), userInfo.get(1));
+                    }
                     break;
                 case "getBookIDList":
                     break;

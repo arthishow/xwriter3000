@@ -31,7 +31,10 @@ public class MessageParser {
                 return message;
             }
             //TODO: think this methods will be needed
-            else if(messageInside.indexOf("register") == 5){
+            else if(messageInside.indexOf("createUser") == 5){
+                message.setType("createUser");
+                message.setMessage(messageInside.substring(15));
+                return message;
             }
             else if(messageInside.indexOf("getBookIDList") == 5){
                 //TODO
@@ -40,11 +43,11 @@ public class MessageParser {
         return null;
     }
 
-    public List<String> parseAuthenticateUser(String message){
+    public List<String> parseUserInfo(String message){
         String username;
         String password;
         if (message.startsWith("username:") && message.contains("password:")) {
-            username = message.substring(9, message.indexOf("password:") - 1);
+            username = message.substring(9, message.indexOf("password:"));
             password = message.substring(message.indexOf("password:") + 9).toString();
             List<String> credentials = new ArrayList<>();
             credentials.add(username);
@@ -60,7 +63,7 @@ public class MessageParser {
         String bookID;
         String sessionID;
         if (message.startsWith("bookID:") && message.contains("sessionID:")) {
-            bookID = message.substring(7, message.indexOf("sessionID:") - 1);
+            bookID = message.substring(7, message.indexOf("sessionID:"));
             sessionID = message.substring(message.indexOf("sessionID:") + 10).toString();
             List<String> bookInfo = new ArrayList<>();
             bookInfo.add(bookID);

@@ -12,6 +12,7 @@ public class Book {
 
     private String text;
 
+
     public Book(String title, String text){
         this.bookID = count.incrementAndGet();
         this.title = title;
