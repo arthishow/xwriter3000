@@ -68,9 +68,9 @@ public class MessageParser {
     public List<String> parseSendBook(String message){
         String bookID;
         String sessionID;
-        if (message.startsWith("bookID:") && message.contains("sessionID:")) {
-            bookID = message.substring(7, message.indexOf("sessionID:"));
-            sessionID = message.substring(message.indexOf("sessionID:") + 10).toString();
+        if (message.startsWith("sessionID:") && message.contains("bookID:")) {
+            bookID = message.substring(10, message.indexOf("bookID:"));
+            sessionID = message.substring(message.indexOf("bookID:") + 7).toString();
             List<String> bookInfo = new ArrayList<>();
             bookInfo.add(bookID);
             bookInfo.add(sessionID);

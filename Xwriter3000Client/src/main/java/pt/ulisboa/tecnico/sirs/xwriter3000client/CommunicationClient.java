@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class CommunicationClient {
 
@@ -15,29 +19,65 @@ public class CommunicationClient {
     public CommunicationClient() {
     }
 
-
-    //think this is better a boolean
-    public Boolean sendBookChanges(String book, String sessionID) {
+    public Boolean createUser(String username, String password){
         String messageContent;
-        messageContent = "type:" + "receiveBookChanges" + "book:" + book + "sessionID" + sessionID;
+        messageContent = "type:" + "createUser" + "username:" + username + "password:" + password;
+        //ciphermessage
+        Message message = new Message(messageContent, "");
+        try {
+            Message replay = sendMessageReplay(message);
+            //add decipher
+            //add some more important stuff
+            System.out.println(replay.getMessage());
+        } catch (IOException e){
+            System.out.println("Server has problems");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Server got problems");
+        }
+        return false;
+    }
+
+    public String authenticateUser(String username, String password) {
+        String messageContent;
+        messageContent = "type:" + "authenticateUser" + "username:" + username + "password:" + password;
+        //ciphermessage
         Message message = new Message(messageContent, "");
         try {
             Message replay = sendMessageReplay(message);
             //add decipher
             //add some verification
-            return true;
-        } catch (IOException e) {
-            System.out.println("ServerProblems");
-            return false;
+            sessionID = replay.getMessage();
+            return replay.getMessage();
+        } catch (IOException e){
+            System.out.println("Server has problems");
         } catch (ClassNotFoundException e) {
             System.out.println("Server problems");
-            return false;
         }
+        return null;
+    }
+
+    public Boolean createBook(String title, String text){
+        String messageContent;
+        messageContent = "type:" + "createBook:" + "sessionID:" + sessionID  + "title:" + title + "text:" + text;
+        //add cypher
+        Message message = new Message(messageContent, "");
+        try {
+            Message replay = sendMessageReplay(message);
+            //add a decipher function
+            //add some more stuff
+            System.out.println(replay.getMessage());
+            return Boolean.valueOf(replay.getMessage());
+        } catch (IOException e){
+            System.out.println("Server has problems");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Server  problems");
+        }
+        return false;
     }
 
     public String getBook(String bookID, String sessionID) {
         String messageContent;
-        messageContent = "type:" + "sendbook" + "bookID:" + bookID + "sessionID:" + sessionID;
+        messageContent = "type:" + "sendbook" + "sessionID:" + sessionID + "bookID:" + bookID;
         //ciphermessage
         Message message = new Message(messageContent, "");
         try {
@@ -54,59 +94,56 @@ public class CommunicationClient {
         }
     }
 
-    public String authenticateUser(String username, String password) {
+
+
+    //think this is better a boolean
+    public Boolean sendBookChanges(String bookID, String bookContent) {
         String messageContent;
-        messageContent = "type:" + "authenticateUser" + "username:" + username + "password:" + password;
-        //ciphermessage
+        messageContent = "type:" + "receiveBookChanges" + "sessionID:" + sessionID + "book:" + bookID + "bookContent:" + bookContent;
         Message message = new Message(messageContent, "");
         try {
             Message replay = sendMessageReplay(message);
             //add decipher
             //add some verification
-            sessionID = replay.getMessage();
-            return replay.getMessage();
-        } catch (IOException e){
-            System.out.println("Server has problems");
-            return null;
+            return true;
+        } catch (IOException e) {
+            System.out.println("ServerProblems");
         } catch (ClassNotFoundException e) {
             System.out.println("Server problems");
-            return null;
         }
+        return false;
     }
 
-    public void createUser(String username, String password){
+
+    public List<ArrayList<String>> getBookList(){
         String messageContent;
-        messageContent = "type:" + "createUser" + "username:" + username + "password:" + password;
-        //ciphermessage
+        messageContent = "type:getBookListsessionID:" + sessionID;
         Message message = new Message(messageContent, "");
-        try {
+        try{
             Message replay = sendMessageReplay(message);
             //add decipher
-            //add some more important stuff
-            System.out.println(replay.getMessage());
-        } catch (IOException e){
-            System.out.println("Server has problems");
+            String[] bookListString = replay.getMessage().split("book(ID:|Title:)");
+            List<String> badBookList = Arrays.asList(bookListString);
+            ArrayList<ArrayList<String>> bookList = new ArrayList<ArrayList<String>>();
+            ArrayList<String> book = new ArrayList<>();
+
+            for (Iterator<String> bookIterator = badBookList.iterator(); bookIterator.hasNext();){
+                book.clear();
+                String bookID = bookIterator.next();
+                book.add(bookID);
+                String bookTitle = bookIterator.next();
+                book.add(bookTitle);
+                bookList.add(book);
+            }
+
+        } catch (IOException e) {
+            System.out.println("ServerProblems");
         } catch (ClassNotFoundException e) {
-            System.out.println("Server got problems");
+            System.out.println("Server problems");
         }
+        return null;
     }
 
-    public void createBook(String title, String text){
-        String messageContent;
-        messageContent = "type:" + "sessionID:" + sessionID + "createBook" + "title:" + title + "text:" + text;
-        //add cypher
-        Message message = new Message(messageContent, "");
-        try {
-            Message replay = sendMessageReplay(message);
-            //add a decipher function
-            //add some more stuff
-            System.out.println(replay.getMessage());
-        } catch (IOException e){
-            System.out.println("Server has problems");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Server  problems");
-        }
-    }
 
     public boolean forwardSymKey() {
         return true;

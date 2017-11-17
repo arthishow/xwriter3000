@@ -92,18 +92,23 @@ public class ConnectionDB {
 
             rs.next();
 
-            int authorID = rs.getInt("authorId");
+            int authorID = rs.getInt("id");
 
             String dataUsername = rs.getString("authorName");
 
             String dataPassword = rs.getString("authorPass");
 
-            if (username == dataUsername &&  password == dataPassword){
+            conn.close();
+
+            stmt.close();
+
+            if (username.equals(dataUsername) &&  password.equals(dataPassword)){
                 return authorID;
             }
             else{
                 return -1;
             }
+
 
         } catch(SQLException e){
             e.printStackTrace();
@@ -228,6 +233,10 @@ public class ConnectionDB {
 
             rs.next();
 
+            conn.close();
+
+            stmt.close();
+
             int authorization = rs.getInt("authorization");
 
             if (authorization <= 1){
@@ -279,6 +288,10 @@ public class ConnectionDB {
 
             ArrayList<String> book = new ArrayList<>();
 
+            conn.close();
+
+            stmt.close();
+
             while(rs.next()){
                 book.clear();
 
@@ -324,6 +337,10 @@ public class ConnectionDB {
             rs.next();
 
             int authorization = rs.getInt("authorization");
+
+            conn.close();
+
+            stmt.close();
 
             if (authorization <= 1){
                 String update = "UPDATE book SET content = '" + content +

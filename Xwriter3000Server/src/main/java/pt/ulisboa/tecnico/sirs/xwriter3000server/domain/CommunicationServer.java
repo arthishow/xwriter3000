@@ -53,7 +53,6 @@ public class CommunicationServer {
         return false;
     }
 
-
     public String sendBook(String sessionID, String bookID){
         for (ActiveUser activeUser : activeUsers){
             if(sessionID.equals(activeUser.getSessionID())){

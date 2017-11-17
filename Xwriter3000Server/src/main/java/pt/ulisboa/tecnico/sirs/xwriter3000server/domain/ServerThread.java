@@ -2,11 +2,10 @@ package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
 import pt.ulisboa.tecnico.sirs.xwriter3000.Message;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ServerThread extends Thread {
@@ -31,8 +30,14 @@ public class ServerThread extends Thread {
             message = (Message) inFromClient.readObject();
             message = parser.parseType(message);
             switch (message.getType()) {
+                case "createUser":
+                    createUser(message);
+                    break;
                 case "authenticateUser":
                     authenticateUser(message);
+                    break;
+                case "createBook":
+                    createBook(message);
                     break;
                 case "sendBook":
                     sendBook(message);
@@ -40,18 +45,12 @@ public class ServerThread extends Thread {
                 case "receiveBookChanges":
                     receiveBookChanges(message);
                     break;
+                case "getBookList":
+                    getBookList(message);
+                    break;
                 case "forwardSymKey":
                     //fixme
                     //server.forwardSymKey();
-                    break;
-                case "createUser":
-                    createUser(message);
-                    break;
-                case "getBookList":
-                    //fixme
-                    break;
-                case "createBook":
-                    createBook(message);
                     break;
             }
             clientSocket.close();
@@ -117,8 +116,15 @@ public class ServerThread extends Thread {
         String sessionID = parser.parseGetBookList(message.getMessage());
         if (sessionID != null){
             List<ArrayList<String>> bookList = communicationServer.getBookList(sessionID);
+            String replayMessage = "";
+
+            for (Iterator<ArrayList<String>> bookIterator = bookList.iterator(); bookIterator.hasNext();){
+                ArrayList<String> book = bookIterator.next();
+                replayMessage += "bookID:" + book.get(0) + "bookTitle:" + book.get(1);
+            }
+
             //add cypher
-            Message replay = new Message(bookList.toString(), "");
+            Message replay = new Message(replayMessage, "");
             sendMessage(replay);
         }
     }

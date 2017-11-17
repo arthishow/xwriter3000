@@ -7,7 +7,12 @@ public class xwriterClientApp {
     public static void main(String[] args) {
         CommunicationClient communicationClient = new CommunicationClient();
 
-        communicationClient.createBook("test", "goodBook");
+
+        System.out.println(communicationClient.authenticateUser("test", "goodPass"));
+
+        communicationClient.createBook("test","goodBook");
+
+        communicationClient.createBook("test","excelent");
 
     }
 
