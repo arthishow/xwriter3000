@@ -18,6 +18,9 @@ import javafx.stage.Stage;
 
 public class Login {
 
+    private static int HEIGHT = 280;
+    private static int WIDTH = 320;
+
     protected static void initLogInWindow(Stage stage){
 
         stage.setTitle("Xwriter 3000 - Log-in");
@@ -44,28 +47,31 @@ public class Login {
         PasswordField pwBox = new PasswordField();
         grid.add(pwBox, 1, 2);
 
-        Button btn = new Button("Sign in");
+        Button signIn = new Button("Sign in");
+        Button createAccount = new Button("Create account");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(btn);
+        hbBtn.getChildren().add(createAccount);
+        hbBtn.getChildren().add(signIn);
         grid.add(hbBtn, 1, 4);
 
         final Text actionTarget = new Text();
         grid.add(actionTarget, 1, 6);
 
-        btn.setOnAction(e -> login(userTextField, pwBox, actionTarget, stage));
+        createAccount.setOnAction(e -> CreateAccount.initCreateAccountWindow(new Stage()));
+        signIn.setOnAction(e -> login(userTextField, pwBox, actionTarget, stage));
 
-        btn.setOnKeyPressed(ke -> {
+        signIn.setOnKeyPressed(ke -> {
                 if (ke.getCode().equals(KeyCode.ENTER))
                 {
-                   login(userTextField, pwBox, actionTarget, stage);
+                   signIn.getOnAction();
                 }
         });
 
-        btn.setDefaultButton(true);
+        signIn.setDefaultButton(true);
         stage.setResizable(false);
 
-        Scene scene = new Scene(grid, 300, 275);
+        Scene scene = new Scene(grid, WIDTH, HEIGHT);
         stage.setScene(scene);
     }
 

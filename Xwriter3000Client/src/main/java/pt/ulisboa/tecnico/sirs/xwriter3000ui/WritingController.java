@@ -24,7 +24,7 @@ public class WritingController{
 
     //TODO
     protected static boolean authorExists(String userid){
-        return true;
+        return false;
     }
 
     //TODO
