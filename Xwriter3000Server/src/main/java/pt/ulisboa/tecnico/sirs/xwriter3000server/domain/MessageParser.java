@@ -115,8 +115,10 @@ public class MessageParser {
 
     public String parseGetBookList(String message){
         String sessionID;
-        if (message.startsWith("sessionID")){
-            sessionID =  message.substring(9);
+        String[] array = message.split("sessionID:");
+        if (array.length == 2){
+            sessionID =  array[1];
+            return sessionID;
         }
         return null;
     }

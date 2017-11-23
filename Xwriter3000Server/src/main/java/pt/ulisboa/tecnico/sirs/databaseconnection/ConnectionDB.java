@@ -279,23 +279,22 @@ public class ConnectionDB {
 
             Statement stmt = conn.createStatement();
 
-            String sql = "SELECT bookId, title FROM book JOIN userbook WHERE authorId =" +
-                        authorID + "AND authorization <= 1" ;
+            String sql = "SELECT DISTINCT bookId, title FROM book JOIN userbook WHERE authorId = " +
+                        authorID + " AND authorization <= 1" ;
+
+            System.out.println(sql);
 
             ResultSet rs = stmt.executeQuery(sql);
 
             ArrayList<ArrayList<String>> bookList = new ArrayList<ArrayList<String>>();
 
-            ArrayList<String> book = new ArrayList<>();
-
-            conn.close();
-
-            stmt.close();
 
             while(rs.next()){
-                book.clear();
+                ArrayList<String> book = new ArrayList<>();
 
                 int bookID = rs.getInt("bookId");
+
+                System.out.println(bookID);
 
                 book.add(String.valueOf(bookID));
 
@@ -305,9 +304,12 @@ public class ConnectionDB {
 
                 bookList.add(book);
 
-                System.out.print(bookID + title);
 
             }
+
+            conn.close();
+
+            stmt.close();
 
             return bookList;
 
@@ -332,7 +334,6 @@ public class ConnectionDB {
             String sql = "SELECT authorization FROM userbook WHERE bookId = " + bookID +
                             " AND authorId = " + authorID;
 
-            System.out.println(sql);
 
             ResultSet rs = stmt.executeQuery(sql);
 

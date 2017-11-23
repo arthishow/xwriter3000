@@ -117,7 +117,6 @@ public class ServerThread extends Thread {
 
     public void getBookList(Message message){
         String sessionID = parser.parseGetBookList(message.getMessage());
-        System.out.println(sessionID);
         if (sessionID != null){
             List<ArrayList<String>> bookList = communicationServer.getBookList(sessionID);
             String replayMessage = "";

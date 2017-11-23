@@ -126,16 +126,17 @@ public class CommunicationClient {
             String[] bookListString = replay.getMessage().split("book(ID:|Title:)");
             List<String> badBookList = Arrays.asList(bookListString);
             ArrayList<ArrayList<String>> bookList = new ArrayList<ArrayList<String>>();
-            ArrayList<String> book = new ArrayList<>();
 
             for (Iterator<String> bookIterator = badBookList.iterator(); bookIterator.hasNext();){
-                book.clear();
+                ArrayList<String> book = new ArrayList<>();
+                bookIterator.next();
                 String bookID = bookIterator.next();
-                System.out.println(book.add(bookID));
+                book.add(bookID);
                 String bookTitle = bookIterator.next();
-                System.out.println(book.add(bookTitle));
+                book.add(bookTitle);
                 bookList.add(book);
             }
+            return bookList;
 
         } catch (IOException e) {
             System.out.println("ServerProblems");
