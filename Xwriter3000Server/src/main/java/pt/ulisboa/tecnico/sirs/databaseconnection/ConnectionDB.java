@@ -272,7 +272,7 @@ public class ConnectionDB {
         return null;
     }
 
-    public List<ArrayList<String>> getBookList(int authorID){
+    public List<Book> getBookList(int authorID){
 
         try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
             Class.forName("com.mysql.jdbc.Driver");
@@ -286,21 +286,19 @@ public class ConnectionDB {
 
             ResultSet rs = stmt.executeQuery(sql);
 
-            ArrayList<ArrayList<String>> bookList = new ArrayList<ArrayList<String>>();
+            ArrayList<Book> bookList = new ArrayList<Book>();
 
 
             while(rs.next()){
-                ArrayList<String> book = new ArrayList<>();
+
 
                 int bookID = rs.getInt("bookId");
 
                 System.out.println(bookID);
 
-                book.add(String.valueOf(bookID));
-
                 String title = rs.getString("title");
 
-                book.add(title);
+                Book book = new Book(bookID, title);
 
                 bookList.add(book);
 

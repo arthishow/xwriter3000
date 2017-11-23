@@ -6,29 +6,38 @@ import java.util.Random;
 
 public class Book {
 
+    private int bookID;
+
     private String title;
-    private int bookId;
-    private List<User> authors;
 
-    public Book(String title, User author){
+    private String text;
+
+
+    public Book(int bookID, String title){
+        this.bookID = bookID;
         this.title = title;
-        this.bookId = new Random().nextInt();
-        this.authors = new ArrayList<>();
-        this.authors.add(author);
     }
 
-    public String getTitle(){
-        return this.title;
+    public Book(String title, String text){
+        this.title = title;
+        this.text = text;
     }
 
-    //TODO
-    private void addAuthor(User author){
-        this.authors.add(author);
+    public Book(int bookID, String title, String text){
+        this.bookID = bookID;
+        this.title = title;
+        this.text = text;
     }
 
-    //TODO
-    protected String getText(){
-        return "I'm the book you need.";
+    public int getBookID() {
+        return bookID;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getText() {
+        return text;
+    }
 }

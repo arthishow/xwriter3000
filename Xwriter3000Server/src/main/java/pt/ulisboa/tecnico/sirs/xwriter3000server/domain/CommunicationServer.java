@@ -75,10 +75,10 @@ public class CommunicationServer {
         return false;
     }
 
-    public List<ArrayList<String>> getBookList(String sessionID){
+    public List<Book> getBookList(String sessionID){
         for (ActiveUser activeUser : activeUsers){
             if(sessionID.equals(activeUser.getSessionID())){
-                List<ArrayList<String>> bookList = database.getBookList(activeUser.getAuthorID());
+                List<Book> bookList = database.getBookList(activeUser.getAuthorID());
                 return bookList;
             }
         }

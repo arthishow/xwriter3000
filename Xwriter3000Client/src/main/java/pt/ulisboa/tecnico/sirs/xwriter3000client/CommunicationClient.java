@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.sirs.xwriter3000client;
 
 
 import pt.ulisboa.tecnico.sirs.xwriter3000.Message;
+import pt.ulisboa.tecnico.sirs.xwriter3000ui.Book;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,6 +30,7 @@ public class CommunicationClient {
             //add decipher
             //add some more important stuff
             System.out.println(replay.getMessage());
+            return Boolean.valueOf(replay.getMessage());
         } catch (IOException e){
             System.out.println("Server has problems");
         } catch (ClassNotFoundException e) {
@@ -37,7 +39,8 @@ public class CommunicationClient {
         return false;
     }
 
-    public String authenticateUser(String username, String password) {
+
+    public Boolean authenticateUser(String username, String password) {
         String messageContent;
         messageContent = "type:" + "authenticateUser" + "username:" + username + "password:" + password;
         //ciphermessage
@@ -47,13 +50,14 @@ public class CommunicationClient {
             //add decipher
             //add some verification
             sessionID = replay.getMessage();
-            return replay.getMessage();
+            //add check
+            return true;
         } catch (IOException e){
             System.out.println("Server has problems");
         } catch (ClassNotFoundException e) {
             System.out.println("Server problems");
         }
-        return null;
+        return false;
     }
 
     public Boolean createBook(String title, String text){
@@ -116,7 +120,7 @@ public class CommunicationClient {
     }
 
 
-    public List<ArrayList<String>> getBookList(){
+    public List<Book> getBookList(){
         String messageContent;
         messageContent = "type:getBookListsessionID:" + sessionID;
         Message message = new Message(messageContent, "");
@@ -124,16 +128,10 @@ public class CommunicationClient {
             Message replay = sendMessageReplay(message);
             //add decipher
             String[] bookListString = replay.getMessage().split("book(ID:|Title:)");
-            List<String> badBookList = Arrays.asList(bookListString);
-            ArrayList<ArrayList<String>> bookList = new ArrayList<ArrayList<String>>();
+            ArrayList<Book> bookList = new ArrayList<Book>();
 
-            for (Iterator<String> bookIterator = badBookList.iterator(); bookIterator.hasNext();){
-                ArrayList<String> book = new ArrayList<>();
-                bookIterator.next();
-                String bookID = bookIterator.next();
-                book.add(bookID);
-                String bookTitle = bookIterator.next();
-                book.add(bookTitle);
+            for (int i = 1; i < bookListString.length; i += 2){
+                Book book = new Book(Integer.parseInt(bookListString[i]), bookListString[i + 1]);
                 bookList.add(book);
             }
             return bookList;

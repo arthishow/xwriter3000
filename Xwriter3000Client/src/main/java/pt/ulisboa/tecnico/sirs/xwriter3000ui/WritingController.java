@@ -7,9 +7,14 @@ public class WritingController{
     protected static List<Book> books = LoginController.user.getBooks();
     protected static Book currentBook = books.get(1);
 
+    //protected static void getBookLists(){
+    //    books = Main.client.getBookList();
+    //}
+
     //TODO
     protected static void sendBookChanges(String book) {
-
+        //FIXME needs bookID
+        //Main.client.sendBookChanges(bookId ,book);
     }
 
     //TODO
@@ -24,7 +29,7 @@ public class WritingController{
 
     //TODO
     protected static boolean authorExists(String userid){
-        return true;
+        return false;
     }
 
     //TODO

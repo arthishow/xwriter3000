@@ -118,12 +118,12 @@ public class ServerThread extends Thread {
     public void getBookList(Message message){
         String sessionID = parser.parseGetBookList(message.getMessage());
         if (sessionID != null){
-            List<ArrayList<String>> bookList = communicationServer.getBookList(sessionID);
+            List<Book> bookList = communicationServer.getBookList(sessionID);
             String replayMessage = "";
 
-            for (Iterator<ArrayList<String>> bookIterator = bookList.iterator(); bookIterator.hasNext();){
-                ArrayList<String> book = bookIterator.next();
-                replayMessage += "bookID:" + book.get(0) + "bookTitle:" + book.get(1);
+            for (Iterator<Book> bookIterator = bookList.iterator(); bookIterator.hasNext();){
+                Book book = bookIterator.next();
+                replayMessage += "bookID:" + book.getBookID() + "bookTitle:" + book.getTitle();
             }
 
             //add cypher

@@ -12,7 +12,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Xwriter3000" target="1.5" />
-      <module name="Xwriter3000 Server" target="1.7" />
+      <module name="Xwriter3000 Server" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -3,15 +3,20 @@ package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Book {
-    //fixme
-    private static final AtomicInteger count = new AtomicInteger(3);
 
     private int bookID;
+
+    private static final AtomicInteger count = new AtomicInteger(4);
 
     private String title;
 
     private String text;
 
+
+    public Book(int bookID, String title){
+        this.bookID = bookID;
+        this.title = title;
+    }
 
     public Book(String title, String text){
         this.bookID = count.incrementAndGet();
