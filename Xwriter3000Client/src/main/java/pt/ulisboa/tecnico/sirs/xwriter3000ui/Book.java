@@ -7,11 +7,8 @@ import java.util.Random;
 public class Book {
 
     private int bookID;
-
     private String title;
-
     private String text;
-
 
     public Book(int bookID, String title){
         this.bookID = bookID;

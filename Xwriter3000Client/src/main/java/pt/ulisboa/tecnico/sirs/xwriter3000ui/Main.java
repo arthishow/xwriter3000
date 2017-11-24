@@ -28,4 +28,10 @@ public class Main extends Application{
         Login.initLogInWindow(primaryStage);
         primaryStage.show();
     }
+
+    @Override
+    public void stop() {
+        System.out.println("Stage is closing");
+        //client.logout(null);
+    }
 }

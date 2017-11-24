@@ -7,33 +7,6 @@ public class LoginController {
     //TODO
     protected static boolean login(String userName, String password){
         Boolean success = Main.client.authenticateUser(userName, password);
-        if(success){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return success;
     }
-
-    //TODO
-    protected static boolean verifyPassword(String password){
-        return true;
-    }
-
-    //TODO
-    protected static boolean createUser(String userId, String password){
-        Boolean success = Main.client.createUser(userId, password);
-        if(success){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    //TODO
-    protected static boolean authorExists(String userid){
-        return false;
-    }
-
 }

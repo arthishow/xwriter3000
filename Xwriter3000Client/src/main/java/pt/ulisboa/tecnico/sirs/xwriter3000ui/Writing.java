@@ -16,7 +16,6 @@ public class Writing {
     protected static void initTextEditingWindow(Stage stage){
 
         stage.setTitle("Xwriter 3000");
-        stage.setResizable(true);
         Scene scene = new Scene(new VBox(), WIDTH, HEIGHT);
 
         MenuBar menuBar = new MenuBar();
@@ -30,6 +29,10 @@ public class Writing {
         //Edit Menu
         Menu menuEdit = new Menu("Edit");
         MenuItem access = new MenuItem("Manage access level");
+
+        //User Menu
+        Menu menuUser = new Menu("User");
+        MenuItem logout = new MenuItem("Log-out");
 
         TextArea text = new TextArea("Once upon a time...");
 
@@ -47,10 +50,13 @@ public class Writing {
 
         access.setOnAction(e -> AccessAuthorization.initAccessAuthorizationWindow(new Stage()));
 
+        logout.setOnAction(e -> WritingController.logout(stage));
+
         //Menus
         menuFile.getItems().addAll(createBook, saveBook, menuBooks);
         menuEdit.getItems().addAll(access);
-        menuBar.getMenus().addAll(menuFile, menuEdit);
+        menuUser.getItems().addAll(logout);
+        menuBar.getMenus().addAll(menuFile, menuEdit, menuUser);
 
         text.setPrefHeight(HEIGHT-30);
         text.setPrefWidth(WIDTH);
