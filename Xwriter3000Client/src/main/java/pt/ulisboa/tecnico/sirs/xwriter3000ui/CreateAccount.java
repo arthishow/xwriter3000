@@ -72,12 +72,12 @@ public class CreateAccount {
         grid.add(actionTextCreateUser, 2, 3);
 
         author.textProperty().addListener(e -> {
-            if (CreateAccountController.authorExists(author.getText())) {
+            if (Communication.authorExists(author.getText())) {
                 actionTextUserId.setFill(Color.RED);
-                actionTextUserId.setText(author.getText() + " already taken.");
+                actionTextUserId.setText("User ID already taken.");
             } else if (!CreateAccountController.verifyUserId(author.getText())) {
                 actionTextUserId.setFill(Color.RED);
-                actionTextUserId.setText("Too short/long.");
+                actionTextUserId.setText("User ID too short/long.");
             }else {
                 actionTextUserId.setFill(Color.GREEN);
                 actionTextUserId.setText("Valid User ID.");

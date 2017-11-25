@@ -1,15 +1,19 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,17 +57,26 @@ public class BookCreation {
         Button cancel = new Button("Cancel");
         grid.add(cancel, 3, 3);
 
-        addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors));
+        Text actionText = new Text();
+        grid.add(actionText, 4, 3);
+
+        addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors, null));
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
         createBook.setOnAction(e -> {
-            List<User> users = new ArrayList<>();
-            users.add(LoginController.user);
-
-            for(String s : authors.getItems())
-                users.add(WritingController.getUser(s));
-
-            WritingController.createBook(title.getText(), users);
-            stage.close();
+            List<String> authorsId = new ArrayList<>();
+            for (String s : authors.getItems()) {
+                authorsId.add(s);
+            }
+            if (Communication.createBook(title.getText(), authorsId)) {
+                actionText.setFill(Color.GREEN);
+                actionText.setText("Book created.");
+                PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+                delay.setOnFinished(e2 -> stage.close());
+                delay.play();
+            } else {
+                actionText.setFill(Color.RED);
+                actionText.setText("An error has occurred.");
+            }
         });
         cancel.setOnAction(e -> stage.close());
 

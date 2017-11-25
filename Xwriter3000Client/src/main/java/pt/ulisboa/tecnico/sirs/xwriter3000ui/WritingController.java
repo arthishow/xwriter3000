@@ -6,7 +6,6 @@ import java.util.List;
 
 public class WritingController{
 
-    protected static List<Book> books = LoginController.user.getBooks();
     protected static Book currentBook = null;
 
     //protected static void getBookLists(){
@@ -27,11 +26,6 @@ public class WritingController{
     //TODO
     protected static void setNewAuthorsForGivenBook(String title, List<User> authors){
 
-    }
-
-    //TODO
-    protected static boolean authorExists(String userid){
-        return false;
     }
 
     //TODO

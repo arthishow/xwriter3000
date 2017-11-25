@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 public class CreateAccountController {
 
-    //TODO
     protected static boolean verifyPassword(String password) {
         int length = password.length();
         Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
@@ -21,13 +20,7 @@ public class CreateAccountController {
         return length > 3 && length < 17;
     }
 
-    //TODO
     protected static boolean createUser(String userId, String password) {
         return Main.client.createUser(userId, password);
-    }
-
-    //TODO
-    protected static boolean authorExists(String userid) {
-        return false;
     }
 }

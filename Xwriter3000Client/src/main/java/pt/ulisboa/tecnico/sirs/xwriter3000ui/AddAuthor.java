@@ -17,7 +17,7 @@ public class AddAuthor {
     private static int HEIGHT = 100;
     private static int WIDTH = 330;
 
-    protected static void initAddAuthorWindow(Stage stage, ListView<String> authors) {
+    protected static void initAddAuthorWindow(Stage stage, ListView<String> authors, Book book) {
 
         stage.setTitle("Add author");
 
@@ -43,7 +43,10 @@ public class AddAuthor {
         grid.add(cancel, 1, 1);
 
         addAuthor.setOnAction(e -> {
-            if(WritingController.authorExists(author.getText())){
+            if (Communication.authorExists(author.getText())) {
+                if (book != null) {
+                    // Main.client.addAuthorToBook(author.getText(), book.getBookID());
+                }
                 authors.getItems().add(author.getText());
                 actionText.setFill(Color.GREEN);
                 actionText.setText(author.getText() + " added.");

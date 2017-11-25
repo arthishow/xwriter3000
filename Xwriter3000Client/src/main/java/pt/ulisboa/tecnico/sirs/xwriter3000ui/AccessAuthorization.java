@@ -33,7 +33,7 @@ public class AccessAuthorization {
         Text title = new Text("Book title: ");
         grid.add(title, 0, 0);
 
-        ComboBox comboBox = new ComboBox(FXCollections.observableArrayList(LoginController.user.getBookTitles()));
+        ComboBox<String> comboBox = new ComboBox(FXCollections.observableArrayList(Main.client.getBookList()));
         comboBox.getSelectionModel().select(0);
         grid.add(comboBox, 1, 0);
 
@@ -41,8 +41,7 @@ public class AccessAuthorization {
         grid.add(authorizedAuthors, 0, 1);
 
         ListView<String> authors = new ListView<>();
-        //TODO
-        //authors.setItems();
+        authors.setItems(Communication.getAuthorsFromGivenBook(comboBox.getSelectionModel().getSelectedItem()));
         grid.add(authors, 1, 1);
 
         Button addAuthor = new Button("Add author");

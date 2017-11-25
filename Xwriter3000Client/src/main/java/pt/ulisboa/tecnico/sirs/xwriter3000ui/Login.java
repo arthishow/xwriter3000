@@ -65,6 +65,7 @@ public class Login {
                 actionTarget.setText("Log-in successful.");
                 SelectBook.initSelectBookWindow(stage);
             } else {
+                pwBox.setText("");
                 actionTarget.setFill(Color.RED);
                 actionTarget.setText("Error, please retry.");
             }

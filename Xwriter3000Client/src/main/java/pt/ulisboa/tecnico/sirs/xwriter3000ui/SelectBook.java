@@ -1,9 +1,11 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
+import com.sun.org.apache.bcel.internal.generic.Select;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -32,10 +34,22 @@ public class SelectBook {
         books.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(books, 0, 0);
 
-        ListView<String> booklist = new ListView<>();
-        booklist.setPrefHeight(450);
-        booklist.setPrefWidth(400);
-        grid.add(booklist, 0, 1);
+        ListView<Book> bookList = new ListView<>();
+        bookList.setCellFactory(param -> new ListCell<Book>() {
+            @Override
+            protected void updateItem(Book book, boolean empty) {
+                super.updateItem(book, empty);
+
+                if (empty || book == null || book.getTitle() == null) {
+                    setText(null);
+                } else {
+                    setText(book.getTitle());
+                }
+            }
+        });
+        bookList.setPrefHeight(450);
+        bookList.setPrefWidth(400);
+        grid.add(bookList, 0, 1);
 
         Button createBook = new Button("Create book");
 
@@ -43,16 +57,30 @@ public class SelectBook {
 
         Button selectBook = new Button("Select book");
 
+        Button refresh = new Button("Refresh");
+
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(createBook);
         hbBtn.getChildren().add(addAuthor);
+        hbBtn.getChildren().add(refresh);
         hbBtn.getChildren().add(selectBook);
         grid.add(hbBtn, 0, 2);
 
         createBook.setOnAction(e -> BookCreation.initBookCreationWindow(new Stage()));
-        addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), null));
-        selectBook.setOnAction(e -> Writing.initTextEditingWindow(stage));
+        addAuthor.setOnAction(e -> {
+            ListView<String> authors = new ListView<>();
+            Book book = bookList.getSelectionModel().getSelectedItem();
+            authors.getItems().addAll(Communication.getAuthorsFromGivenBook(book.getBookID()));
+            AddAuthor.initAddAuthorWindow(new Stage(), authors, book);
+        });
+        refresh.setOnAction(e -> {
+            bookList.getItems().removeAll();
+            bookList.getItems().addAll(Main.client.getBookList());
+        });
+        selectBook.setOnAction(e -> Writing.initTextEditingWindow(stage, bookList.getSelectionModel().getSelectedItem()));
+
+        bookList.getItems().addAll(Main.client.getBookList());
 
         Scene scene = new Scene(grid, WIDTH, HEIGHT);
         stage.setScene(scene);
