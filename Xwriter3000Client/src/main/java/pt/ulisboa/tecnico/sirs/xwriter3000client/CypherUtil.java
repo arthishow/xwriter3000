@@ -128,6 +128,32 @@ public class CypherUtil {
         }
     }
     
+    private String cypherMessage(String msg, String user){
+        try {
+            PublicKey keyPublic = publicKeyMap.get(user);
+            Cipher c = Cipher.getInstance(algoritmo);
+            c.init(Cipher.ENCRYPT_MODE, keyPublic);
+            byte[] msgCifrada = c.doFinal(msg.getBytes());
+            return Base64.getEncoder().encodeToString(msgCifrada);
+        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
+            System.out.println(ex.getMessage());
+            return "";
+        }        
+    }
+    
+    private String decypherMsg(String msgCifrada, String user){
+        try {
+            byte[] msgBytes = Base64.getDecoder().decode(msgCifrada);
+            Cipher c = Cipher.getInstance(algoritmo);
+            c.init(Cipher.DECRYPT_MODE, privateKey);
+            byte[] msgDecifrada = c.doFinal(msgBytes);
+            return Base64.getEncoder().encodeToString(msgDecifrada);
+        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
+            System.out.println(ex.getMessage());
+            return "";
+        }
+    }
+    
     /* adiciona a public key de um user */
     public void addPublicKey(String user, String publicKey) {
         try {
