@@ -16,12 +16,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class SelectBook {
+class SelectBook {
 
     private static int HEIGHT = 600;
     private static int WIDTH = 500;
 
-    protected static void initSelectBookWindow(Stage stage) {
+    static void initSelectBookWindow(Stage stage) {
 
         stage.setTitle("Xwriter 3000 - Book selection");
         GridPane grid = new GridPane();
@@ -53,7 +53,7 @@ public class SelectBook {
 
         Button createBook = new Button("Create book");
 
-        Button addAuthor = new Button("Add author");
+        Button manageAuthorizations = new Button("Manage authorizations");
 
         Button selectBook = new Button("Select book");
 
@@ -62,23 +62,31 @@ public class SelectBook {
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(createBook);
-        hbBtn.getChildren().add(addAuthor);
+        hbBtn.getChildren().add(manageAuthorizations);
         hbBtn.getChildren().add(refresh);
         hbBtn.getChildren().add(selectBook);
         grid.add(hbBtn, 0, 2);
 
         createBook.setOnAction(e -> BookCreation.initBookCreationWindow(new Stage()));
-        addAuthor.setOnAction(e -> {
-            ListView<String> authors = new ListView<>();
-            Book book = bookList.getSelectionModel().getSelectedItem();
-            authors.getItems().addAll(Communication.getAuthorsFromGivenBook(book.getBookID()));
-            AddAuthor.initAddAuthorWindow(new Stage(), authors, book);
+        manageAuthorizations.setOnAction(e -> {
+            if (!bookList.getSelectionModel().isEmpty()) {
+                AccessAuthorization.initAccessAuthorizationWindow(new Stage());
+            } else {
+                Popup.initPopupWindow(new Stage(), "No books to manage.");
+            }
         });
         refresh.setOnAction(e -> {
             bookList.getItems().removeAll();
             bookList.getItems().addAll(Main.client.getBookList());
         });
-        selectBook.setOnAction(e -> Writing.initTextEditingWindow(stage, bookList.getSelectionModel().getSelectedItem()));
+        selectBook.setOnAction(e -> {
+            if (bookList.getSelectionModel().getSelectedItem() != null) {
+                Writing.initTextEditingWindow(stage, bookList.getSelectionModel().getSelectedItem());
+            } else {
+                System.out.print("sisi");
+                Popup.initPopupWindow(new Stage(), "No book selected.");
+            }
+        });
 
         bookList.getItems().addAll(Main.client.getBookList());
 

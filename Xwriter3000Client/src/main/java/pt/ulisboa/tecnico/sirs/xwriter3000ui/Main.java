@@ -10,14 +10,9 @@ import java.util.List;
 
 public class Main extends Application{
 
-    protected static User currentUser;
-    protected static List<Book> currentUserBooks = new ArrayList<>();
-
-    protected static CommunicationClient client;
-
+    static CommunicationClient client;
 
     public static void main(String[] args) {
-        currentUser = new User("abc12345", "Assa");
         client = new CommunicationClient();
         Application.launch(Main.class, args);
     }
@@ -29,6 +24,7 @@ public class Main extends Application{
         primaryStage.show();
     }
 
+    //TODO
     @Override
     public void stop() {
         System.out.println("Stage is closing");

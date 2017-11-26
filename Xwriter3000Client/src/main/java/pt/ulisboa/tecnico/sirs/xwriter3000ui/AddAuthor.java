@@ -12,12 +12,15 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class AddAuthor {
+import java.util.ArrayList;
+import java.util.List;
+
+class AddAuthor {
 
     private static int HEIGHT = 100;
     private static int WIDTH = 330;
 
-    protected static void initAddAuthorWindow(Stage stage, ListView<String> authors, Book book) {
+    static void initAddAuthorWindow(Stage stage, ListView<String> authors, Book book) {
 
         stage.setTitle("Add author");
 
@@ -45,7 +48,9 @@ public class AddAuthor {
         addAuthor.setOnAction(e -> {
             if (Communication.authorExists(author.getText())) {
                 if (book != null) {
-                    // Main.client.addAuthorToBook(author.getText(), book.getBookID());
+                    List<String> authorList = new ArrayList<>();
+                    authorList.add(author.getText());
+                    Communication.addAuthorsToGivenBook(authorList, book.getBookID());
                 }
                 authors.getItems().add(author.getText());
                 actionText.setFill(Color.GREEN);
