@@ -179,12 +179,12 @@ public class CypherUtil {
         return Base64.getEncoder().encodeToString(iv);
     }
     
-    /* criação da assinatura para o book */
-    public String getSign(String book) {
+    /* criação da assinatura para o book ou mensagem */
+    public String getSign(String bookOrMsg) {
         try {
             Signature sign = Signature.getInstance("SHA1withRSA");
             sign.initSign(privateKey);
-            sign.update(book.getBytes(), 0, book.getBytes().length);
+            sign.update(bookOrMsg.getBytes(), 0, bookOrMsg.getBytes().length);
             byte[] realSig = sign.sign();
             return Base64.getEncoder().encodeToString(realSig);
         } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException ex) {
