@@ -13,10 +13,11 @@ public class Writing {
     private static int HEIGHT = 600;
     private static int WIDTH = 500;
 
-    protected static void initTextEditingWindow(Stage stage){
+    private static Book currentBook;
+
+    protected static void initTextEditingWindow(Stage stage, Book book) {
 
         stage.setTitle("Xwriter 3000");
-        stage.setResizable(true);
         Scene scene = new Scene(new VBox(), WIDTH, HEIGHT);
 
         MenuBar menuBar = new MenuBar();
@@ -31,26 +32,37 @@ public class Writing {
         Menu menuEdit = new Menu("Edit");
         MenuItem access = new MenuItem("Manage access level");
 
-        TextArea text = new TextArea("Once upon a time...");
+        //User Menu
+        Menu menuUser = new Menu("User");
+        MenuItem logout = new MenuItem("Log-out");
 
-        for (Book book: LoginController.user.getBooks()) {
-            MenuItem b = new MenuItem(book.getTitle());
-            b.setOnAction(e -> {
+        TextArea text = new TextArea();
+        if (book == null) {
+            text.setText("Once upon a time...");
+        } else {
+            currentBook = book;
+            text.setText(book.getText());
+        }
+
+        for (Book b : Main.client.getBookList()) {
+            MenuItem bmenu = new MenuItem(book.getTitle());
+            bmenu.setOnAction(e -> {
                 String t = book.getText();
                 text.setText(t);
             });
-            menuBooks.getItems().add(b);
+            menuBooks.getItems().add(bmenu);
         }
 
         createBook.setOnAction(e -> BookCreation.initBookCreationWindow(new Stage()));
-        saveBook.setOnAction(e -> WritingController.sendBookChanges(text.getText()));
-
+        saveBook.setOnAction(e -> Main.client.sendBookChanges(String.valueOf(currentBook.getBookID()), currentBook.getText()));
         access.setOnAction(e -> AccessAuthorization.initAccessAuthorizationWindow(new Stage()));
+        logout.setOnAction(e -> WritingController.logout(stage));
 
         //Menus
         menuFile.getItems().addAll(createBook, saveBook, menuBooks);
         menuEdit.getItems().addAll(access);
-        menuBar.getMenus().addAll(menuFile, menuEdit);
+        menuUser.getItems().addAll(logout);
+        menuBar.getMenus().addAll(menuFile, menuEdit, menuUser);
 
         text.setPrefHeight(HEIGHT-30);
         text.setPrefWidth(WIDTH);

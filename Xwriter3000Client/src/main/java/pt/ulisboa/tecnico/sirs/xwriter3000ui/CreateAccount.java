@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class CreateAccount {
 
@@ -70,9 +72,12 @@ public class CreateAccount {
         grid.add(actionTextCreateUser, 2, 3);
 
         author.textProperty().addListener(e -> {
-            if(LoginController.authorExists(author.getText())){
+            if (Communication.authorExists(author.getText())) {
                 actionTextUserId.setFill(Color.RED);
-                actionTextUserId.setText(author.getText() + " already taken.");
+                actionTextUserId.setText("User ID already taken.");
+            } else if (!CreateAccountController.verifyUserId(author.getText())) {
+                actionTextUserId.setFill(Color.RED);
+                actionTextUserId.setText("User ID too short/long.");
             }else {
                 actionTextUserId.setFill(Color.GREEN);
                 actionTextUserId.setText("Valid User ID.");
@@ -80,12 +85,12 @@ public class CreateAccount {
         });
 
         psw1.textProperty().addListener(e -> {
-            if(LoginController.verifyPassword(psw1.getText())){
+            if (CreateAccountController.verifyPassword(psw1.getText())) {
                 actionTextPassword.setFill(Color.GREEN);
                 actionTextPassword.setText("OK.");
             }else{
                 actionTextPassword.setFill(Color.RED);
-                actionTextPassword.setText("Password too weak.");
+                actionTextPassword.setText("Password is too weak.");
             }
 
             if(psw1.getText().equals(psw2.getText())) {
@@ -100,13 +105,17 @@ public class CreateAccount {
                 actionTextRepeatPassword.setText("OK.");
             }else{
                 actionTextRepeatPassword.setFill(Color.RED);
-                actionTextRepeatPassword.setText("Passwords different.");
+                actionTextRepeatPassword.setText("Passwords are different.");
             }
         });
 
         create.setOnAction(e -> {
-            if(LoginController.createUser(userid.getText(), psw1.getText())){
-                stage.close();
+            if (CreateAccountController.createUser(author.getText(), psw1.getText())) {
+                actionTextCreateUser.setFill(Color.GREEN);
+                actionTextCreateUser.setText("Author created.");
+                PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+                delay.setOnFinished(e2 -> stage.close());
+                delay.play();
             } else {
                 actionTextCreateUser.setFill(Color.RED);
                 actionTextCreateUser.setText("An error has occurred.");

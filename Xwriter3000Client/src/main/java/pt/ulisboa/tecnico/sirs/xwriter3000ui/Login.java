@@ -35,13 +35,13 @@ public class Login {
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(sceneTitle, 0, 0, 2, 1);
 
-        Label userName = new Label("User Name:");
+        Label userName = new Label("User Name: ");
         grid.add(userName, 0, 1);
 
         TextField userTextField = new TextField();
         grid.add(userTextField, 1, 1);
 
-        Label pw = new Label("Password:");
+        Label pw = new Label("Password: ");
         grid.add(pw, 0, 2);
 
         PasswordField pwBox = new PasswordField();
@@ -55,11 +55,21 @@ public class Login {
         hbBtn.getChildren().add(signIn);
         grid.add(hbBtn, 1, 4);
 
-        final Text actionTarget = new Text();
+        Text actionTarget = new Text();
         grid.add(actionTarget, 1, 6);
 
         createAccount.setOnAction(e -> CreateAccount.initCreateAccountWindow(new Stage()));
-        signIn.setOnAction(e -> login(userTextField, pwBox, actionTarget, stage));
+        signIn.setOnAction(e -> {
+            if (LoginController.login(userTextField.getText(), pwBox.getText())) {
+                actionTarget.setFill(Color.GREEN);
+                actionTarget.setText("Log-in successful.");
+                SelectBook.initSelectBookWindow(stage);
+            } else {
+                pwBox.setText("");
+                actionTarget.setFill(Color.RED);
+                actionTarget.setText("Error, please retry.");
+            }
+        });
 
         signIn.setOnKeyPressed(ke -> {
                 if (ke.getCode().equals(KeyCode.ENTER))
@@ -73,16 +83,5 @@ public class Login {
 
         Scene scene = new Scene(grid, WIDTH, HEIGHT);
         stage.setScene(scene);
-    }
-
-    private static void login(TextField userTextField, PasswordField pwBox, Text text, Stage stage){
-        if(LoginController.login(userTextField.getText(), pwBox.getText())) {
-            text.setFill(Color.GREEN);
-            text.setText("Log-in successful.");
-            Writing.initTextEditingWindow(stage);
-        }else{
-            text.setFill(Color.RED);
-            text.setText("Error, please retry.");
-        }
     }
 }
