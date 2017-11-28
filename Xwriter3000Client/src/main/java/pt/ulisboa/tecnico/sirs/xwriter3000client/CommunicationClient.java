@@ -60,7 +60,7 @@ public class CommunicationClient {
         return false;
     }
 
-    public Boolean createBook(String title){
+    public int createBook(String title){
         String messageContent;
         messageContent = "type:" + "createBook:" + "sessionID:" + sessionID  + "bookTitle:" + title;
         //add cypher
@@ -70,18 +70,20 @@ public class CommunicationClient {
             //add a decipher function
             //add some more stuff
             System.out.println(replay.getMessage());
-            return Boolean.valueOf(replay.getMessage());
+            return Integer.valueOf(replay.getMessage());
         } catch (IOException e){
             System.out.println("Server has problems");
         } catch (ClassNotFoundException e) {
             System.out.println("Server  problems");
         }
-        return false;
+        return -1;
     }
 
 
-    public Boolean createBook(String title, List<String> userID){
-        return false;
+    public int createBook(String title, List<String> userID){
+        int bookID = createBook(title);
+        addAuthorsAuth(String.valueOf(bookID), userID);
+        return bookID;
     }
 
     public String getBook(String bookID, String sessionID) {

@@ -91,9 +91,9 @@ public class ServerThread extends Thread {
     public void createBook(Message message){
         List<String> book = parser.parseNewBook(message.getMessage());
         if (book != null){
-            Boolean success = communicationServer.createBook(book.get(0), book.get(1));
+            int bookID = communicationServer.createBook(book.get(0), book.get(1));
             //add cypher
-            Message replay = new Message(success.toString(), "");
+            Message replay = new Message(String.valueOf(bookID), "");
             sendMessage(replay);
         }
     }

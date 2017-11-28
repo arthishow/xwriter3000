@@ -77,7 +77,6 @@ public class ConnectionDB {
 
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-            System.out.println("Creating statement...");
 
             stmt = conn.createStatement();
 
@@ -86,7 +85,6 @@ public class ConnectionDB {
             //add protection from sqli
             sql = "select id, authorName, authorPass from author where authorName = '" + username + "' AND authorPass = '"+ password +"'";
 
-            System.out.println(sql);
 
             ResultSet rs = stmt.executeQuery(sql);
 
@@ -135,11 +133,8 @@ public class ConnectionDB {
             sql = "INSERT INTO author(authorName, authorPass) VALUES ("
                      + "'" + username + "'" + "," + "'" + password + "'" + ")" ;
 
-            System.out.println(sql);
 
             int result = stmt.executeUpdate(sql);
-
-            System.out.println(result);
 
             stmt.close();
             conn.close();
@@ -158,7 +153,7 @@ public class ConnectionDB {
         return false;
     }
 
-    public Boolean createBook(Book book, int authorID){
+    public int createBook(Book book, int authorID){
         Connection conn = null;
         Statement stmt = null;
 
@@ -167,13 +162,14 @@ public class ConnectionDB {
 
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-            System.out.println("Creating statement...");
 
             stmt = conn.createStatement();
 
             String bookSql;
             bookSql = "INSERT INTO book(id, title, content) VALUES ("
                     + book.getBookID() + "," + "'" + book.getTitle() + "'" + "," + "'" + book.getText() + "'" + ")" ;
+
+
 
             String authrizationLevel;
             authrizationLevel = "INSERT INTO userbook(bookId, authorId, authorization) VALUES ("
@@ -182,21 +178,20 @@ public class ConnectionDB {
 
             System.out.println(bookSql);
 
+            System.out.println(authrizationLevel);
+
             int firstResult = stmt.executeUpdate(bookSql);
 
             int secondResult = stmt.executeUpdate(authrizationLevel);
 
-            System.out.println(firstResult);
-
-            System.out.println(secondResult);
 
             stmt.close();
             conn.close();
 
             if (firstResult == 1 && secondResult == 1){
-                return true;
+               book.getBookID();
             } else {
-                return false;
+                return -1;
             }
 
         } catch(SQLException e){
@@ -204,7 +199,7 @@ public class ConnectionDB {
         } catch(Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     public String getBook(int bookID, int authorID){
