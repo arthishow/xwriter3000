@@ -286,7 +286,7 @@ public class ConnectionDB {
 
             ResultSet rs = stmt.executeQuery(sql);
 
-            ArrayList<Book> bookList = new ArrayList<Book>();
+            List<Book> bookList = new ArrayList<>();
 
 
             while(rs.next()){
@@ -421,6 +421,41 @@ public class ConnectionDB {
         }
 
         return false;
+    }
+
+    public List<String> getAuthorsFromBook(String bookID){
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
+            Class.forName("com.mysql.jdbc.Driver");
+
+            Statement stmt = conn.createStatement();
+
+            String sql = "SELECT username FROM author JOIN book JOIN userbook WHERE bookID = '" + bookID + "'";
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            List<String> authors = new ArrayList<>();
+
+            rs.next();
+
+            while(rs.next()){
+
+                String username = rs.getString("username");
+
+                System.out.println(username);
+
+                authors.add(username);
+            }
+
+            return authors;
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

@@ -141,11 +141,11 @@ public class ServerThread extends Thread {
     public void getBookList(Message message){
         String sessionID = parser.parseGetBookList(message.getMessage());
         if (sessionID != null){
-            List<Book> bookList = communicationServer.getBookList(sessionID);
+            List<Book> bookList = new ArrayList<>();
+            bookList.addAll(communicationServer.getBookList(sessionID));
             String replayMessage = "";
 
-            for (Iterator<Book> bookIterator = bookList.iterator(); bookIterator.hasNext();){
-                Book book = bookIterator.next();
+            for (Book book: bookList){
                 replayMessage += "bookID:" + book.getBookID() + "bookTitle:" + book.getTitle();
             }
 
@@ -164,6 +164,23 @@ public class ServerThread extends Thread {
             sendMessage(replay);
         }
 
+    }
+
+    public void getAuthorsFromBook(Message message){
+        List<String> info = parser.getAuthorsFromBook(message.getMessage());
+
+        if (info != null) {
+            List<String> authors = new ArrayList<>();
+            authors.addAll(communicationServer.getAuthorsFromBook(info.get(0), info.get(1)));
+
+            String replayMessage = "";
+
+            for (String author: authors){
+                replayMessage += "username:" + author;
+            }
+            Message replay = new Message(replayMessage, "");
+            sendMessage(replay);
+        }
     }
 
 
