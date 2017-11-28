@@ -72,7 +72,7 @@ public class CreateAccount {
         grid.add(actionTextCreateUser, 2, 3);
 
         author.textProperty().addListener(e -> {
-            if (Communication.authorExists(author.getText())) {
+            if (Main.client.authorExists(author.getText())) {
                 actionTextUserId.setFill(Color.RED);
                 actionTextUserId.setText("User ID already taken.");
             } else if (!CreateAccountController.verifyUserId(author.getText())) {

@@ -4,10 +4,7 @@ import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -42,7 +39,11 @@ public class BookCreation {
         Text authorizedAuthors = new Text("Added authors: ");
         grid.add(authorizedAuthors, 0, 1);
 
-        ListView<String> authors = new ListView<>();
+        TableView<User> authors = new TableView<>();
+        authors.setEditable(false);
+        TableColumn userIdCol = new TableColumn("User ID");
+        TableColumn levelCol = new TableColumn("Level");
+        authors.getColumns().addAll(userIdCol, levelCol);
         grid.add(authors, 1, 1);
 
         Button addAuthor = new Button("Add author");
@@ -60,14 +61,14 @@ public class BookCreation {
         Text actionText = new Text();
         grid.add(actionText, 4, 3);
 
-        addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors, null));
+        addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors));
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
         createBook.setOnAction(e -> {
             List<String> authorsId = new ArrayList<>();
-            for (String s : authors.getItems()) {
-                authorsId.add(s);
+            for(User user: authors.getItems()){
+                authorsId.add(user.getAuthorId());
             }
-            if (Communication.createBook(title.getText(), authorsId)) {
+            if (Main.client.createBook(title.getText(), authorsId) >= 0) {
                 actionText.setFill(Color.GREEN);
                 actionText.setText("Book created.");
                 PauseTransition delay = new PauseTransition(Duration.seconds(1.5));

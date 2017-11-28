@@ -6,8 +6,14 @@ import java.util.List;
 public class User {
 
     private String authorId;
+    private int authorizationLevel;
 
-    public User(String authorId) {
+    protected User(String authorId, int authorizationLevel) {
         this.authorId = authorId;
+        this.authorizationLevel = authorizationLevel;
+    }
+
+    protected String getAuthorId(){
+        return authorId;
     }
 }
