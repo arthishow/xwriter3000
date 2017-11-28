@@ -17,7 +17,7 @@ public class CreateAccountController {
 
     protected static boolean verifyUserId(String userId) {
         int length = userId.length();
-        return length > 3 && length < 17;
+        return length > 3 && length < 129;
     }
 
     protected static boolean createUser(String userId, String password) {

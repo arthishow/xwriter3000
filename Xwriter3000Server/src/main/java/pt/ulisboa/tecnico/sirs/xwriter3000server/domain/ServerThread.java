@@ -52,6 +52,12 @@ public class ServerThread extends Thread {
                     //fixme
                     //server.forwardSymKey();
                     break;
+                case "addAuthorsAuth":
+                    addAuthorAuth(message);
+                    break;
+                case "authorExists":
+                    authorExists(message);
+                    break;
             }
             clientSocket.close();
         } catch (IOException e) {
@@ -85,11 +91,28 @@ public class ServerThread extends Thread {
     public void createBook(Message message){
         List<String> book = parser.parseNewBook(message.getMessage());
         if (book != null){
-            Boolean success = communicationServer.createBook(book.get(0), book.get(1), book.get(2));
+            Boolean success = communicationServer.createBook(book.get(0), book.get(1));
             //add cypher
             Message replay = new Message(success.toString(), "");
             sendMessage(replay);
         }
+    }
+
+    public void addAuthorAuth(Message message){
+
+        List<String> ids = parser.parseAddAuthorAuth(message.getMessage());
+        if (ids != null){
+            String sessionID = ids.get(0);
+            String bookID = ids.get(1);
+            List<String> authorIDs = new ArrayList<>();
+            for (int i = 2; i < ids.size(); i++){
+                ids.add(ids.get(i));
+            }
+            Boolean success = communicationServer.addAuthorAuth(sessionID, bookID, authorIDs);
+            Message replay = new Message(success.toString(), "");
+            sendMessage(replay);
+        }
+
     }
 
     public void sendBook(Message message){
@@ -130,6 +153,17 @@ public class ServerThread extends Thread {
             Message replay = new Message(replayMessage, "");
             sendMessage(replay);
         }
+    }
+
+    public void authorExists(Message message){
+        List<String> info = parser.authorExists(message.getMessage());
+
+        if (info != null){
+            Boolean success = communicationServer.authorExists(info.get(0), info.get(1));
+            Message replay = new Message(success.toString(), "");
+            sendMessage(replay);
+        }
+
     }
 
 
