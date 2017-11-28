@@ -60,9 +60,9 @@ public class CommunicationClient {
         return false;
     }
 
-    public Boolean createBook(String title, String text){
+    public Boolean createBook(String title){
         String messageContent;
-        messageContent = "type:" + "createBook:" + "sessionID:" + sessionID  + "bookTitle:" + title + "bookText:" + text;
+        messageContent = "type:" + "createBook:" + "sessionID:" + sessionID  + "bookTitle:" + title;
         //add cypher
         Message message = new Message(messageContent, "");
         try {
@@ -76,6 +76,11 @@ public class CommunicationClient {
         } catch (ClassNotFoundException e) {
             System.out.println("Server  problems");
         }
+        return false;
+    }
+
+
+    public Boolean createBook(String title, List<String> userID){
         return false;
     }
 
@@ -149,6 +154,44 @@ public class CommunicationClient {
         return true;
     }
 
+    public boolean addAuthorsAuth(String bookID, List<String> authorIDs){
+        String messageContent;
+        messageContent = "type:addAuthorAuthsessioID:" + sessionID + "bookID:" + bookID;
+        for (String authorID : authorIDs){
+            messageContent += "authorID:" + authorID;
+        }
+        Message message = new Message(messageContent, "");
+        try{
+            Message replay = sendMessageReplay(message);
+            //add decipher
+
+        } catch (IOException e) {
+            System.out.println("ServerProblems");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Server problems");
+        }
+        return false;
+    }
+
+    public boolean authorExists(String username){
+        String messageContent;
+        messageContent = "type:addAuthorAuthsessioID:" + sessionID + "username:" + username;
+        Message message = new Message(messageContent, "");
+        try{
+            Message replay = sendMessageReplay(message);
+            //add decipher
+        } catch (IOException e) {
+            System.out.println("ServerProblems");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Server problems");
+        }
+        return false;
+    }
+
+    public List<String> getAuthorsFromBook(String bookID){
+        return null;
+    }
+
     public void sendMessage(Message message) throws IOException {
         Socket clientSocket = new Socket("localhost", 8001);
         ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -165,5 +208,7 @@ public class CommunicationClient {
         Message replay = (Message) objectIn.readObject();
         return replay;
     }
+
+
 
 }

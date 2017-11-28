@@ -45,6 +45,18 @@ public class MessageParser {
                 message.setMessage(messageInside.substring(16));
                 return message;
             }
+            else if (messageInside.indexOf("logout") == 5){
+                message.setType("logout");
+                message.setMessage(messageInside.substring(11));
+            }
+            else if(messageInside.indexOf("addAuthorAuth") == 5){
+                message.setType("addAuthorAuth");
+                message.setMessage(messageInside.split("addAuthorAuth")[1]);
+            }
+            else if(messageInside.indexOf("authorExists") == 5){
+                message.setType("authorExists");
+                message.setMessage(messageInside.split("authorExists")[1]);
+            }
         }
         return null;
     }
@@ -99,15 +111,13 @@ public class MessageParser {
         String sessionID;
         String title;
         String text;
-        String[] array = message.split("(sessionID:|bookTitle:|bookText:)");
-        if (array.length == 4){
+        String[] array = message.split("(sessionID:|bookTitle:)");
+        if (array.length == 3){
             List<String> info = new ArrayList<>();
             sessionID = array[1];
             info.add(sessionID);
             title = array[2];
             info.add(title);
-            text = array[3];
-            info.add(text);
             return info;
         }
         return null;
@@ -119,6 +129,28 @@ public class MessageParser {
         if (array.length == 2){
             sessionID =  array[1];
             return sessionID;
+        }
+        return null;
+    }
+
+    public List<String> parseAddAuthorAuth(String message){
+        List<String> ids = new ArrayList<>();
+        String[] array = message.split("sessionID:|bookID:|authorID:");
+        if (array.length > 3){
+            for (int i = 1; i < array.length; i++){
+                ids.add(array[i]);
+            }
+            return ids;
+        }
+        return null;
+    }
+
+    public List<String> authorExists(String message) {
+        String[] array = message.split("sessioID:|username:");
+        if (array.length == 3){
+            List<String> info = new ArrayList<>();
+            info.add(array[1]);
+            info.add(array[2]);
         }
         return null;
     }

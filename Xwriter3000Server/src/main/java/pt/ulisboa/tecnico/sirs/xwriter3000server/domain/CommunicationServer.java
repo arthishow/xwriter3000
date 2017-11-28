@@ -44,10 +44,10 @@ public class CommunicationServer {
         return null;
     }
 
-    public Boolean createBook(String sessionID, String title, String text){
+    public Boolean createBook(String sessionID, String title){
         for (ActiveUser activeUser : activeUsers){
             if(sessionID.equals(activeUser.getSessionID())){
-                Book book = new Book(title, text);
+                Book book = new Book(title);
                 return database.createBook(book, activeUser.getAuthorID());
             }
         }
@@ -86,6 +86,26 @@ public class CommunicationServer {
     }
 
 
+    public Boolean addAuthorAuth(String sessionID, String bookID, List<String> authorIDs){
+        for (ActiveUser activeUser : activeUsers){
+            if(sessionID.equals(activeUser.getSessionID())){
+                for(String authorID: authorIDs){
+                    database.addAuthorAuth(Integer.valueOf(bookID), Integer.valueOf(authorID));
+                }
+
+            }
+        }
+        return false;
+    }
+
+    public Boolean authorExists(String sessionID, String username) {
+        for (ActiveUser activeUser : activeUsers) {
+            if (sessionID.equals(activeUser.getSessionID())) {
+                return database.authorExists(username);
+            }
+        }
+        return false;
+    }
 
     //TODO: fix this method
     public Boolean forwardSymKey(){

@@ -364,4 +364,64 @@ public class ConnectionDB {
 
         return false;
     }
+
+
+    public Boolean addAuthorAuth(int bookID, int authorID){
+
+        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
+            Class.forName("com.mysql.jdbc.Driver");
+
+            Statement stmt = conn.createStatement();
+
+            String update = "INSERT INTO userbook(bookId, authorId, authorization) VALUES ( "
+                    + bookID + "," + authorID + "," + "1";
+
+            System.out.println(update);
+
+            int result = stmt.executeUpdate(update);
+
+
+            if(result == 1){
+                return true;
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+    public Boolean authorExists(String username){
+        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
+            Class.forName("com.mysql.jdbc.Driver");
+
+            Statement stmt = conn.createStatement();
+
+            String sql = "SELECT username FROM author WHERE username = '" + username + "'";
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            rs.next();
+
+
+            if(rs.getString("authorName").equals(username)){
+                return true;
+            }else{
+                return false;
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
 }

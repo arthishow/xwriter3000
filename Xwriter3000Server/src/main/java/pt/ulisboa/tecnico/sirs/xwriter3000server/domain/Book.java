@@ -18,6 +18,11 @@ public class Book {
         this.title = title;
     }
 
+    public Book(String title){
+        this.bookID = count.incrementAndGet();
+        this.title = title;
+    }
+
     public Book(String title, String text){
         this.bookID = count.incrementAndGet();
         this.title = title;
