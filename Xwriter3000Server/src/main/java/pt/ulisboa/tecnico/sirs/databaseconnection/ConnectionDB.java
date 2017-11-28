@@ -21,7 +21,7 @@ public class ConnectionDB {
     static final String DB_URL = "jdbc:mysql://localhost:3306/xwriter3000?zeroDateTimeBehavior=convertToNull&useSSL=false";
 
     static final String USER = "root";
-    static final String PASS = "Io8JbOCc";
+    static final String PASS = "2ninshL6+5";
 
     public void example(String[] args) {
         
