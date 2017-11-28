@@ -45,6 +45,10 @@ public class MessageParser {
                 message.setMessage(messageInside.substring(16));
                 return message;
             }
+            else if (messageInside.indexOf("logout") == 5){
+                message.setType("logout");
+                message.setType(messageInside.substring(11));
+            }
         }
         return null;
     }
