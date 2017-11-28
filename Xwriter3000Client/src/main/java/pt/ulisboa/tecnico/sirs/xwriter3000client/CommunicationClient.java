@@ -163,8 +163,8 @@ public class CommunicationClient {
         Message message = new Message(messageContent, "");
         try{
             Message replay = sendMessageReplay(message);
-            //add decipher
-
+            //add deciphera
+            return true;
         } catch (IOException e) {
             System.out.println("ServerProblems");
         } catch (ClassNotFoundException e) {
@@ -179,6 +179,7 @@ public class CommunicationClient {
         Message message = new Message(messageContent, "");
         try{
             Message replay = sendMessageReplay(message);
+            return true;
             //add decipher
         } catch (IOException e) {
             System.out.println("ServerProblems");
@@ -189,6 +190,22 @@ public class CommunicationClient {
     }
 
     public List<String> getAuthorsFromBook(String bookID){
+        String messageContent;
+        messageContent = "type:getAuthorsFromBooksessioID:" + sessionID + "bookID:" + bookID;
+        Message message = new Message(messageContent, "");
+        try{
+            Message replay = sendMessageReplay(message);
+            //add decipher
+            String[] authors = replay.getMessage().split("username:");
+            List<String> authorsList= new ArrayList<>();
+            for(int i = 1; i < authors.length; i++) {
+                authorsList.add(authors[i]);
+            }
+        } catch (IOException e) {
+            System.out.println("ServerProblems");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Server problems");
+        }
         return null;
     }
 

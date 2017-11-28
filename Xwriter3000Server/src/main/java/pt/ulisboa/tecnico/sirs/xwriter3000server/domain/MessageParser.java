@@ -155,4 +155,14 @@ public class MessageParser {
         return null;
     }
 
+    public List<String> getAuthorsFromBook(String message){
+        String[] array = message.split("sessionID:bookID:");
+        if (array.length == 3){
+            List<String> info = new ArrayList<>();
+            info.add(array[1]);
+            info.add(array[2]);
+        }
+        return null;
+    }
+
 }

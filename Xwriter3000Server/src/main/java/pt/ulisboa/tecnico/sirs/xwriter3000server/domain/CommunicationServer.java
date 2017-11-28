@@ -107,6 +107,15 @@ public class CommunicationServer {
         return false;
     }
 
+    public List<String> getAuthorsFromBook(String sessionID, String bookID){
+        for (ActiveUser activeUser : activeUsers) {
+            if (sessionID.equals(activeUser.getSessionID())) {
+                return database.getAuthorsFromBook(bookID);
+            }
+        }
+        return null;
+    }
+
     //TODO: fix this method
     public Boolean forwardSymKey(){
         return true;
