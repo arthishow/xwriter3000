@@ -12,7 +12,8 @@ public class CreateAccountController {
         boolean hasUppercase = !password.equals(password.toLowerCase());
         boolean hasLowercase = !password.equals(password.toUpperCase());
         boolean hasNumber = password.matches(".*\\d+.*");
-        return length > 5 && length < 21 && m.find() && hasUppercase && hasLowercase && hasNumber;
+        boolean hasSpace = password.contains(" ");
+        return length > 5 && length < 21 && m.find() && hasUppercase && hasLowercase && hasNumber && !hasSpace;
     }
 
     protected static boolean verifyUserId(String userId) {

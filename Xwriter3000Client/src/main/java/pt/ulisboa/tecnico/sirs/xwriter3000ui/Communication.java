@@ -24,5 +24,4 @@ public class Communication {
         return true;
     }
 
-
 }

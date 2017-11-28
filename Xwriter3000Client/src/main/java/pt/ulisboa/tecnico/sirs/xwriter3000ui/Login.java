@@ -60,7 +60,7 @@ public class Login {
 
         createAccount.setOnAction(e -> CreateAccount.initCreateAccountWindow(new Stage()));
         signIn.setOnAction(e -> {
-            if (LoginController.login(userTextField.getText(), pwBox.getText())) {
+            if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText())) {
                 actionTarget.setFill(Color.GREEN);
                 actionTarget.setText("Log-in successful.");
                 SelectBook.initSelectBookWindow(stage);

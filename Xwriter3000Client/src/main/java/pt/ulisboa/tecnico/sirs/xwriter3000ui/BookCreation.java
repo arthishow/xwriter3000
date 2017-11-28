@@ -64,10 +64,8 @@ public class BookCreation {
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
         createBook.setOnAction(e -> {
             List<String> authorsId = new ArrayList<>();
-            for (String s : authors.getItems()) {
-                authorsId.add(s);
-            }
-            if (Communication.createBook(title.getText(), authorsId)) {
+            authorsId.addAll(authors.getItems());
+            if (Main.client.createBook(title.getText(), authors)) {
                 actionText.setFill(Color.GREEN);
                 actionText.setText("Book created.");
                 PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
