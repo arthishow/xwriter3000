@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="92e5b27a-1d6b-438f-85da-030f18dbbc63" name="Default" comment="">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../Xwriter3000Client/XWriter3000Client.iml" afterPath="$PROJECT_DIR$/../Xwriter3000Client/Xwriter3000Client.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Client/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../Xwriter3000Client/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Client/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorization.java" afterPath="$PROJECT_DIR$/../Xwriter3000Client/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorization.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Client/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/BookCreation.java" afterPath="$PROJECT_DIR$/../Xwriter3000Client/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/BookCreation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Client/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.java" afterPath="$PROJECT_DIR$/../Xwriter3000Client/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,7 +32,7 @@
       <file leaf-file-name="ServerThread.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
+            <state relative-caret-position="147">
               <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
               <folding />
             </state>
@@ -449,7 +453,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
+        <state relative-caret-position="147">
           <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding />
         </state>

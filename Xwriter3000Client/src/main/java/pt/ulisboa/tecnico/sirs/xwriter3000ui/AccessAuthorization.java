@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -22,7 +19,7 @@ import java.util.List;
 class AccessAuthorization {
 
     private static int HEIGHT = 350;
-    private static int WIDTH = 600;
+    private static int WIDTH = 630;
 
     static void initAccessAuthorizationWindow(Stage stage) {
 
@@ -47,13 +44,15 @@ class AccessAuthorization {
         grid.add(authorizedAuthors, 0, 1);
 
         TableView<User> authors = new TableView<>();
-        if (comboBox.getSelectionModel().getSelectedItem() != null) {
-            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
-        }
-        comboBox.valueProperty().addListener(e -> {
-            authors.getItems().removeAll();
-            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
-        });
+        authors.setEditable(false);
+        TableColumn userIdCol = new TableColumn("User ID");
+        TableColumn levelCol = new TableColumn("Level");
+        authors.getColumns().addAll(userIdCol, levelCol);
+        userIdCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.7));
+        levelCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.3));
+        userIdCol.setResizable(false);
+        levelCol.setResizable(false);
+        authors.setPlaceholder(new Label("No authors to display."));
         grid.add(authors, 1, 1);
 
         Button addAuthor = new Button("Add author");
@@ -90,6 +89,14 @@ class AccessAuthorization {
             }
         });
         cancel.setOnAction(e -> stage.close());
+
+        if (comboBox.getSelectionModel().getSelectedItem() != null) {
+            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
+        }
+        comboBox.valueProperty().addListener(e -> {
+            authors.getItems().clear();
+            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
+        });
 
         Scene scene = new Scene(grid, WIDTH, HEIGHT);
         stage.setScene(scene);
