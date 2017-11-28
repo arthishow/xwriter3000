@@ -60,12 +60,12 @@ public class BookCreation {
         Text actionText = new Text();
         grid.add(actionText, 4, 3);
 
-        addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors, null));
+        addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors));
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
         createBook.setOnAction(e -> {
             List<String> authorsId = new ArrayList<>();
             authorsId.addAll(authors.getItems());
-            if (Main.client.createBook(title.getText(), authors)) {
+            if (Main.client.createBook(title.getText(), authorsId)) {
                 actionText.setFill(Color.GREEN);
                 actionText.setText("Book created.");
                 PauseTransition delay = new PauseTransition(Duration.seconds(1.5));

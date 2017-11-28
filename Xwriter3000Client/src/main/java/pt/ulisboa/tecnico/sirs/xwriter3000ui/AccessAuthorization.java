@@ -47,11 +47,11 @@ class AccessAuthorization {
 
         ListView<String> authors = new ListView<>();
         if (comboBox.getSelectionModel().getSelectedItem() != null) {
-            authors.getItems().addAll(Main.client.getAuthorsFromGivenBook(comboBox.getSelectionModel().getSelectedItem().getBookID()));
+            authors.getItems().addAll(Main.client.getAuthorsFromBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
         }
         comboBox.valueProperty().addListener(e -> {
             authors.getItems().removeAll();
-            authors.getItems().addAll(Main.client.getAuthorsFromGivenBook(comboBox.getSelectionModel().getSelectedItem().getBookID()));
+            authors.getItems().addAll(Main.client.getAuthorsFromBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
         });
         grid.add(authors, 1, 1);
 
@@ -75,7 +75,7 @@ class AccessAuthorization {
         saveChanges.setOnAction(e -> {
             List<String> authorsId = new ArrayList<>();
             authorsId.addAll(authors.getItems());
-            if(Main.client.addAuthorsAuth(comboBox.getSelectionModel().getSelectedItem().getBookID(), authorsId)){
+            if(Main.client.addAuthorsAuth(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID()), authorsId)){
                 actionText.setFill(Color.GREEN);
                 actionText.setText("Changes saved.");
                 PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
