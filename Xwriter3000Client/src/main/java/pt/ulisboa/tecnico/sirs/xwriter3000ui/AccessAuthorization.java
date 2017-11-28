@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -45,13 +46,13 @@ class AccessAuthorization {
         Text authorizedAuthors = new Text("Authors: ");
         grid.add(authorizedAuthors, 0, 1);
 
-        ListView<String> authors = new ListView<>();
+        TableView<User> authors = new TableView<>();
         if (comboBox.getSelectionModel().getSelectedItem() != null) {
-            authors.getItems().addAll(Main.client.getAuthorsFromBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
+            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
         }
         comboBox.valueProperty().addListener(e -> {
             authors.getItems().removeAll();
-            authors.getItems().addAll(Main.client.getAuthorsFromBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
+            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
         });
         grid.add(authors, 1, 1);
 
@@ -74,7 +75,9 @@ class AccessAuthorization {
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
         saveChanges.setOnAction(e -> {
             List<String> authorsId = new ArrayList<>();
-            authorsId.addAll(authors.getItems());
+            for(User user: authors.getItems()){
+                authorsId.add(user.getAuthorId());
+            }
             if(Main.client.addAuthorsAuth(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID()), authorsId)){
                 actionText.setFill(Color.GREEN);
                 actionText.setText("Changes saved.");

@@ -3,10 +3,9 @@ package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -17,10 +16,10 @@ import java.util.List;
 
 class AddAuthor {
 
-    private static int HEIGHT = 100;
+    private static int HEIGHT = 130;
     private static int WIDTH = 330;
 
-    static void initAddAuthorWindow(Stage stage, ListView<String> authors) {
+    static void initAddAuthorWindow(Stage stage, TableView<User> authors) {
 
         stage.setTitle("Add author");
 
@@ -30,8 +29,8 @@ class AddAuthor {
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Text userid = new Text("User ID: ");
-        grid.add(userid, 0, 0);
+        Text userId = new Text("User ID: ");
+        grid.add(userId, 0, 0);
 
         TextField author = new TextField();
         grid.add(author, 1, 0);
@@ -39,15 +38,28 @@ class AddAuthor {
         Text actionText = new Text();
         grid.add(actionText, 2, 0);
 
+        ToggleGroup group = new ToggleGroup();
+        RadioButton read = new RadioButton("Read");
+        read.setToggleGroup(group);
+        read.setSelected(true);
+        RadioButton readAndWrite = new RadioButton("Read&Write");
+        readAndWrite.setToggleGroup(group);
+        grid.add(read, 0, 1);
+        grid.add(readAndWrite, 1, 1);
+
         Button addAuthor = new Button("Add");
-        grid.add(addAuthor, 0, 1);
+        grid.add(addAuthor, 0, 2);
 
         Button cancel = new Button("Cancel");
-        grid.add(cancel, 1, 1);
+        grid.add(cancel, 1, 2);
 
         addAuthor.setOnAction(e -> {
             if (Main.client.authorExists(author.getText())) {
-                authors.getItems().add(author.getText());
+                int authLvl = 0;
+                if(!group.getSelectedToggle().getUserData().toString().equals("Read")){
+                    authLvl = 1;
+                }
+                authors.getItems().add(new User(author.getText(), authLvl));
                 actionText.setFill(Color.GREEN);
                 actionText.setText(author.getText() + " added.");
                 author.setText("");
