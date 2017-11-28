@@ -29,7 +29,6 @@ public class CommunicationClient {
             Message replay = sendMessageReplay(message);
             //add decipher
             //add some more important stuff
-            System.out.println(replay.getMessage());
             return Boolean.valueOf(replay.getMessage());
         } catch (IOException e){
             System.out.println("Server has problems");
@@ -69,7 +68,6 @@ public class CommunicationClient {
             Message replay = sendMessageReplay(message);
             //add a decipher function
             //add some more stuff
-            System.out.println(replay.getMessage());
             return Integer.valueOf(replay.getMessage());
         } catch (IOException e){
             System.out.println("Server has problems");
@@ -82,7 +80,9 @@ public class CommunicationClient {
 
     public int createBook(String title, List<String> userID){
         int bookID = createBook(title);
-        addAuthorsAuth(String.valueOf(bookID), userID);
+        if (!userID.isEmpty()) {
+            addAuthorsAuth(String.valueOf(bookID), userID);
+        }
         return bookID;
     }
 
@@ -136,8 +136,10 @@ public class CommunicationClient {
             //add decipher
             String[] bookListString = replay.getMessage().split("book(ID:|Title:)");
             ArrayList<Book> bookList = new ArrayList<Book>();
-
+            System.out.println(replay.getMessage());
             for (int i = 1; i < bookListString.length; i += 2){
+                System.out.println(bookListString[i]);
+                System.out.println(bookListString[i + 1]);
                 Book book = new Book(Integer.parseInt(bookListString[i]), bookListString[i + 1]);
                 bookList.add(book);
             }

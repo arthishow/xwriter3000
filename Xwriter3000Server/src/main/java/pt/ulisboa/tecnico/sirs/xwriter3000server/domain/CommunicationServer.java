@@ -31,13 +31,13 @@ public class CommunicationServer {
     }
 
     public String authenticateUser(String username, String password){
-        int authorID = database.login(username, password);
-        if (authorID != -1){
+        Boolean success = database.login(username, password);
+        if (success){
             char[] sessionID = new char[20];
             for (int i = 0; i < 20; i++){
                 sessionID[i] = symbols.toCharArray()[random.nextInt(symbols.toCharArray().length)];
             }
-            ActiveUser user = new ActiveUser(new String(sessionID), authorID);
+            ActiveUser user = new ActiveUser(new String(sessionID), username);
             activeUsers.add(user);
             return new String(sessionID);
         }
@@ -49,7 +49,9 @@ public class CommunicationServer {
         for (ActiveUser activeUser : activeUsers) {
             if (sessionID.equals(activeUser.getSessionID())) {
                 Book book = new Book(title);
-                return database.createBook(book, activeUser.getAuthorID());
+                int bookID = database.createBook(book, activeUser.getUsername());
+                System.out.println(bookID);
+                return bookID;
             }
         }
         return -1;
@@ -58,7 +60,7 @@ public class CommunicationServer {
     public String sendBook(String sessionID, String bookID){
         for (ActiveUser activeUser : activeUsers){
             if(sessionID.equals(activeUser.getSessionID())){
-                String bookContent = database.getBook(Integer.parseInt(bookID), activeUser.getAuthorID());
+                String bookContent = database.getBook(Integer.parseInt(bookID), activeUser.getUsername());
                 return bookContent;
             }
         }
@@ -69,7 +71,7 @@ public class CommunicationServer {
     public Boolean receiveBookChanges(String sessionID, String bookID, String bookContent){
         for (ActiveUser activeUser : activeUsers){
             if(sessionID.equals(activeUser.getSessionID())){
-                Boolean result = database.changeBook(activeUser.getAuthorID(), Integer.parseInt(bookID), bookContent);
+                Boolean result = database.changeBook(activeUser.getUsername(), Integer.parseInt(bookID), bookContent);
                 return true;
             }
         }
@@ -79,7 +81,7 @@ public class CommunicationServer {
     public List<Book> getBookList(String sessionID){
         for (ActiveUser activeUser : activeUsers){
             if(sessionID.equals(activeUser.getSessionID())){
-                List<Book> bookList = database.getBookList(activeUser.getAuthorID());
+                List<Book> bookList = database.getBookList(activeUser.getUsername());
                 return bookList;
             }
         }
@@ -87,11 +89,11 @@ public class CommunicationServer {
     }
 
 
-    public Boolean addAuthorAuth(String sessionID, String bookID, List<String> authorIDs){
+    public Boolean addAuthorAuth(String sessionID, String bookID, List<String> usernames){
         for (ActiveUser activeUser : activeUsers){
             if(sessionID.equals(activeUser.getSessionID())){
-                for(String authorID: authorIDs){
-                    database.addAuthorAuth(Integer.valueOf(bookID), Integer.valueOf(authorID));
+                for(String username: usernames){
+                    database.addAuthorAuth(Integer.valueOf(bookID), username);
                 }
 
             }

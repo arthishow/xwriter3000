@@ -58,6 +58,9 @@ public class ServerThread extends Thread {
                 case "authorExists":
                     authorExists(message);
                     break;
+                case "":
+                    getAuthorsFromBook(message);
+                    break;
             }
             clientSocket.close();
         } catch (IOException e) {
@@ -104,11 +107,11 @@ public class ServerThread extends Thread {
         if (ids != null){
             String sessionID = ids.get(0);
             String bookID = ids.get(1);
-            List<String> authorIDs = new ArrayList<>();
+            List<String> usernames = new ArrayList<>();
             for (int i = 2; i < ids.size(); i++){
                 ids.add(ids.get(i));
             }
-            Boolean success = communicationServer.addAuthorAuth(sessionID, bookID, authorIDs);
+            Boolean success = communicationServer.addAuthorAuth(sessionID, bookID, usernames);
             Message replay = new Message(success.toString(), "");
             sendMessage(replay);
         }

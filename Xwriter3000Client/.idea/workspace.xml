@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="426421fa-dab2-486b-bb9b-817775662d19" name="Default" comment="">
+    <list default="true" id="8335da47-15c7-42a1-8d3b-589402a5fc8a" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/XWriter3000Client.iml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Server/.idea/misc.xml" afterPath="$PROJECT_DIR$/../Xwriter3000Server/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Server/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../Xwriter3000Server/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.java" afterPath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ActiveUser.java" afterPath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ActiveUser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Author.java" afterPath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Author.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Book.java" afterPath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Book.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/CommunicationServer.java" afterPath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/CommunicationServer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/MessageParser.java" afterPath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/MessageParser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.java" afterPath="$PROJECT_DIR$/../Xwriter3000Server/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.java" />
     </list>
-    <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,31 +32,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="User.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/User.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="16" column="24" lean-forward="false" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
-              <folding>
-                <element signature="e#378#379#0" expanded="true" />
-                <element signature="e#409#410#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AccessAuthorization.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorization.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="77" column="0" lean-forward="false" selection-start-line="77" selection-start-column="0" selection-end-line="79" selection-end-column="13" />
+            <state relative-caret-position="180">
+              <caret line="10" column="37" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -50,35 +41,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AccessAuthorizationController.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorizationController.java">
+      <file leaf-file-name="xwriterClientApp.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="5" lean-forward="false" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Login.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Login.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="54" column="40" lean-forward="true" selection-start-line="51" selection-start-column="7" selection-end-line="54" selection-end-column="40" />
-              <folding>
-                <marker date="1511877549613" expanded="true" signature="2751:2757" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SelectBook.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="36" column="16" lean-forward="false" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="16" />
+            <state relative-caret-position="165">
+              <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -87,12 +54,22 @@
       <file leaf-file-name="CommunicationClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-134">
-              <caret line="191" column="26" lean-forward="false" selection-start-line="191" selection-start-column="26" selection-end-line="191" selection-end-column="26" />
+            <state relative-caret-position="-1098">
+              <caret line="69" column="33" lean-forward="false" selection-start-line="69" selection-start-column="33" selection-end-line="69" selection-end-column="33" />
               <folding>
-                <marker date="1511877555381" expanded="true" signature="7294:7303" ph=" { " />
-                <marker date="1511877555381" expanded="true" signature="7315:7321" ph=" }" />
+                <element signature="e#4738#4744#0" expanded="true" />
+                <marker date="1511886071227" expanded="true" signature="2839:2846" ph="{...}" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SelectBook.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="77" column="34" lean-forward="true" selection-start-line="77" selection-start-column="34" selection-end-line="77" selection-end-column="34" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -100,28 +77,48 @@
       <file leaf-file-name="BookCreation.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/BookCreation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="70" column="69" lean-forward="false" selection-start-line="70" selection-start-column="69" selection-end-line="70" selection-end-column="69" />
+            <state relative-caret-position="-73">
+              <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Popup.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Popup.java">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="33" selection-end-column="46" />
+            <state relative-caret-position="198">
+              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AddAuthor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AddAuthor.java">
+      <file leaf-file-name="Xwriter3000Client.iml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Xwriter3000Client.iml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="61" column="74" lean-forward="false" selection-start-line="61" selection-start-column="74" selection-end-line="61" selection-end-column="74" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Communication.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Communication.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="72">
+              <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Login.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Login.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="72">
+              <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -129,33 +126,8 @@
       </file>
     </leaf>
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$/.." value="master" />
-      </map>
-    </option>
-    <favorite-branches>
-      <branch-storage>
-        <map>
-          <entry type="LOCAL">
-            <value>
-              <list>
-                <branch-info repo="$PROJECT_DIR$/.." source="ui" />
-              </list>
-            </value>
-          </entry>
-        </map>
-      </branch-storage>
-    </favorite-branches>
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -165,30 +137,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/IComunicationClient.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/xwriterClientHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/xwriterClientChannel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/ClientApp.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/ComunicationClient.java" />
-        <option value="$PROJECT_DIR$/src/resources/contract.wsdl" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/MessageParser.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/xwriterClientApp.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/Message.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/CommunicationClient.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000/Message.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/App.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000/Message.java" />
+        <option value="$PROJECT_DIR$/Xwriter3000Client.iml" />
+        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.java" />
         <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java" />
         <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CypherUtil.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/CreateAccountController.java" />
-        <option value="$PROJECT_DIR$/XWriter3000Client.iml" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AddAuthor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/User.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorization.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/BookCreation.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorizationController.java" />
       </list>
     </option>
   </component>
@@ -198,9 +150,11 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1280" />
-    <option name="height" value="800" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="65" />
+    <option name="y" value="-4" />
+    <option name="width" value="1299" />
+    <option name="height" value="792" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -218,6 +172,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -258,15 +216,6 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="sirs" type="462c0819:PsiDirectoryNode" />
-              <item name="xwriter3000" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Xwriter3000Client" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Xwriter3000Client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="sirs" type="462c0819:PsiDirectoryNode" />
               <item name="xwriter3000client" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -282,24 +231,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Scratches" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui" />
-    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -313,7 +250,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.xwriterClientApp">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -414,29 +351,17 @@
       <properties />
       <listeners />
     </configuration>
-    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="Xwriter3000Client" />
-      <envs />
-    </configuration>
     <configuration name="xwriterClientApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
-          <option name="PATTERN" value="pt.tecnico.ulisboa.sirs.xwriter3000client.*" />
+          <option name="PATTERN" value="pt.ulisboa.tecnico.sirs.xwriter3000client.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="pt.ulisboa.tecnico.sirs.xwriter3000client.xwriterClientApp" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
@@ -446,13 +371,13 @@
       <envs />
     </configuration>
     <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="Application.xwriterClientApp" />
-      <item index="1" class="java.lang.String" itemvalue="Application.Main" />
+      <item index="0" class="java.lang.String" itemvalue="Application.Main" />
+      <item index="1" class="java.lang.String" itemvalue="Application.xwriterClientApp" />
     </list>
     <recent_temporary>
       <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Application.Main" />
-        <item index="1" class="java.lang.String" itemvalue="Application.xwriterClientApp" />
+        <item index="0" class="java.lang.String" itemvalue="Application.xwriterClientApp" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -466,42 +391,22 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="426421fa-dab2-486b-bb9b-817775662d19" name="Default" comment="" />
-      <created>1509103511450</created>
+      <changelist id="8335da47-15c7-42a1-8d3b-589402a5fc8a" name="Default" comment="" />
+      <created>1511725571466</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1509103511450</updated>
-      <workItem from="1510065888631" duration="2131000" />
-      <workItem from="1510412502798" duration="16590000" />
-      <workItem from="1510502475022" duration="1643000" />
-      <workItem from="1510509994216" duration="1746000" />
-      <workItem from="1510525926786" duration="36000" />
-      <workItem from="1510567380949" duration="2145000" />
-      <workItem from="1510765287097" duration="7098000" />
-      <workItem from="1510853265578" duration="183000" />
+      <updated>1511725571466</updated>
+      <workItem from="1511725577052" duration="80000" />
+      <workItem from="1511882219690" duration="4319000" />
     </task>
-    <task id="LOCAL-00001" summary="ui in work">
-      <created>1511881138665</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1511881138665</updated>
-    </task>
-    <task id="LOCAL-00002" summary="sa">
-      <created>1511881692231</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1511881692231</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31572000" />
+    <option name="totallyTimeSpent" value="4411000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <frame x="65" y="-4" width="1301" height="772" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -509,15 +414,16 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5129241" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32737276" sideWeight="0.49676898" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3287483" sideWeight="0.48707592" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32882884" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25686592" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32513452" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -527,7 +433,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -538,43 +443,11 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="ui in work" />
-    <MESSAGE value="sa" />
-    <option name="LAST_COMMIT_MESSAGE" value="sa" />
-  </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <option name="time" value="1" />
-    </breakpoint-manager>
+    <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="22" column="19" lean-forward="false" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/xwriterClientHandler.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/xwriterClientChannel.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/IComunicationClient.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/CypherUtil.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/CommunicationClient.java" />
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/CommunicationClient.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/IComunicationClient.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/CypherUtil.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/ClientApp.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/IComunicationClient.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/CypherUtil.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/tecnico/ulisboa/sirs/xwriter3000client/MessageParser.java" />
@@ -607,11 +480,9 @@
     <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_all_4_1_15_Final.xml" />
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Writing.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="46" column="50" lean-forward="false" selection-start-line="46" selection-start-column="50" selection-end-line="46" selection-end-column="50" />
-          <folding>
-            <marker date="1511871489169" expanded="true" signature="2244:2463" ph="{...}" />
-          </folding>
+        <state relative-caret-position="72">
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -625,9 +496,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/WritingController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="144">
+          <caret line="10" column="10" lean-forward="false" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
+          <folding>
+            <marker date="1511881222557" expanded="true" signature="184:186" ph="//..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -639,18 +512,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="10" column="32" lean-forward="false" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/CreateAccountController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="23" column="48" lean-forward="false" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -658,15 +523,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="17" lean-forward="false" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -678,29 +534,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/XWriter3000Client.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="9" lean-forward="false" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
+        <state relative-caret-position="180">
+          <caret line="10" column="37" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Login.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="54" column="40" lean-forward="true" selection-start-line="51" selection-start-column="7" selection-end-line="54" selection-end-column="40" />
-          <folding>
-            <marker date="1511877549613" expanded="true" signature="2751:2757" ph="{...}" />
-          </folding>
+        <state relative-caret-position="72">
+          <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -708,7 +556,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="149">
           <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="33" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -716,18 +563,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="298">
           <caret line="61" column="74" lean-forward="false" selection-start-line="61" selection-start-column="74" selection-end-line="61" selection-end-column="74" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-134">
-          <caret line="191" column="26" lean-forward="false" selection-start-line="191" selection-start-column="26" selection-end-line="191" selection-end-column="26" />
-          <folding>
-            <marker date="1511877555381" expanded="true" signature="7294:7303" ph=" { " />
-            <marker date="1511877555381" expanded="true" signature="7315:7321" ph=" }" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -735,10 +570,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="16" column="24" lean-forward="false" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
-          <folding>
-            <element signature="e#378#379#0" expanded="true" />
-            <element signature="e#409#410#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -746,25 +577,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
           <caret line="77" column="0" lean-forward="false" selection-start-line="77" selection-start-column="0" selection-end-line="79" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="36" column="16" lean-forward="false" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/BookCreation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="70" column="69" lean-forward="false" selection-start-line="70" selection-start-column="69" selection-end-line="70" selection-end-column="69" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -772,88 +584,120 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="14" column="5" lean-forward="false" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Xwriter3000Client.iml" />
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AddAuthor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="24" column="37" lean-forward="false" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CypherUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="33" column="47" lean-forward="false" selection-start-line="33" selection-start-column="47" selection-end-line="33" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Xwriter3000Client.iml" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CypherUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="50" column="47" lean-forward="false" selection-start-line="50" selection-start-column="47" selection-end-line="50" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AddAuthor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="24" column="37" lean-forward="false" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Xwriter3000Client.iml" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AddAuthor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="21" column="37" lean-forward="false" selection-start-line="21" selection-start-column="37" selection-end-line="21" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CypherUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="33" column="47" lean-forward="false" selection-start-line="33" selection-start-column="47" selection-end-line="33" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Communication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Xwriter3000Client.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/XWriter3000Client.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/BookCreation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-73">
+          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="77" column="34" lean-forward="true" selection-start-line="77" selection-start-column="34" selection-end-line="77" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1098">
+          <caret line="69" column="33" lean-forward="false" selection-start-line="69" selection-start-column="33" selection-end-line="69" selection-end-column="33" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#4738#4744#0" expanded="true" />
+            <marker date="1511886071227" expanded="true" signature="2839:2846" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>scala-sdk</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>Xwriter3000Client</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-                <option value="0.6" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>Maven: io.netty:netty-all:4.1.15.Final</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

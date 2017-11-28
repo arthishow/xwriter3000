@@ -6,7 +6,7 @@ public class Book {
 
     private int bookID;
 
-    private static final AtomicInteger count = new AtomicInteger(4);
+    private static final AtomicInteger count = new AtomicInteger(14);
 
     private String title;
 

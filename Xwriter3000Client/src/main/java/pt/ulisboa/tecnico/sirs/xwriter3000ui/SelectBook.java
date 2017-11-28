@@ -76,7 +76,7 @@ class SelectBook {
             }
         });
         refresh.setOnAction(e -> {
-            bookList.getItems().removeAll();
+            bookList.getItems().clear();
             bookList.getItems().addAll(Main.client.getBookList());
         });
         selectBook.setOnAction(e -> {

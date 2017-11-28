@@ -12,17 +12,10 @@ public class xwriterClientApp {
         CommunicationClient communicationClient = new CommunicationClient();
 
 
-        System.out.println(communicationClient.authenticateUser("test", "goodPass"));
+        System.out.println(communicationClient.authenticateUser("d", "es"));
 
         List<Book> list = communicationClient.getBookList();
 
-        System.out.println(list.get(0).getBookID());
-
-        System.out.println(list.get(0).getTitle());
-
-        System.out.println(list.get(1).getBookID());
-
-        System.out.println(list.get(1).getTitle());
 
     }
 
