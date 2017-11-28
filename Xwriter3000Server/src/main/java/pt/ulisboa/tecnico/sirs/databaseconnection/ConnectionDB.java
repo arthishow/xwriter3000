@@ -11,10 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author josesa
- */
+
 public class ConnectionDB {
     
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -23,67 +20,25 @@ public class ConnectionDB {
     static final String USER = "root";
     static final String PASS = "Io8JbOCc";
 
-    public void example(String[] args) {
-        
-        Connection conn = null;
-        Statement stmt = null;
 
-        try {
-          Class.forName("com.mysql.jdbc.Driver");
-
-          conn = DriverManager.getConnection(DB_URL,USER,PASS);
-
-          stmt = conn.createStatement();
-          String sql;
-          sql = "SELECT authorName FROM user";        //Exemplo para ir buscar o nome de todos os USERS
-          ResultSet rs = stmt.executeQuery(sql);
-
-          while(rs.next()){
-             String userName = rs.getString("authorName");
-
-          }
-          rs.close();
-          stmt.close();
-          conn.close();
-
-       }catch(SQLException se){
-          se.printStackTrace();
-       }catch(Exception e){
-          e.printStackTrace();
-       }finally{
-          try{
-             if(stmt!=null)
-                stmt.close();
-          }catch(SQLException se2){
-          }
-          try{
-             if(conn!=null)
-                conn.close();
-          }catch(SQLException se){
-             se.printStackTrace();
-          }
-       }
-    }
 
     public Boolean login(String username, String password){
-        Connection conn = null;
-        Statement stmt = null;
+
+        String query = "select authorName, authorPass from author " +
+                       "where authorName = ? and authorPass = ?";
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
 
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-
-            stmt = conn.createStatement();
-
-            String sql;
-
-            //add protection from sqli
-            sql = "select authorName, authorPass from author where authorName = '" + username + "' AND authorPass = '"+ password +"'";
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 
-            ResultSet rs = stmt.executeQuery(sql);
+            PreparedStatement login = conn.prepareStatement(query);
+
+            login.setString(1, username);
+
+            login.setString(2, password);
+
+            ResultSet rs = login.executeQuery();
 
             rs.next();
 
@@ -93,7 +48,7 @@ public class ConnectionDB {
 
             conn.close();
 
-            stmt.close();
+            login.close();
 
             if (username.equals(dataUsername) &&  password.equals(dataPassword)){
                 return true;

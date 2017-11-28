@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000client;
 
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import pt.ulisboa.tecnico.sirs.xwriter3000.Message;
 import pt.ulisboa.tecnico.sirs.xwriter3000ui.Book;
 
@@ -25,15 +26,13 @@ public class CommunicationClient {
         messageContent = "type:" + "createUser" + "username:" + username + "password:" + password;
         //ciphermessage
         Message message = new Message(messageContent, "");
-        try {
-            Message replay = sendMessageReplay(message);
+
+        Message replay = sendMessageReplay(message);
             //add decipher
             //add some more important stuff
-            return Boolean.valueOf(replay.getMessage());
-        } catch (IOException e){
-            System.out.println("Server has problems");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Server got problems");
+        if (Boolean.valueOf(replay.getMessage())) {
+            return true;
+                //add decipher
         }
         return false;
     }
@@ -44,17 +43,14 @@ public class CommunicationClient {
         messageContent = "type:" + "authenticateUser" + "username:" + username + "password:" + password;
         //ciphermessage
         Message message = new Message(messageContent, "");
-        try {
             Message replay = sendMessageReplay(message);
             //add decipher
             //add some verification
-            sessionID = replay.getMessage();
+        sessionID = replay.getMessage();
             //add check
+        if (sessionID != null) {
             return true;
-        } catch (IOException e){
-            System.out.println("Server has problems");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Server problems");
+            //add decipher
         }
         return false;
     }
@@ -64,17 +60,10 @@ public class CommunicationClient {
         messageContent = "type:" + "createBook:" + "sessionID:" + sessionID  + "bookTitle:" + title;
         //add cypher
         Message message = new Message(messageContent, "");
-        try {
-            Message replay = sendMessageReplay(message);
-            //add a decipher function
-            //add some more stuff
-            return Integer.valueOf(replay.getMessage());
-        } catch (IOException e){
-            System.out.println("Server has problems");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Server  problems");
-        }
-        return -1;
+        Message replay = sendMessageReplay(message);
+        //add a decipher function
+        //add some more stuff
+        return Integer.valueOf(replay.getMessage());
     }
 
 
@@ -91,18 +80,10 @@ public class CommunicationClient {
         messageContent = "type:" + "sendbook" + "sessionID:" + sessionID + "bookID:" + bookID;
         //ciphermessage
         Message message = new Message(messageContent, "");
-        try {
-            Message replay = sendMessageReplay(message);
+        Message replay = sendMessageReplay(message);
             //add decipher
             //add some verification
-            return replay.getMessage();
-        } catch (IOException e) {
-            System.out.println("Server problems");
-            return null;
-        }  catch (ClassNotFoundException e) {
-            System.out.println("Server problems");
-            return null;
-        }
+        return replay.getMessage();
     }
 
 
@@ -112,16 +93,12 @@ public class CommunicationClient {
         String messageContent;
         messageContent = "type:" + "receiveBookChanges" + "sessionID:" + sessionID + "bookID:" + bookID + "bookContent:" + bookContent;
         Message message = new Message(messageContent, "");
-        try {
-            Message replay = sendMessageReplay(message);
+        Message replay = sendMessageReplay(message);
             //add decipher
             //add some verification
-            System.out.println(replay.getMessage());
+        if (Boolean.valueOf(replay.getMessage())) {
             return true;
-        } catch (IOException e) {
-            System.out.println("ServerProblems");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Server problems");
+                //add decipher
         }
         return false;
     }
@@ -131,64 +108,45 @@ public class CommunicationClient {
         String messageContent;
         messageContent = "type:getBookListsessionID:" + sessionID;
         Message message = new Message(messageContent, "");
-        try{
-            Message replay = sendMessageReplay(message);
-            //add decipher
-            String[] bookListString = replay.getMessage().split("book(ID:|Title:)");
-            ArrayList<Book> bookList = new ArrayList<Book>();
-            System.out.println(replay.getMessage());
-            for (int i = 1; i < bookListString.length; i += 2){
-                System.out.println(bookListString[i]);
-                System.out.println(bookListString[i + 1]);
-                Book book = new Book(Integer.parseInt(bookListString[i]), bookListString[i + 1]);
-                bookList.add(book);
-            }
-            return bookList;
-
-        } catch (IOException e) {
-            System.out.println("ServerProblems");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Server problems");
+        Message replay = sendMessageReplay(message);
+        //add decipher
+        String[] bookListString = replay.getMessage().split("book(ID:|Title:)");
+        ArrayList<Book> bookList = new ArrayList<>();
+        for (int i = 1; i < bookListString.length; i += 2){
+            Book book = new Book(Integer.parseInt(bookListString[i]), bookListString[i + 1]);
+            bookList.add(book);
         }
-        return null;
+        return bookList;
     }
 
 
-    public boolean forwardSymKey() {
+    public Boolean forwardSymKey() {
         return true;
     }
 
-    public boolean addAuthorsAuth(String bookID, List<String> authorIDs){
+    public Boolean addAuthorsAuth(String bookID, List<String> authorIDs){
         String messageContent;
         messageContent = "type:addAuthorAuthsessioID:" + sessionID + "bookID:" + bookID;
         for (String authorID : authorIDs){
             messageContent += "authorID:" + authorID;
         }
         Message message = new Message(messageContent, "");
-        try{
-            Message replay = sendMessageReplay(message);
-            //add deciphera
+        Message replay = sendMessageReplay(message);
+        if (Boolean.valueOf(replay.getMessage())) {
             return true;
-        } catch (IOException e) {
-            System.out.println("ServerProblems");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Server problems");
+            //add decipher
         }
         return false;
     }
 
-    public boolean authorExists(String username){
+    public Boolean authorExists(String username){
         String messageContent;
         messageContent = "type:addAuthorAuthsessioID:" + sessionID + "username:" + username;
         Message message = new Message(messageContent, "");
-        try{
-            Message replay = sendMessageReplay(message);
+        Message replay = sendMessageReplay(message);
+        if (Boolean.valueOf(replay.getMessage())) {
             return true;
             //add decipher
-        } catch (IOException e) {
-            System.out.println("ServerProblems");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Server problems");
         }
         return false;
     }
@@ -197,37 +155,42 @@ public class CommunicationClient {
         String messageContent;
         messageContent = "type:getAuthorsFromBooksessioID:" + sessionID + "bookID:" + bookID;
         Message message = new Message(messageContent, "");
+        Message replay = sendMessageReplay(message);
+        //add decipher
+        String[] authors = replay.getMessage().split("username:");
+        List<String> authorsList = new ArrayList<>();
+        for(int i = 1; i < authors.length; i++) {
+            authorsList.add(authors[i]);
+        }
+        return authorsList;
+    }
+
+    public void sendMessage(Message message) throws IOException {
+        try {
+            Socket clientSocket = new Socket("localhost", 8001);
+            ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
+            objectOut.writeObject(message);
+            objectOut.close();
+            clientSocket.close();
+        } catch (IOException e){
+            System.out.println("ServerProblems");
+        }
+    }
+
+    public Message sendMessageReplay(Message message) {
         try{
-            Message replay = sendMessageReplay(message);
-            //add decipher
-            String[] authors = replay.getMessage().split("username:");
-            List<String> authorsList= new ArrayList<>();
-            for(int i = 1; i < authors.length; i++) {
-                authorsList.add(authors[i]);
-            }
+            Socket clientSocket = new Socket("localhost", 8001);
+            ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
+            objectOut.writeObject(message);
+            ObjectInputStream objectIn = new ObjectInputStream(clientSocket.getInputStream());
+            Message replay = (Message) objectIn.readObject();
+        return replay;
         } catch (IOException e) {
             System.out.println("ServerProblems");
         } catch (ClassNotFoundException e) {
             System.out.println("Server problems");
         }
         return null;
-    }
-
-    public void sendMessage(Message message) throws IOException {
-        Socket clientSocket = new Socket("localhost", 8001);
-        ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
-        objectOut.writeObject(message);
-        objectOut.close();
-        clientSocket.close();
-    }
-
-    public Message sendMessageReplay(Message message) throws IOException, ClassNotFoundException {
-        Socket clientSocket = new Socket("localhost", 8001);
-        ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
-        objectOut.writeObject(message);
-        ObjectInputStream objectIn = new ObjectInputStream(clientSocket.getInputStream());
-        Message replay = (Message) objectIn.readObject();
-        return replay;
     }
 
 

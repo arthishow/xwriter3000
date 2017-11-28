@@ -14,8 +14,6 @@ public class xwriterClientApp {
 
         System.out.println(communicationClient.authenticateUser("d", "es"));
 
-        List<Book> list = communicationClient.getBookList();
-
 
     }
 
