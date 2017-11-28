@@ -188,6 +188,10 @@ public class CommunicationClient {
         return false;
     }
 
+    public List<String> getAuthorsFromBook(String bookID){
+        return null;
+    }
+
     public void sendMessage(Message message) throws IOException {
         Socket clientSocket = new Socket("localhost", 8001);
         ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
