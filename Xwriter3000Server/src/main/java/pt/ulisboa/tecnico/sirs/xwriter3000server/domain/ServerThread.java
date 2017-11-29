@@ -156,10 +156,10 @@ public class ServerThread extends Thread {
     }
 
     public void authorExists(Message message){
-        List<String> info = parser.authorExists(message.getMessage());
+        String username = parser.authorExists(message.getMessage());
 
-        if (info != null){
-            Boolean success = communicationServer.authorExists(info.get(0), info.get(1));
+        if (username != null){
+            Boolean success = communicationServer.authorExists(username);
             Message replay = new Message(success.toString(), "");
             sendMessage(replay);
         }

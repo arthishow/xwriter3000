@@ -99,13 +99,8 @@ public class CommunicationServer {
         return false;
     }
 
-    public Boolean authorExists(String sessionID, String username) {
-        for (ActiveUser activeUser : activeUsers) {
-            if (sessionID.equals(activeUser.getSessionID())) {
-                return database.authorExists(username);
-            }
-        }
-        return false;
+    public Boolean authorExists(String username) {
+        return database.authorExists(username);
     }
 
     public List<String> getAuthorsFromBook(String sessionID, String bookID){

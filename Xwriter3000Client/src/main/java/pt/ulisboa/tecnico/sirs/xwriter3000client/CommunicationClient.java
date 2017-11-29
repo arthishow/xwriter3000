@@ -140,10 +140,9 @@ public class CommunicationClient {
         return false;
     }
 
-    //FIXME
     public Boolean authorExists(String username){
         String messageContent;
-        messageContent = "type:addAuthorAuthsessioID:" + sessionID + "username:" + username;
+        messageContent = "type:authorExistsusername:" + username;
         Message message = new Message(messageContent, "");
         Message replay = sendMessageReplay(message);
         if (Boolean.valueOf(replay.getMessage())) {

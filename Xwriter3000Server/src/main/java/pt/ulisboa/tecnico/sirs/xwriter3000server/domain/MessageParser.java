@@ -153,12 +153,11 @@ public class MessageParser {
         return null;
     }
 
-    public List<String> authorExists(String message) {
-        String[] array = message.split("sessioID:|username:");
-        if (array.length == 3){
-            List<String> info = new ArrayList<>();
-            info.add(array[1]);
-            info.add(array[2]);
+    public String authorExists(String message) {
+        System.out.println("asd");
+        String[] array = message.split("username:");
+        if (array.length == 2){
+            return array[1];
         }
         return null;
     }

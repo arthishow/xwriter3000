@@ -278,7 +278,7 @@ public class ConnectionDB {
         return false;
     }
 
-
+    //FIXME
     public Boolean addAuthorAuth(int bookID, String username){
 
         try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
@@ -308,21 +308,20 @@ public class ConnectionDB {
 
 
     public Boolean authorExists(String username){
-        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
-            Class.forName("com.mysql.jdbc.Driver");
 
-            Statement stmt = conn.createStatement();
+        String query = "SELECT authorName FROM author WHERE authorName = ?";
 
-            String sql = "SELECT username FROM author WHERE username = '" + username + "'";
+        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+             PreparedStatement checkAuthStatement = conn.prepareStatement(query)){
 
-            ResultSet rs = stmt.executeQuery(sql);
+            checkAuthStatement.setString(1, username);
 
-            rs.next();
+            ResultSet rs = checkAuthStatement.executeQuery();
 
-
-            if(rs.getString("authorName").equals(username)){
+            if(rs.next()){
                 return true;
-            }else{
+            }
+            else{
                 return false;
             }
 
@@ -335,6 +334,7 @@ public class ConnectionDB {
         return false;
     }
 
+    //FIXME
     public List<String> getAuthorsFromBook(String bookID){
 
         try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
