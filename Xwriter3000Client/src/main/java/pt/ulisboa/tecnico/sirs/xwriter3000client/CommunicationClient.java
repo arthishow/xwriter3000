@@ -75,9 +75,9 @@ public class CommunicationClient {
         return bookID;
     }
 
-    public String getBook(String bookID, String sessionID) {
+    public String getBook(String bookID) {
         String messageContent;
-        messageContent = "type:" + "sendbook" + "sessionID:" + sessionID + "bookID:" + bookID;
+        messageContent = "type:" + "getBook" + "sessionID:" + sessionID + "bookID:" + bookID;
         //ciphermessage
         Message message = new Message(messageContent, "");
         Message replay = sendMessageReplay(message);
@@ -109,6 +109,7 @@ public class CommunicationClient {
         messageContent = "type:getBookListsessionID:" + sessionID;
         Message message = new Message(messageContent, "");
         Message replay = sendMessageReplay(message);
+        System.out.println(replay.getMessage());
         //add decipher
         String[] bookListString = replay.getMessage().split("book(ID:|Title:)");
         ArrayList<Book> bookList = new ArrayList<>();
@@ -139,6 +140,7 @@ public class CommunicationClient {
         return false;
     }
 
+    //FIXME
     public Boolean authorExists(String username){
         String messageContent;
         messageContent = "type:addAuthorAuthsessioID:" + sessionID + "username:" + username;
@@ -146,7 +148,6 @@ public class CommunicationClient {
         Message replay = sendMessageReplay(message);
         if (Boolean.valueOf(replay.getMessage())) {
             return true;
-            //add decipher
         }
         return false;
     }

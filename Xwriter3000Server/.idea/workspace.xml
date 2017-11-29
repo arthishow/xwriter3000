@@ -5,8 +5,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Client/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../Xwriter3000Client/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Client/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java" afterPath="$PROJECT_DIR$/../Xwriter3000Client/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Xwriter3000Client/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java" afterPath="$PROJECT_DIR$/../Xwriter3000Client/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000client/xwriterClientApp.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/CommunicationServer.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/CommunicationServer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/MessageParser.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/MessageParser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,8 +28,8 @@
       <file leaf-file-name="MessageParser.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/MessageParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2484">
-              <caret line="141" column="67" lean-forward="false" selection-start-line="141" selection-start-column="67" selection-end-line="141" selection-end-column="67" />
+            <state relative-caret-position="-2039">
+              <caret line="12" column="12" lean-forward="false" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -36,8 +38,8 @@
       <file leaf-file-name="ServerThread.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="756">
-              <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+            <state relative-caret-position="153">
+              <caret line="191" column="17" lean-forward="false" selection-start-line="191" selection-start-column="12" selection-end-line="191" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -46,7 +48,7 @@
       <file leaf-file-name="Book.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Book.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
+            <state relative-caret-position="18">
               <caret line="8" column="67" lean-forward="false" selection-start-line="8" selection-start-column="67" selection-end-line="8" selection-end-column="67" />
               <folding />
             </state>
@@ -56,8 +58,8 @@
       <file leaf-file-name="CommunicationServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/CommunicationServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1188">
-              <caret line="71" column="50" lean-forward="false" selection-start-line="71" selection-start-column="50" selection-end-line="71" selection-end-column="50" />
+            <state relative-caret-position="171">
+              <caret line="120" column="28" lean-forward="false" selection-start-line="120" selection-start-column="28" selection-end-line="120" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -66,36 +68,34 @@
       <file leaf-file-name="ConnectionDB.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3525">
-              <caret line="226" column="52" lean-forward="false" selection-start-line="226" selection-start-column="52" selection-end-line="226" selection-end-column="52" />
+            <state relative-caret-position="63">
+              <caret line="281" column="60" lean-forward="true" selection-start-line="281" selection-start-column="60" selection-end-line="281" selection-end-column="60" />
               <folding>
-                <marker date="1511906084831" expanded="true" signature="764:873" ph="select autho... author" />
-                <marker date="1511906084831" expanded="true" signature="2096:2226" ph="INSERT INTO author... " />
-                <marker date="1511906084831" expanded="true" signature="2981:3146" ph="INSERT INTO book... " />
-                <marker date="1511906084831" expanded="true" signature="3224:3362" ph="INSERT INTO userbook... " />
-                <marker date="1511906084831" expanded="true" signature="4282:4384" ph="SELECT autho... " />
-                <marker date="1511906084831" expanded="true" signature="4282:4385" ph="SELECT autho... " />
-                <marker date="1511906084831" expanded="true" signature="4282:4402" ph="SELECT autho... " />
-                <marker date="1511906084831" expanded="true" signature="4659:4699" ph="SELECT conte... book" />
-                <marker date="1511906084831" expanded="true" signature="5513:5659" ph="SELECT DISTI... book" />
-                <marker date="1511906084831" expanded="true" signature="5513:5683" ph="SELECT DISTI... book" />
-                <marker date="1511906084831" expanded="true" signature="6674:6724" ph="SELECT autho... " />
-                <marker date="1511906084831" expanded="true" signature="6674:6737" ph="SELECT autho... " />
-                <marker date="1511906084831" expanded="true" signature="6674:6784" ph="SELECT autho... " />
-                <marker date="1511906084831" expanded="true" signature="7008:7093" ph="UPDATE book " />
-                <marker date="1511906084831" expanded="true" signature="7722:7784" ph="INSERT INTO book... " />
-                <marker date="1511906084831" expanded="true" signature="7722:7786" ph="INSERT INTO book... " />
-                <marker date="1511906084831" expanded="true" signature="7722:7787" ph="INSERT INTO userbook... " />
-                <marker date="1511906084831" expanded="true" signature="7722:7822" ph="INSERT INTO userbook... " />
-                <marker date="1511906084831" expanded="true" signature="7722:7839" ph="INSERT INTO userbook... " />
-                <marker date="1511906084831" expanded="true" signature="7722:7845" ph="INSERT INTO userbook... " />
-                <marker date="1511906084831" expanded="true" signature="8411:8455" ph="SELECT usern... author" />
-                <marker date="1511906084831" expanded="true" signature="8411:8456" ph="SELECT usern... author" />
-                <marker date="1511906084831" expanded="true" signature="8411:8457" ph="SELECT usern... author" />
-                <marker date="1511906084831" expanded="true" signature="8411:8460" ph="SELECT usern... author" />
-                <marker date="1511906084831" expanded="true" signature="8411:8474" ph="SELECT usern... author" />
-                <marker date="1511906084831" expanded="true" signature="8411:8476" ph="SELECT usern... author" />
-                <marker date="1511906084831" expanded="true" signature="9150:9233" ph="SELECT book author" />
+                <marker date="1511926167167" expanded="true" signature="764:873" ph="select autho... author" />
+                <marker date="1511926167167" expanded="true" signature="1939:1995" ph="INSERT INTO author... " />
+                <marker date="1511926167167" expanded="true" signature="2695:2752" ph="INSERT INTO book... " />
+                <marker date="1511926167167" expanded="true" signature="2786:2858" ph="INSERT INTO userbook... " />
+                <marker date="1511926167167" expanded="true" signature="4031:4101" ph="SELECT autho... " />
+                <marker date="1511926167167" expanded="true" signature="4128:4168" ph="SELECT conte... book" />
+                <marker date="1511926167167" expanded="true" signature="4128:4169" ph="SELECT conte... book" />
+                <marker date="1511926167167" expanded="true" signature="5261:5423" ph="SELECT DISTI... book" />
+                <marker date="1511926167167" expanded="true" signature="5663:5811" ph="SELECT DISTI... book" />
+                <marker date="1511926167167" expanded="true" signature="5663:5835" ph="SELECT DISTI... book" />
+                <marker date="1511926167167" expanded="true" signature="6505:6575" ph="select autho... " />
+                <marker date="1511926167167" expanded="true" signature="6604:6648" ph="update book " />
+                <marker date="1511926167167" expanded="true" signature="8074:8136" ph="INSERT INTO book... " />
+                <marker date="1511926167167" expanded="true" signature="8074:8138" ph="INSERT INTO book... " />
+                <marker date="1511926167167" expanded="true" signature="8074:8139" ph="INSERT INTO userbook... " />
+                <marker date="1511926167167" expanded="true" signature="8074:8174" ph="INSERT INTO userbook... " />
+                <marker date="1511926167167" expanded="true" signature="8074:8191" ph="INSERT INTO userbook... " />
+                <marker date="1511926167167" expanded="true" signature="8074:8197" ph="INSERT INTO userbook... " />
+                <marker date="1511926167167" expanded="true" signature="8763:8807" ph="SELECT usern... author" />
+                <marker date="1511926167167" expanded="true" signature="8763:8808" ph="SELECT usern... author" />
+                <marker date="1511926167167" expanded="true" signature="8763:8809" ph="SELECT usern... author" />
+                <marker date="1511926167167" expanded="true" signature="8763:8812" ph="SELECT usern... author" />
+                <marker date="1511926167167" expanded="true" signature="8763:8826" ph="SELECT usern... author" />
+                <marker date="1511926167167" expanded="true" signature="8763:8828" ph="SELECT usern... author" />
+                <marker date="1511926167167" expanded="true" signature="9502:9585" ph="SELECT book author" />
               </folding>
             </state>
           </provider>
@@ -131,6 +131,8 @@
       <find>System.out.print</find>
       <find>getBook</find>
       <find>authorIDs</find>
+      <find>Sys</find>
+      <find>Syste</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -146,10 +148,10 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Author.java" />
         <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ActiveUser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Book.java" />
         <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/CommunicationServer.java" />
         <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/MessageParser.java" />
         <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.java" />
-        <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Book.java" />
         <option value="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.java" />
       </list>
     </option>
@@ -161,10 +163,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="65" />
-    <option name="y" value="-4" />
-    <option name="width" value="1375" />
-    <option name="height" value="904" />
+    <option name="x" value="1505" />
+    <option name="y" value="97" />
+    <option name="width" value="1301" />
+    <option name="height" value="772" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -184,8 +186,8 @@
     <panes>
       <pane id="Scope" />
       <pane id="AndroidView" />
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -235,7 +237,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Xwriter3000Client" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
   </component>
@@ -375,14 +377,16 @@
       <updated>1511866920737</updated>
       <workItem from="1511903424200" duration="1324000" />
       <workItem from="1511907560075" duration="77000" />
+      <workItem from="1511921831936" duration="4638000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7989000" />
+    <option name="totallyTimeSpent" value="12627000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1375" height="904" extended-state="6" />
+    <frame x="1505" y="97" width="1301" height="772" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -390,14 +394,14 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32706767" sideWeight="0.50545454" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32582584" sideWeight="0.11913913" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32706767" sideWeight="0.49454546" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32582584" sideWeight="0.88086087" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23490909" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20138355" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -454,50 +458,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3474">
-          <caret line="201" column="17" lean-forward="false" selection-start-line="201" selection-start-column="17" selection-end-line="201" selection-end-column="17" />
-          <folding>
-            <marker date="1511906084831" expanded="true" signature="764:873" ph="select autho... author" />
-            <marker date="1511906084831" expanded="true" signature="2096:2226" ph="INSERT INTO author... " />
-            <marker date="1511906084831" expanded="true" signature="2981:3146" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="3224:3362" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4384" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4385" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4402" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4659:4699" ph="SELECT conte... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5659" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5683" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="6674:6724" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6737" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6784" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="7008:7093" ph="UPDATE book " />
-            <marker date="1511906084831" expanded="true" signature="7722:7784" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7786" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7787" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7822" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7839" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7845" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="8411:8455" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8456" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8457" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8460" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8474" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8476" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="9150:9233" ph="SELECT book author" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/MessageParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2898">
-          <caret line="164" column="20" lean-forward="false" selection-start-line="164" selection-start-column="20" selection-end-line="164" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Book.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -540,33 +500,31 @@
         <state relative-caret-position="3474">
           <caret line="201" column="17" lean-forward="false" selection-start-line="201" selection-start-column="17" selection-end-line="201" selection-end-column="17" />
           <folding>
-            <marker date="1511906084831" expanded="true" signature="764:873" ph="select autho... author" />
-            <marker date="1511906084831" expanded="true" signature="2096:2226" ph="INSERT INTO author... " />
-            <marker date="1511906084831" expanded="true" signature="2981:3146" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="3224:3362" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4384" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4385" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4402" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4659:4699" ph="SELECT conte... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5659" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5683" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="6674:6724" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6737" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6784" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="7008:7093" ph="UPDATE book " />
-            <marker date="1511906084831" expanded="true" signature="7722:7784" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7786" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7787" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7822" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7839" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7845" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="8411:8455" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8456" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8457" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8460" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8474" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8476" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="9150:9233" ph="SELECT book author" />
+            <marker date="1511926167167" expanded="true" signature="764:873" ph="select autho... author" />
+            <marker date="1511926167167" expanded="true" signature="1939:1995" ph="INSERT INTO author... " />
+            <marker date="1511926167167" expanded="true" signature="2695:2752" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="2786:2858" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="4031:4101" ph="SELECT autho... " />
+            <marker date="1511926167167" expanded="true" signature="4128:4168" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="4128:4169" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="5261:5423" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5811" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5835" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="6505:6575" ph="select autho... " />
+            <marker date="1511926167167" expanded="true" signature="6604:6648" ph="update book " />
+            <marker date="1511926167167" expanded="true" signature="8074:8136" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8138" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8139" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8174" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8191" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8197" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8763:8807" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8808" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8809" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8812" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8826" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8828" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="9502:9585" ph="SELECT book author" />
           </folding>
         </state>
       </provider>
@@ -622,33 +580,31 @@
         <state relative-caret-position="7740">
           <caret line="438" column="22" lean-forward="true" selection-start-line="438" selection-start-column="22" selection-end-line="438" selection-end-column="22" />
           <folding>
-            <marker date="1511906084831" expanded="true" signature="764:873" ph="select autho... author" />
-            <marker date="1511906084831" expanded="true" signature="2096:2226" ph="INSERT INTO author... " />
-            <marker date="1511906084831" expanded="true" signature="2981:3146" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="3224:3362" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4384" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4385" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4402" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4659:4699" ph="SELECT conte... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5659" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5683" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="6674:6724" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6737" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6784" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="7008:7093" ph="UPDATE book " />
-            <marker date="1511906084831" expanded="true" signature="7722:7784" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7786" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7787" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7822" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7839" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7845" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="8411:8455" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8456" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8457" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8460" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8474" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8476" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="9150:9233" ph="SELECT book author" />
+            <marker date="1511926167167" expanded="true" signature="764:873" ph="select autho... author" />
+            <marker date="1511926167167" expanded="true" signature="1939:1995" ph="INSERT INTO author... " />
+            <marker date="1511926167167" expanded="true" signature="2695:2752" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="2786:2858" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="4031:4101" ph="SELECT autho... " />
+            <marker date="1511926167167" expanded="true" signature="4128:4168" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="4128:4169" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="5261:5423" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5811" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5835" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="6505:6575" ph="select autho... " />
+            <marker date="1511926167167" expanded="true" signature="6604:6648" ph="update book " />
+            <marker date="1511926167167" expanded="true" signature="8074:8136" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8138" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8139" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8174" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8191" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8197" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8763:8807" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8808" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8809" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8812" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8826" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8828" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="9502:9585" ph="SELECT book author" />
           </folding>
         </state>
       </provider>
@@ -696,33 +652,31 @@
         <state relative-caret-position="7290">
           <caret line="413" column="29" lean-forward="false" selection-start-line="413" selection-start-column="29" selection-end-line="413" selection-end-column="29" />
           <folding>
-            <marker date="1511906084831" expanded="true" signature="764:873" ph="select autho... author" />
-            <marker date="1511906084831" expanded="true" signature="2096:2226" ph="INSERT INTO author... " />
-            <marker date="1511906084831" expanded="true" signature="2981:3146" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="3224:3362" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4384" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4385" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4402" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4659:4699" ph="SELECT conte... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5659" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5683" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="6674:6724" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6737" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6784" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="7008:7093" ph="UPDATE book " />
-            <marker date="1511906084831" expanded="true" signature="7722:7784" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7786" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7787" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7822" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7839" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7845" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="8411:8455" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8456" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8457" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8460" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8474" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8476" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="9150:9233" ph="SELECT book author" />
+            <marker date="1511926167167" expanded="true" signature="764:873" ph="select autho... author" />
+            <marker date="1511926167167" expanded="true" signature="1939:1995" ph="INSERT INTO author... " />
+            <marker date="1511926167167" expanded="true" signature="2695:2752" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="2786:2858" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="4031:4101" ph="SELECT autho... " />
+            <marker date="1511926167167" expanded="true" signature="4128:4168" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="4128:4169" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="5261:5423" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5811" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5835" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="6505:6575" ph="select autho... " />
+            <marker date="1511926167167" expanded="true" signature="6604:6648" ph="update book " />
+            <marker date="1511926167167" expanded="true" signature="8074:8136" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8138" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8139" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8174" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8191" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8197" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8763:8807" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8808" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8809" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8812" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8826" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8828" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="9502:9585" ph="SELECT book author" />
           </folding>
         </state>
       </provider>
@@ -795,33 +749,31 @@
         <state relative-caret-position="3474">
           <caret line="201" column="17" lean-forward="false" selection-start-line="201" selection-start-column="17" selection-end-line="201" selection-end-column="17" />
           <folding>
-            <marker date="1511906084831" expanded="true" signature="764:873" ph="select autho... author" />
-            <marker date="1511906084831" expanded="true" signature="2096:2226" ph="INSERT INTO author... " />
-            <marker date="1511906084831" expanded="true" signature="2981:3146" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="3224:3362" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4384" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4385" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4402" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4659:4699" ph="SELECT conte... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5659" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5683" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="6674:6724" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6737" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6784" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="7008:7093" ph="UPDATE book " />
-            <marker date="1511906084831" expanded="true" signature="7722:7784" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7786" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7787" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7822" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7839" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7845" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="8411:8455" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8456" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8457" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8460" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8474" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8476" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="9150:9233" ph="SELECT book author" />
+            <marker date="1511926167167" expanded="true" signature="764:873" ph="select autho... author" />
+            <marker date="1511926167167" expanded="true" signature="1939:1995" ph="INSERT INTO author... " />
+            <marker date="1511926167167" expanded="true" signature="2695:2752" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="2786:2858" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="4031:4101" ph="SELECT autho... " />
+            <marker date="1511926167167" expanded="true" signature="4128:4168" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="4128:4169" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="5261:5423" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5811" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5835" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="6505:6575" ph="select autho... " />
+            <marker date="1511926167167" expanded="true" signature="6604:6648" ph="update book " />
+            <marker date="1511926167167" expanded="true" signature="8074:8136" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8138" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8139" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8174" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8191" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8197" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8763:8807" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8808" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8809" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8812" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8826" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8828" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="9502:9585" ph="SELECT book author" />
           </folding>
         </state>
       </provider>
@@ -869,33 +821,31 @@
         <state relative-caret-position="1005">
           <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
           <folding>
-            <marker date="1511906084831" expanded="true" signature="764:873" ph="select autho... author" />
-            <marker date="1511906084831" expanded="true" signature="2096:2226" ph="INSERT INTO author... " />
-            <marker date="1511906084831" expanded="true" signature="2981:3146" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="3224:3362" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4384" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4385" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4402" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4659:4699" ph="SELECT conte... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5659" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5683" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="6674:6724" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6737" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6784" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="7008:7093" ph="UPDATE book " />
-            <marker date="1511906084831" expanded="true" signature="7722:7784" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7786" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7787" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7822" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7839" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7845" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="8411:8455" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8456" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8457" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8460" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8474" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8476" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="9150:9233" ph="SELECT book author" />
+            <marker date="1511926167167" expanded="true" signature="764:873" ph="select autho... author" />
+            <marker date="1511926167167" expanded="true" signature="1939:1995" ph="INSERT INTO author... " />
+            <marker date="1511926167167" expanded="true" signature="2695:2752" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="2786:2858" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="4031:4101" ph="SELECT autho... " />
+            <marker date="1511926167167" expanded="true" signature="4128:4168" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="4128:4169" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="5261:5423" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5811" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5835" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="6505:6575" ph="select autho... " />
+            <marker date="1511926167167" expanded="true" signature="6604:6648" ph="update book " />
+            <marker date="1511926167167" expanded="true" signature="8074:8136" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8138" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8139" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8174" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8191" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8197" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8763:8807" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8808" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8809" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8812" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8826" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8828" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="9502:9585" ph="SELECT book author" />
           </folding>
         </state>
       </provider>
@@ -958,14 +908,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Author.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ActiveUser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -977,70 +919,92 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/MessageParser.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Author.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2484">
-          <caret line="141" column="67" lean-forward="false" selection-start-line="141" selection-start-column="67" selection-end-line="141" selection-end-column="67" />
+        <state relative-caret-position="270">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.44/mysql-connector-java-5.1.44.jar!/com/mysql/jdbc/Connection.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="135" column="19" lean-forward="false" selection-start-line="135" selection-start-column="19" selection-end-line="135" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/sql/Connection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="279" column="15" lean-forward="false" selection-start-line="279" selection-start-column="9" selection-end-line="279" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Book.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
+        <state relative-caret-position="18">
           <caret line="8" column="67" lean-forward="false" selection-start-line="8" selection-start-column="67" selection-end-line="8" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="756">
-          <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/CommunicationServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1188">
-          <caret line="71" column="50" lean-forward="false" selection-start-line="71" selection-start-column="50" selection-end-line="71" selection-end-column="50" />
+        <state relative-caret-position="171">
+          <caret line="120" column="28" lean-forward="false" selection-start-line="120" selection-start-column="28" selection-end-line="120" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/MessageParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2039">
+          <caret line="12" column="12" lean-forward="false" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="191" column="17" lean-forward="false" selection-start-line="191" selection-start-column="12" selection-end-line="191" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3525">
-          <caret line="226" column="52" lean-forward="false" selection-start-line="226" selection-start-column="52" selection-end-line="226" selection-end-column="52" />
+        <state relative-caret-position="63">
+          <caret line="281" column="60" lean-forward="true" selection-start-line="281" selection-start-column="60" selection-end-line="281" selection-end-column="60" />
           <folding>
-            <marker date="1511906084831" expanded="true" signature="764:873" ph="select autho... author" />
-            <marker date="1511906084831" expanded="true" signature="2096:2226" ph="INSERT INTO author... " />
-            <marker date="1511906084831" expanded="true" signature="2981:3146" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="3224:3362" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4384" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4385" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4282:4402" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="4659:4699" ph="SELECT conte... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5659" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="5513:5683" ph="SELECT DISTI... book" />
-            <marker date="1511906084831" expanded="true" signature="6674:6724" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6737" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="6674:6784" ph="SELECT autho... " />
-            <marker date="1511906084831" expanded="true" signature="7008:7093" ph="UPDATE book " />
-            <marker date="1511906084831" expanded="true" signature="7722:7784" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7786" ph="INSERT INTO book... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7787" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7822" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7839" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="7722:7845" ph="INSERT INTO userbook... " />
-            <marker date="1511906084831" expanded="true" signature="8411:8455" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8456" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8457" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8460" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8474" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="8411:8476" ph="SELECT usern... author" />
-            <marker date="1511906084831" expanded="true" signature="9150:9233" ph="SELECT book author" />
+            <marker date="1511926167167" expanded="true" signature="764:873" ph="select autho... author" />
+            <marker date="1511926167167" expanded="true" signature="1939:1995" ph="INSERT INTO author... " />
+            <marker date="1511926167167" expanded="true" signature="2695:2752" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="2786:2858" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="4031:4101" ph="SELECT autho... " />
+            <marker date="1511926167167" expanded="true" signature="4128:4168" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="4128:4169" ph="SELECT conte... book" />
+            <marker date="1511926167167" expanded="true" signature="5261:5423" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5811" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="5663:5835" ph="SELECT DISTI... book" />
+            <marker date="1511926167167" expanded="true" signature="6505:6575" ph="select autho... " />
+            <marker date="1511926167167" expanded="true" signature="6604:6648" ph="update book " />
+            <marker date="1511926167167" expanded="true" signature="8074:8136" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8138" ph="INSERT INTO book... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8139" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8174" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8191" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8074:8197" ph="INSERT INTO userbook... " />
+            <marker date="1511926167167" expanded="true" signature="8763:8807" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8808" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8809" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8812" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8826" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="8763:8828" ph="SELECT usern... author" />
+            <marker date="1511926167167" expanded="true" signature="9502:9585" ph="SELECT book author" />
           </folding>
         </state>
       </provider>

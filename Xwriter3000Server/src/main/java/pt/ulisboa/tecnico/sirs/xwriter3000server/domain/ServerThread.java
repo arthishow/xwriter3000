@@ -39,8 +39,8 @@ public class ServerThread extends Thread {
                 case "createBook":
                     createBook(message);
                     break;
-                case "sendBook":
-                    sendBook(message);
+                case "getBook":
+                    getBook(message);
                     break;
                 case "receiveBookChanges":
                     receiveBookChanges(message);
@@ -118,8 +118,8 @@ public class ServerThread extends Thread {
 
     }
 
-    public void sendBook(Message message){
-        List<String> bookInfo = parser.parseSendBook(message.getMessage());
+    public void getBook(Message message){
+        List<String> bookInfo = parser.parseGetBook(message.getMessage());
         if (bookInfo != null) {
             String book = communicationServer.sendBook(bookInfo.get(0), bookInfo.get(1));
             //add cypher
@@ -130,9 +130,6 @@ public class ServerThread extends Thread {
 
     public void receiveBookChanges(Message message){
         List<String> info = parser.parseReceiveBookChanges(message.getMessage());
-        System.out.println(info.get(0));
-        System.out.println(info.get(1));
-        System.out.println(info.get(2));
         if (info != null){
             Boolean success = communicationServer.receiveBookChanges(info.get(0), info.get(1), info.get(2));
             //add cypher

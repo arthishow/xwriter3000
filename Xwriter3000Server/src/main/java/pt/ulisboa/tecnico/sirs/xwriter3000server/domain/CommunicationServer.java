@@ -45,12 +45,10 @@ public class CommunicationServer {
     }
 
     public int createBook(String sessionID, String title){
-        System.out.println(sessionID);
         for (ActiveUser activeUser : activeUsers) {
             if (sessionID.equals(activeUser.getSessionID())) {
                 Book book = new Book(title);
                 int bookID = database.createBook(book, activeUser.getUsername());
-                System.out.println(bookID);
                 return bookID;
             }
         }
