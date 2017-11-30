@@ -2,10 +2,7 @@ package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
 import pt.ulisboa.tecnico.sirs.databaseconnection.ConnectionDB;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class CommunicationServer {
 
@@ -87,12 +84,13 @@ public class CommunicationServer {
     }
 
 
-    public Boolean addAuthorAuth(String sessionID, String bookID, List<String> usernames){
+    public Boolean addAuthorAuth(String sessionID, String bookID, Map<String, Integer> authorsAuth){
         for (ActiveUser activeUser : activeUsers){
             if(sessionID.equals(activeUser.getSessionID())){
-                for(String username: usernames){
-                    database.addAuthorAuth(Integer.valueOf(bookID), username);
+                for (Map.Entry<String, Integer> authorAuth : authorsAuth.entrySet()){
+                    database.addAuthorAuth(Integer.valueOf(bookID), activeUser.getUsername(), authorAuth.getKey(), authorAuth.getValue());
                 }
+                return true;
 
             }
         }
@@ -110,6 +108,20 @@ public class CommunicationServer {
             }
         }
         return null;
+    }
+
+    public Boolean logout(String sessionID, String username) {
+        int removeIndex = -1;
+        for (int i = 0; i < activeUsers.size(); i++) {
+            if (sessionID.equals(activeUsers.get(i))) {
+                removeIndex = i;
+            }
+        }
+        if (removeIndex != -1){
+            activeUsers.remove(removeIndex);
+            return true;
+        }
+        return false;
     }
 
     //TODO: fix this method

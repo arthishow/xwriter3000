@@ -279,23 +279,42 @@ public class ConnectionDB {
     }
 
     //FIXME
-    public Boolean addAuthorAuth(int bookID, String username){
+    public Boolean addAuthorAuth(int bookID, String originalAuthor ,String username, int authorization){
 
-        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
-            Class.forName("com.mysql.jdbc.Driver");
+        String checkAuth = "select authorization from userbook where bookID = ? and authorName = ?";
 
-            Statement stmt = conn.createStatement();
+        String updateAuth = "insert into userbook(bookId, authorName, authorization) values (?, ?, ?)";
 
-            String update = "INSERT INTO userbook(bookId, authorName, authorization) VALUES ( "
-                    + bookID + "," + username + "," + "1";
+        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+             PreparedStatement checkAuthStatement = conn.prepareStatement(checkAuth);
+             PreparedStatement updateAuthStatement = conn.prepareStatement(updateAuth)){
 
+            checkAuthStatement.setInt(1, bookID);
+            checkAuthStatement.setString(2, originalAuthor);
 
-            int result = stmt.executeUpdate(update);
+            System.out.println("here");
 
+            System.out.println(checkAuthStatement);
 
-            if(result == 1){
-                return true;
+            ResultSet rs = checkAuthStatement.executeQuery();
+
+            if (rs.next()){
+                System.out.println("here");
+                if(rs.getInt("authorization") == 0) {
+                    updateAuthStatement.setInt(1, bookID);
+                    updateAuthStatement.setString(2, username);
+                    updateAuthStatement.setInt(3, authorization);
+
+                    int updateResult = updateAuthStatement.executeUpdate();
+
+                    if (updateResult == 1) {
+                        return true;
+                    }
+                }
+
             }
+
+            return false;
 
         } catch(SQLException e){
             e.printStackTrace();

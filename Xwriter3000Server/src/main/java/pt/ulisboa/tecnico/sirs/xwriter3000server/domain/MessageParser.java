@@ -50,9 +50,10 @@ public class MessageParser {
                 message.setMessage(messageInside.substring(11));
                 return message;
             }
-            else if(messageInside.indexOf("addAuthorAuth") == 5){
-                message.setType("addAuthorAuth");
-                message.setMessage(messageInside.split("addAuthorAuth")[1]);
+            else if(messageInside.indexOf("addAuthorsAuth") == 5){
+                System.out.println(message.getMessage());
+                message.setType("addAuthorsAuth");
+                message.setMessage(messageInside.split("addAuthorsAuth")[1]);
                 return message;
             }
             else if(messageInside.indexOf("authorExists") == 5){
@@ -143,10 +144,11 @@ public class MessageParser {
 
     public List<String> parseAddAuthorAuth(String message){
         List<String> ids = new ArrayList<>();
-        String[] array = message.split("sessionID:|bookID:|username:");
+        String[] array = message.split("sessionID:|bookID:|username:|auth:");
         if (array.length > 3){
             for (int i = 1; i < array.length; i++){
                 ids.add(array[i]);
+                System.out.println(array[i]);
             }
             return ids;
         }

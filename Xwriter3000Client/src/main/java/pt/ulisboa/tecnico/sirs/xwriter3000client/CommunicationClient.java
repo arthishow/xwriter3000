@@ -9,10 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class CommunicationClient {
 
@@ -67,10 +64,10 @@ public class CommunicationClient {
     }
 
 
-    public int createBook(String title, List<String> userID){
+    public int createBook(String title, Map<String, Integer> authorsAuth){
         int bookID = createBook(title);
-        if (!userID.isEmpty()) {
-            addAuthorsAuth(String.valueOf(bookID), userID);
+        if (!authorsAuth.isEmpty()) {
+            addAuthorsAuth(String.valueOf(bookID), authorsAuth);
         }
         return bookID;
     }
@@ -125,17 +122,17 @@ public class CommunicationClient {
         return true;
     }
 
-    public Boolean addAuthorsAuth(String bookID, List<String> authorIDs){
+    public Boolean addAuthorsAuth(String bookID, Map<String, Integer> authorsAuth){
         String messageContent;
-        messageContent = "type:addAuthorAuthsessioID:" + sessionID + "bookID:" + bookID;
-        for (String authorID : authorIDs){
-            messageContent += "authorID:" + authorID;
+        messageContent = "type:addAuthorsAuthsessionID:" + sessionID + "bookID:" + bookID;
+        for (Map.Entry<String, Integer> authorAuth : authorsAuth.entrySet()){
+            messageContent += "username:" + authorAuth.getKey();
+            messageContent += "auth:" + authorAuth.getValue();
         }
         Message message = new Message(messageContent, "");
         Message replay = sendMessageReplay(message);
         if (Boolean.valueOf(replay.getMessage())) {
             return true;
-            //add decipher
         }
         return false;
     }
