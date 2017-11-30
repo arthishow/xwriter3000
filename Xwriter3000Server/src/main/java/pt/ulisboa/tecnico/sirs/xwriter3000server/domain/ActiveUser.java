@@ -6,15 +6,15 @@ public class ActiveUser {
 
     private String sessionID;
 
-    private int authorID;
+    private String username;
 
     private Date timestamp;
 
     //README: this class might need something like the ip from the user
 
-    public ActiveUser(String sessionID, int authorID) {
+    public ActiveUser(String sessionID, String username) {
         this.sessionID = sessionID;
-        this.authorID = authorID;
+        this.username = username;
         timestamp = new Date();
     }
 
@@ -22,8 +22,8 @@ public class ActiveUser {
         return sessionID;
     }
 
-    public int getAuthorID() {
-        return authorID;
+    public String getUsername() {
+        return username;
     }
 
     public Date getTimestamp() {

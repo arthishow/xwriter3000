@@ -10,9 +10,14 @@ public class MessageParser {
     public Message parseType(Message message){
         String messageInside = message.getMessage();
         if (messageInside.startsWith("type:")){
-            if(messageInside.indexOf("sendbook") == 5){
-                message.setType("sendbook");
-                message.setMessage(messageInside.substring(13));
+            if(messageInside.indexOf("getBookList") == 5){
+                message.setType("getBookList");
+                message.setMessage(messageInside.split("getBookList")[1]);
+                return message;
+            }
+            else if(messageInside.indexOf("getBook") == 5){
+                message.setType("getBook");
+                message.setMessage(messageInside.split("getBook")[1]);
                 return message;
             }
             else if(messageInside.indexOf("receiveBookChanges") == 5){
@@ -35,11 +40,6 @@ public class MessageParser {
                 message.setMessage(messageInside.substring(15));
                 return message;
             }
-            else if(messageInside.indexOf("getBookList") == 5){
-                message.setType("getBookList");
-                message.setMessage(messageInside.substring(16));
-                return message;
-            }
             else if(messageInside.indexOf("createBook") == 5){
                 message.setType("createBook");
                 message.setMessage(messageInside.substring(16));
@@ -48,14 +48,22 @@ public class MessageParser {
             else if (messageInside.indexOf("logout") == 5){
                 message.setType("logout");
                 message.setMessage(messageInside.substring(11));
+                return message;
             }
             else if(messageInside.indexOf("addAuthorAuth") == 5){
                 message.setType("addAuthorAuth");
                 message.setMessage(messageInside.split("addAuthorAuth")[1]);
+                return message;
             }
             else if(messageInside.indexOf("authorExists") == 5){
                 message.setType("authorExists");
                 message.setMessage(messageInside.split("authorExists")[1]);
+                return message;
+            }
+            else if(messageInside.indexOf("getAuthorsFromBook") == 5){
+                message.setType("getAuthorsFromBook");
+                message.setMessage(messageInside.split("getAuthorsFromBook")[1]);
+                return message;
             }
         }
         return null;
@@ -77,7 +85,7 @@ public class MessageParser {
 
 
     //untested
-    public List<String> parseSendBook(String message){
+    public List<String> parseGetBook(String message){
         String bookID;
         String sessionID;
         if (message.startsWith("sessionID:") && message.contains("bookID:")) {
@@ -135,7 +143,7 @@ public class MessageParser {
 
     public List<String> parseAddAuthorAuth(String message){
         List<String> ids = new ArrayList<>();
-        String[] array = message.split("sessionID:|bookID:|authorID:");
+        String[] array = message.split("sessionID:|bookID:|username:");
         if (array.length > 3){
             for (int i = 1; i < array.length; i++){
                 ids.add(array[i]);
@@ -145,12 +153,11 @@ public class MessageParser {
         return null;
     }
 
-    public List<String> authorExists(String message) {
-        String[] array = message.split("sessioID:|username:");
-        if (array.length == 3){
-            List<String> info = new ArrayList<>();
-            info.add(array[1]);
-            info.add(array[2]);
+    public String authorExists(String message) {
+        System.out.println("asd");
+        String[] array = message.split("username:");
+        if (array.length == 2){
+            return array[1];
         }
         return null;
     }

@@ -39,8 +39,8 @@ public class ServerThread extends Thread {
                 case "createBook":
                     createBook(message);
                     break;
-                case "sendBook":
-                    sendBook(message);
+                case "getBook":
+                    getBook(message);
                     break;
                 case "receiveBookChanges":
                     receiveBookChanges(message);
@@ -57,6 +57,9 @@ public class ServerThread extends Thread {
                     break;
                 case "authorExists":
                     authorExists(message);
+                    break;
+                case "":
+                    getAuthorsFromBook(message);
                     break;
             }
             clientSocket.close();
@@ -91,9 +94,9 @@ public class ServerThread extends Thread {
     public void createBook(Message message){
         List<String> book = parser.parseNewBook(message.getMessage());
         if (book != null){
-            Boolean success = communicationServer.createBook(book.get(0), book.get(1));
+            int bookID = communicationServer.createBook(book.get(0), book.get(1));
             //add cypher
-            Message replay = new Message(success.toString(), "");
+            Message replay = new Message(String.valueOf(bookID), "");
             sendMessage(replay);
         }
     }
@@ -104,19 +107,19 @@ public class ServerThread extends Thread {
         if (ids != null){
             String sessionID = ids.get(0);
             String bookID = ids.get(1);
-            List<String> authorIDs = new ArrayList<>();
+            List<String> usernames = new ArrayList<>();
             for (int i = 2; i < ids.size(); i++){
                 ids.add(ids.get(i));
             }
-            Boolean success = communicationServer.addAuthorAuth(sessionID, bookID, authorIDs);
+            Boolean success = communicationServer.addAuthorAuth(sessionID, bookID, usernames);
             Message replay = new Message(success.toString(), "");
             sendMessage(replay);
         }
 
     }
 
-    public void sendBook(Message message){
-        List<String> bookInfo = parser.parseSendBook(message.getMessage());
+    public void getBook(Message message){
+        List<String> bookInfo = parser.parseGetBook(message.getMessage());
         if (bookInfo != null) {
             String book = communicationServer.sendBook(bookInfo.get(0), bookInfo.get(1));
             //add cypher
@@ -127,9 +130,6 @@ public class ServerThread extends Thread {
 
     public void receiveBookChanges(Message message){
         List<String> info = parser.parseReceiveBookChanges(message.getMessage());
-        System.out.println(info.get(0));
-        System.out.println(info.get(1));
-        System.out.println(info.get(2));
         if (info != null){
             Boolean success = communicationServer.receiveBookChanges(info.get(0), info.get(1), info.get(2));
             //add cypher
@@ -156,10 +156,10 @@ public class ServerThread extends Thread {
     }
 
     public void authorExists(Message message){
-        List<String> info = parser.authorExists(message.getMessage());
+        String username = parser.authorExists(message.getMessage());
 
-        if (info != null){
-            Boolean success = communicationServer.authorExists(info.get(0), info.get(1));
+        if (username != null){
+            Boolean success = communicationServer.authorExists(username);
             Message replay = new Message(success.toString(), "");
             sendMessage(replay);
         }

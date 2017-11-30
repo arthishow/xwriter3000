@@ -11,138 +11,73 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author josesa
- */
+
 public class ConnectionDB {
     
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/xwriter3000?zeroDateTimeBehavior=convertToNull&useSSL=false";
 
     static final String USER = "root";
-    static final String PASS = "2ninshL6+5";
+    static final String PASS = "Io8JbOCc";
 
-    public void example(String[] args) {
-        
-        Connection conn = null;
-        Statement stmt = null;
 
-        try {
-          Class.forName("com.mysql.jdbc.Driver");
 
-          conn = DriverManager.getConnection(DB_URL,USER,PASS);
+    public Boolean login(String username, String password){
 
-          System.out.println("Creating statement...");
-          stmt = conn.createStatement();
-          String sql;
-          sql = "SELECT authorName FROM user";        //Exemplo para ir buscar o nome de todos os USERS
-          ResultSet rs = stmt.executeQuery(sql);
+        String query = "select authorName, authorPass from author " +
+                       "where authorName = ? and authorPass = ?";
 
-          while(rs.next()){
-             String userName = rs.getString("authorName");
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             PreparedStatement login = conn.prepareStatement(query)){
 
-             System.out.print("authorName: " + userName + "\n");
-          }
-          rs.close();
-          stmt.close();
-          conn.close();
 
-       }catch(SQLException se){
-          se.printStackTrace();
-       }catch(Exception e){
-          e.printStackTrace();
-       }finally{
-          try{
-             if(stmt!=null)
-                stmt.close();
-          }catch(SQLException se2){
-          }
-          try{
-             if(conn!=null)
+            login.setString(1, username);
+
+            login.setString(2, password);
+
+            ResultSet rs = login.executeQuery();
+
+            if(rs.next()){
+                String dataUsername = rs.getString("authorName");
+
+                String dataPassword = rs.getString("authorPass");
+
                 conn.close();
-          }catch(SQLException se){
-             se.printStackTrace();
-          }
-       }
-       System.out.println("Goodbye!");
-    }
 
-    public int login(String username, String password){
-        Connection conn = null;
-        Statement stmt = null;
+                login.close();
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-            System.out.println("Creating statement...");
-
-            stmt = conn.createStatement();
-
-            String sql;
-
-            //add protection from sqli
-            sql = "select id, authorName, authorPass from author where authorName = '" + username + "' AND authorPass = '"+ password +"'";
-
-            System.out.println(sql);
-
-            ResultSet rs = stmt.executeQuery(sql);
-
-            rs.next();
-
-            int authorID = rs.getInt("id");
-
-            String dataUsername = rs.getString("authorName");
-
-            String dataPassword = rs.getString("authorPass");
-
-            conn.close();
-
-            stmt.close();
-
-            if (username.equals(dataUsername) &&  password.equals(dataPassword)){
-                return authorID;
+                if (username.equals(dataUsername) &&  password.equals(dataPassword)){
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
             else{
-                return -1;
+                return false;
             }
-
 
         } catch(SQLException e){
             e.printStackTrace();
         } catch(Exception e) {
             e.printStackTrace();
         }
-        return -1;
+        return false;
     }
 
     public Boolean createAuthor(String username, String password){
-        Connection conn = null;
-        Statement stmt = null;
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
+        String insert = "INSERT INTO author(authorName, authorPass) VALUES (?, ?)" ;
 
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             PreparedStatement insertAuthor = conn.prepareStatement(insert)){
 
-            System.out.println("Creating statement...");
+            insertAuthor.setString(1, username);
 
-            stmt = conn.createStatement();
+            insertAuthor.setString(2, password);
 
-            String sql;
-            sql = "INSERT INTO author(authorName, authorPass) VALUES ("
-                     + "'" + username + "'" + "," + "'" + password + "'" + ")" ;
+            int result = insertAuthor.executeUpdate();
 
-            System.out.println(sql);
-
-            int result = stmt.executeUpdate(sql);
-
-            System.out.println(result);
-
-            stmt.close();
-            conn.close();
 
             if (result == 1){
                 return true;
@@ -158,45 +93,42 @@ public class ConnectionDB {
         return false;
     }
 
-    public Boolean createBook(Book book, int authorID){
-        Connection conn = null;
-        Statement stmt = null;
+    public int createBook(Book book, String username){
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
+        String insertBook = "INSERT INTO book(bookId, title, content) VALUES (?, ?, ?)" ;
 
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        String insertAuth = "INSERT INTO userbook(bookId, authorName, authorization) VALUES (?, ?, ?)";
 
-            System.out.println("Creating statement...");
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             PreparedStatement insertBookStatement = conn.prepareStatement(insertBook);
+             PreparedStatement insertAuthStatement = conn.prepareStatement(insertAuth)){
 
-            stmt = conn.createStatement();
+            insertBookStatement.setInt(1, book.getBookID());
 
-            String bookSql;
-            bookSql = "INSERT INTO book(id, title, content) VALUES ("
-                    + book.getBookID() + "," + "'" + book.getTitle() + "'" + "," + "'" + book.getText() + "'" + ")" ;
+            insertBookStatement.setString(2, book.getTitle());
 
-            String authrizationLevel;
-            authrizationLevel = "INSERT INTO userbook(bookId, authorId, authorization) VALUES ("
-                            + book.getBookID() + "," + authorID + ",0)";
+            insertBookStatement.setString(3, "");
+
+            insertAuthStatement.setInt(1, book.getBookID());
+
+            insertAuthStatement.setString(2, username);
+
+            insertAuthStatement.setInt(3, 0);
 
 
-            System.out.println(bookSql);
 
-            int firstResult = stmt.executeUpdate(bookSql);
+            int firstResult = insertBookStatement.executeUpdate();
 
-            int secondResult = stmt.executeUpdate(authrizationLevel);
+            int secondResult = insertAuthStatement.executeUpdate();
 
-            System.out.println(firstResult);
 
-            System.out.println(secondResult);
 
-            stmt.close();
-            conn.close();
-
+            //FIXME
             if (firstResult == 1 && secondResult == 1){
-                return true;
+                return book.getBookID();
+
             } else {
-                return false;
+                return -1;
             }
 
         } catch(SQLException e){
@@ -204,63 +136,42 @@ public class ConnectionDB {
         } catch(Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
-    public String getBook(int bookID, int authorID){
-        Connection conn = null;
-        Statement stmt = null;
+    public String getBook(int bookID, String username){
 
-        try{
+        String auth = "SELECT authorization FROM userbook WHERE bookId = ? AND authorName = ?";
 
-            Class.forName("com.mysql.jdbc.Driver");
+        String book = "SELECT content FROM book WHERE bookId = ?";
 
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             PreparedStatement authStatement = conn.prepareStatement(auth);
+             PreparedStatement bookStatement = conn.prepareStatement(book)){
 
-            System.out.println("Creating statement...");
+            authStatement.setInt(1, bookID);
 
-            stmt = conn.createStatement();
+            authStatement.setString(2, username);
 
-            String sql;
+            ResultSet rs = authStatement.executeQuery();
 
-            //add protection from sqli
-            sql = "SELECT authorization FROM userbook WHERE bookId = " + bookID +
-                    " AND authorId = " + authorID;
+            if (rs.next()){
 
-            System.out.println(sql);
+                int authorization = rs.getInt("authorization");
 
-            ResultSet rs = stmt.executeQuery(sql);
 
-            rs.next();
+                if (authorization <= 2) {
 
-            conn.close();
+                    bookStatement.setInt(1, bookID);
 
-            stmt.close();
+                    rs = bookStatement.executeQuery();
 
-            int authorization = rs.getInt("authorization");
-
-            if (authorization <= 1){
-
-                sql = "SELECT content FROM book WHERE bookId = " + bookID;
-
-                System.out.println(sql);
-
-                rs = stmt.executeQuery(sql);
-
-                rs.next();
-
-                String book = rs.getString("content");
-
-                if(book != null){
-                    return book;
-                }
-                else{
-                    return null;
+                    if(rs.next()){
+                        String bookContent = rs.getString("content");
+                        return bookContent;
+                    }
                 }
 
-            }
-            else {
-                return null;
             }
 
         } catch(SQLException e){
@@ -272,42 +183,37 @@ public class ConnectionDB {
         return null;
     }
 
-    public List<Book> getBookList(int authorID){
+    public List<Book> getBookList(String username){
 
-        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
-            Class.forName("com.mysql.jdbc.Driver");
+        String query = "SELECT DISTINCT B.bookId, title FROM book as B JOIN userbook as U " +
+                        "WHERE authorName = ? AND authorization <= 1 AND B.bookId = U.bookId";
 
-            Statement stmt = conn.createStatement();
+        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+             PreparedStatement bookStatement = conn.prepareStatement(query)){
 
-            String sql = "SELECT DISTINCT bookId, title FROM book JOIN userbook WHERE authorId = " +
-                        authorID + " AND authorization <= 1" ;
+            bookStatement.setString(1, username);
 
-            System.out.println(sql);
+            //String sql = "SELECT DISTINCT B.bookId, title FROM book as B JOIN userbook as U WHERE authorName = '" +
+            //        username + "' AND authorization <= 1 AND B.bookid = U.bookid"  ;
 
-            ResultSet rs = stmt.executeQuery(sql);
+
+            ResultSet rs = bookStatement.executeQuery();
 
             List<Book> bookList = new ArrayList<>();
 
-
             while(rs.next()){
 
-
                 int bookID = rs.getInt("bookId");
-
-                System.out.println(bookID);
 
                 String title = rs.getString("title");
 
                 Book book = new Book(bookID, title);
 
+
                 bookList.add(book);
 
 
             }
-
-            conn.close();
-
-            stmt.close();
 
             return bookList;
 
@@ -322,39 +228,46 @@ public class ConnectionDB {
     }
 
 
-    public Boolean changeBook(int authorID, int bookID, String content){
+    public Boolean changeBook(String username, int bookID, String content){
 
-        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
-            Class.forName("com.mysql.jdbc.Driver");
+        String checkAuth = "select authorization from userbook where bookId = ? and authorName = ?";
 
-            Statement stmt = conn.createStatement();
+        String update = "update book set content = ? where bookId = ?";
 
-            String sql = "SELECT authorization FROM userbook WHERE bookId = " + bookID +
-                            " AND authorId = " + authorID;
+        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+             PreparedStatement checkAuthStatement = conn.prepareStatement(checkAuth);
+             PreparedStatement updateStatement = conn.prepareStatement(update)){
 
-
-            ResultSet rs = stmt.executeQuery(sql);
-
-            rs.next();
-
-            int authorization = rs.getInt("authorization");
-
-
-            if (authorization <= 1){
-                String update = "UPDATE book SET content = '" + content +
-                                "' WHERE id=" + bookID;
-
-                System.out.println(update);
-
-                int result = stmt.executeUpdate(update);
-
-                conn.close();
-
-                stmt.close();
-
-                return true;
-
+            if(content == null){
+                return false;
             }
+
+            checkAuthStatement.setInt(1, bookID);
+
+            checkAuthStatement.setString(2, username);
+
+            ResultSet rs = checkAuthStatement.executeQuery();
+
+            if(rs.next()){
+
+                int authorization = rs.getInt("authorization");
+
+
+                if (authorization <= 1) {
+
+                    updateStatement.setString(1, content);
+
+                    updateStatement.setInt(2, bookID);
+
+                    int result = updateStatement.executeUpdate();
+
+                    if (result == 1) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
 
         } catch(SQLException e){
             e.printStackTrace();
@@ -365,18 +278,17 @@ public class ConnectionDB {
         return false;
     }
 
-
-    public Boolean addAuthorAuth(int bookID, int authorID){
+    //FIXME
+    public Boolean addAuthorAuth(int bookID, String username){
 
         try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
             Class.forName("com.mysql.jdbc.Driver");
 
             Statement stmt = conn.createStatement();
 
-            String update = "INSERT INTO userbook(bookId, authorId, authorization) VALUES ( "
-                    + bookID + "," + authorID + "," + "1";
+            String update = "INSERT INTO userbook(bookId, authorName, authorization) VALUES ( "
+                    + bookID + "," + username + "," + "1";
 
-            System.out.println(update);
 
             int result = stmt.executeUpdate(update);
 
@@ -396,21 +308,20 @@ public class ConnectionDB {
 
 
     public Boolean authorExists(String username){
-        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
-            Class.forName("com.mysql.jdbc.Driver");
 
-            Statement stmt = conn.createStatement();
+        String query = "SELECT authorName FROM author WHERE authorName = ?";
 
-            String sql = "SELECT username FROM author WHERE username = '" + username + "'";
+        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+             PreparedStatement checkAuthStatement = conn.prepareStatement(query)){
 
-            ResultSet rs = stmt.executeQuery(sql);
+            checkAuthStatement.setString(1, username);
 
-            rs.next();
+            ResultSet rs = checkAuthStatement.executeQuery();
 
-
-            if(rs.getString("authorName").equals(username)){
+            if(rs.next()){
                 return true;
-            }else{
+            }
+            else{
                 return false;
             }
 
@@ -423,6 +334,7 @@ public class ConnectionDB {
         return false;
     }
 
+    //FIXME
     public List<String> getAuthorsFromBook(String bookID){
 
         try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
@@ -442,7 +354,6 @@ public class ConnectionDB {
 
                 String username = rs.getString("username");
 
-                System.out.println(username);
 
                 authors.add(username);
             }

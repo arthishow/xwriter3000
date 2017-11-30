@@ -12,18 +12,21 @@ public class xwriterClientApp {
         CommunicationClient communicationClient = new CommunicationClient();
 
 
-        System.out.println(communicationClient.authenticateUser("test", "goodPass"));
+        System.out.println(communicationClient.authenticateUser("d", "es"));
 
-        List<Book> list = communicationClient.getBookList();
+        System.out.println(communicationClient.getBook("13"));
 
-        System.out.println(list.get(0).getBookID());
+        System.out.println(communicationClient.getBook("14"));
 
-        System.out.println(list.get(0).getTitle());
+        List<Book> books = communicationClient.getBookList();
 
-        System.out.println(list.get(1).getBookID());
+        for (Book book: books){
+            System.out.println(book.getBookID());
+            System.out.println(book.getTitle());
+            System.out.println(book.getText());
+        }
 
-        System.out.println(list.get(1).getTitle());
-
+        //System.out.println(addAuthorsAuth(13, ));
     }
 
 }
