@@ -21,6 +21,8 @@ public class Login {
     private static int HEIGHT = 280;
     private static int WIDTH = 320;
 
+    protected static String currentUserId;
+
     protected static void initLogInWindow(Stage stage){
 
         stage.setTitle("Xwriter 3000 - Log-in");
@@ -63,6 +65,7 @@ public class Login {
             if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText())) {
                 actionTarget.setFill(Color.GREEN);
                 actionTarget.setText("Log-in successful.");
+                currentUserId = userTextField.getText();
                 SelectBook.initSelectBookWindow(stage);
             } else {
                 pwBox.setText("");

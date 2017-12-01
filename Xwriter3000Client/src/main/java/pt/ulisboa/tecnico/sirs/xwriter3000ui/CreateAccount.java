@@ -110,10 +110,10 @@ public class CreateAccount {
         });
 
         create.setOnAction(e -> {
-            if (CreateAccountController.createUser(author.getText(), psw1.getText())) {
+            if (Main.client.createUser(author.getText(), psw1.getText())) {
                 actionTextCreateUser.setFill(Color.GREEN);
                 actionTextCreateUser.setText("Author created.");
-                PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+                PauseTransition delay = new PauseTransition(Duration.seconds(1));
                 delay.setOnFinished(e2 -> stage.close());
                 delay.play();
             } else {
