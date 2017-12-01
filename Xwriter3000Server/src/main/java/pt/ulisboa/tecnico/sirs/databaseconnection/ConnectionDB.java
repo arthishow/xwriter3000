@@ -279,23 +279,63 @@ public class ConnectionDB {
     }
 
     //FIXME
-    public Boolean addAuthorAuth(int bookID, String username){
+    public Boolean addAuthorAuth(int bookID, String originalAuthor ,String username, int authorization){
 
-        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
-            Class.forName("com.mysql.jdbc.Driver");
+        String checkOriginal = "select authorization from userbook where bookID = ? and authorName = ?";
 
-            Statement stmt = conn.createStatement();
+        String insertAuth = "insert into userbook(bookId, authorName, authorization) values (?, ?, ?)";
 
-            String update = "INSERT INTO userbook(bookId, authorName, authorization) VALUES ( "
-                    + bookID + "," + username + "," + "1";
+        String updateAuth = "update userbook set authorization = ? where bookId = ? and authorName = ?";
 
+        try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+             PreparedStatement checkAuthStatement = conn.prepareStatement(checkOriginal);
+             PreparedStatement insertAuthStatement = conn.prepareStatement(insertAuth);
+             PreparedStatement updateAuthStatement = conn.prepareStatement(updateAuth)){
 
-            int result = stmt.executeUpdate(update);
+            checkAuthStatement.setInt(1, bookID);
+            checkAuthStatement.setString(2, originalAuthor);
 
+            ResultSet rs = checkAuthStatement.executeQuery();
 
-            if(result == 1){
-                return true;
+            if (rs.next()){
+                if(rs.getInt("authorization") == 0) {
+
+                    checkAuthStatement.setString(2, username);
+
+                    rs = checkAuthStatement.executeQuery();
+
+                    if (rs.next()){
+
+                        if(rs.getInt("authorization") == authorization){
+                            updateAuthStatement.setInt(1, authorization);
+                            updateAuthStatement.setInt(2, bookID);
+                            updateAuthStatement.setString(3, username);
+
+                            int updateResult = updateAuthStatement.executeUpdate();
+
+                            if(updateResult == 1){
+                                return true;
+                            }
+                        }
+
+                    }
+                    else{
+                        insertAuthStatement.setInt(1, bookID);
+                        insertAuthStatement.setString(2, username);
+                        insertAuthStatement.setInt(3, authorization);
+
+                        int insertResult = insertAuthStatement.executeUpdate();
+
+                        if (insertResult == 1) {
+                            return true;
+                        }
+                    }
+
+                }
+
             }
+
+            return false;
 
         } catch(SQLException e){
             e.printStackTrace();
@@ -334,28 +374,30 @@ public class ConnectionDB {
         return false;
     }
 
-    //FIXME
-    public List<String> getAuthorsFromBook(String bookID){
 
-        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS)){
-            Class.forName("com.mysql.jdbc.Driver");
+    public List<String> getAuthorsFromBook(String bookID, String author){
 
-            Statement stmt = conn.createStatement();
+        String query = "SELECT authorName FROM userbook WHERE bookID = ? ";
 
-            String sql = "SELECT username FROM author JOIN book JOIN userbook WHERE bookID = '" + bookID + "'";
 
-            ResultSet rs = stmt.executeQuery(sql);
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setInt(1, Integer.parseInt(bookID));
+
+            ResultSet rs = statement.executeQuery();
 
             List<String> authors = new ArrayList<>();
 
-            rs.next();
 
             while(rs.next()){
 
-                String username = rs.getString("username");
+                String username = rs.getString("authorName");
 
+                if(!author.equals(username)){
+                    authors.add(username);
+                }
 
-                authors.add(username);
             }
 
             return authors;

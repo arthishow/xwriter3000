@@ -4,9 +4,7 @@ import pt.ulisboa.tecnico.sirs.xwriter3000.Message;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ServerThread extends Thread {
     private Socket clientSocket;
@@ -58,7 +56,7 @@ public class ServerThread extends Thread {
                 case "authorExists":
                     authorExists(message);
                     break;
-                case "":
+                case "getAuthorsFromBook":
                     getAuthorsFromBook(message);
                     break;
             }
@@ -102,16 +100,15 @@ public class ServerThread extends Thread {
     }
 
     public void addAuthorAuth(Message message){
-
         List<String> ids = parser.parseAddAuthorAuth(message.getMessage());
         if (ids != null){
             String sessionID = ids.get(0);
             String bookID = ids.get(1);
-            List<String> usernames = new ArrayList<>();
-            for (int i = 2; i < ids.size(); i++){
-                ids.add(ids.get(i));
+            Map<String, Integer> authorAuth = new HashMap<>();
+            for (int i = 2; i < ids.size(); i += 2){
+                authorAuth.put(ids.get(i), Integer.valueOf(ids.get(i + 1)));
             }
-            Boolean success = communicationServer.addAuthorAuth(sessionID, bookID, usernames);
+            Boolean success = communicationServer.addAuthorAuth(sessionID, bookID, authorAuth);
             Message replay = new Message(success.toString(), "");
             sendMessage(replay);
         }
@@ -168,7 +165,6 @@ public class ServerThread extends Thread {
 
     public void getAuthorsFromBook(Message message){
         List<String> info = parser.getAuthorsFromBook(message.getMessage());
-
         if (info != null) {
             List<String> authors = new ArrayList<>();
             authors.addAll(communicationServer.getAuthorsFromBook(info.get(0), info.get(1)));
