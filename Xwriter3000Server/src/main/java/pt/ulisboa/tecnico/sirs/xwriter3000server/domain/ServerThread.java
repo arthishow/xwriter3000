@@ -56,7 +56,7 @@ public class ServerThread extends Thread {
                 case "authorExists":
                     authorExists(message);
                     break;
-                case "":
+                case "getAuthorsFromBook":
                     getAuthorsFromBook(message);
                     break;
             }
@@ -106,8 +106,6 @@ public class ServerThread extends Thread {
             String bookID = ids.get(1);
             Map<String, Integer> authorAuth = new HashMap<>();
             for (int i = 2; i < ids.size(); i += 2){
-                System.out.println(ids.get(i));
-                System.out.println(ids.get(i + 1));
                 authorAuth.put(ids.get(i), Integer.valueOf(ids.get(i + 1)));
             }
             Boolean success = communicationServer.addAuthorAuth(sessionID, bookID, authorAuth);
@@ -167,7 +165,6 @@ public class ServerThread extends Thread {
 
     public void getAuthorsFromBook(Message message){
         List<String> info = parser.getAuthorsFromBook(message.getMessage());
-
         if (info != null) {
             List<String> authors = new ArrayList<>();
             authors.addAll(communicationServer.getAuthorsFromBook(info.get(0), info.get(1)));

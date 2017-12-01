@@ -104,7 +104,7 @@ public class CommunicationServer {
     public List<String> getAuthorsFromBook(String sessionID, String bookID){
         for (ActiveUser activeUser : activeUsers) {
             if (sessionID.equals(activeUser.getSessionID())) {
-                return database.getAuthorsFromBook(bookID);
+                return database.getAuthorsFromBook(bookID, activeUser.getUsername());
             }
         }
         return null;

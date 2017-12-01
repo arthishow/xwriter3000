@@ -150,7 +150,7 @@ public class CommunicationClient {
 
     public List<String> getAuthorsFromBook(String bookID){
         String messageContent;
-        messageContent = "type:getAuthorsFromBooksessioID:" + sessionID + "bookID:" + bookID;
+        messageContent = "type:"+ "getAuthorsFromBook" +"sessionID:" + sessionID + "bookID:" + bookID;
         Message message = new Message(messageContent, "");
         Message replay = sendMessageReplay(message);
         //add decipher
