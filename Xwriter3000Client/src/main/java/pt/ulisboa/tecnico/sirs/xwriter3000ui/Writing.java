@@ -26,7 +26,7 @@ public class Writing {
         Menu menuFile = new Menu("File");
         MenuItem createBook = new MenuItem("Create book...");
         MenuItem saveBook = new MenuItem("Save to the cloud");
-        MenuItem selectBook = new Menu("Select book");
+        MenuItem selectBook = new MenuItem("Select book");
 
         //Edit Menu
         Menu menuEdit = new Menu("Edit");
@@ -41,7 +41,7 @@ public class Writing {
             text.setText("Once upon a time...");
         } else {
             currentBook = book;
-            text.setText(book.getText());
+            text.setText(Main.client.getBook(String.valueOf(currentBook.getBookID())));
         }
 
         selectBook.setOnAction(e -> {
@@ -49,7 +49,7 @@ public class Writing {
             SelectBook.initSelectBookWindow(stage);
         });
         createBook.setOnAction(e -> BookCreation.initBookCreationWindow(new Stage()));
-        saveBook.setOnAction(e -> Main.client.sendBookChanges(String.valueOf(currentBook.getBookID()), currentBook.getText()));
+        saveBook.setOnAction(e -> Main.client.sendBookChanges(String.valueOf(currentBook.getBookID()), text.getText()));
         access.setOnAction(e -> AccessAuthorization.initAccessAuthorizationWindow(new Stage()));
         logout.setOnAction(e -> WritingController.logout(stage));
 

@@ -83,7 +83,6 @@ class SelectBook {
             if (bookList.getSelectionModel().getSelectedItem() != null) {
                 Writing.initTextEditingWindow(stage, bookList.getSelectionModel().getSelectedItem());
             } else {
-                System.out.print("sisi");
                 Popup.initPopupWindow(new Stage(), "No book selected.");
             }
         });
