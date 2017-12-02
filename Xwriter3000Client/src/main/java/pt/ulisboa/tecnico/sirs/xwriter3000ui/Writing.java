@@ -26,7 +26,7 @@ public class Writing {
         Menu menuFile = new Menu("File");
         MenuItem createBook = new MenuItem("Create book...");
         MenuItem saveBook = new MenuItem("Save to the cloud");
-        Menu menuBooks = new Menu("Work on ...");
+        MenuItem selectBook = new Menu("Select book");
 
         //Edit Menu
         Menu menuEdit = new Menu("Edit");
@@ -44,22 +44,17 @@ public class Writing {
             text.setText(book.getText());
         }
 
-        for (Book b : Main.client.getBookList()) {
-            MenuItem bmenu = new MenuItem(book.getTitle());
-            bmenu.setOnAction(e -> {
-                String t = book.getText();
-                text.setText(t);
-            });
-            menuBooks.getItems().add(bmenu);
-        }
-
+        selectBook.setOnAction(e -> {
+            Main.client.sendBookChanges(String.valueOf(currentBook.getBookID()), text.getText());
+            SelectBook.initSelectBookWindow(stage);
+        });
         createBook.setOnAction(e -> BookCreation.initBookCreationWindow(new Stage()));
         saveBook.setOnAction(e -> Main.client.sendBookChanges(String.valueOf(currentBook.getBookID()), currentBook.getText()));
         access.setOnAction(e -> AccessAuthorization.initAccessAuthorizationWindow(new Stage()));
         logout.setOnAction(e -> WritingController.logout(stage));
 
         //Menus
-        menuFile.getItems().addAll(createBook, saveBook, menuBooks);
+        menuFile.getItems().addAll(createBook, saveBook, selectBook);
         menuEdit.getItems().addAll(access);
         menuUser.getItems().addAll(logout);
         menuBar.getMenus().addAll(menuFile, menuEdit, menuUser);

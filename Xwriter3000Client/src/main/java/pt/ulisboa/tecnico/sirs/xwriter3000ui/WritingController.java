@@ -6,9 +6,6 @@ import java.util.List;
 
 public class WritingController{
 
-    protected static Book currentBook = null;
-
-    //TODO
     protected static void logout(Stage stage) {
         //Main.client.logout();
         Login.initLogInWindow(stage);

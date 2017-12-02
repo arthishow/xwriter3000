@@ -41,9 +41,11 @@ class AddAuthor {
         ToggleGroup group = new ToggleGroup();
         RadioButton read = new RadioButton("Read");
         read.setToggleGroup(group);
+        read.setUserData(2);
         read.setSelected(true);
         RadioButton readAndWrite = new RadioButton("Read&Write");
         readAndWrite.setToggleGroup(group);
+        readAndWrite.setUserData(1);
         grid.add(read, 0, 1);
         grid.add(readAndWrite, 1, 1);
 
@@ -54,11 +56,8 @@ class AddAuthor {
         grid.add(cancel, 1, 2);
 
         addAuthor.setOnAction(e -> {
-            if (Main.client.authorExists(author.getText())) {
-                int authLvl = 0;
-                if(!group.getSelectedToggle().getUserData().toString().equals("Read")){
-                    authLvl = 1;
-                }
+            if (Main.client.authorExists(author.getText()) && !author.getText().equals(Login.currentUserId) && !authors.getItems().contains(author.getText())) {
+                int authLvl = (int) group.getSelectedToggle().getUserData();
                 authors.getItems().add(new User(author.getText(), authLvl));
                 actionText.setFill(Color.GREEN);
                 actionText.setText(author.getText() + " added.");

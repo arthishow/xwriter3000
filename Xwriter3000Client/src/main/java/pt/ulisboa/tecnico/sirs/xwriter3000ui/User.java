@@ -1,5 +1,7 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
+import javafx.beans.property.SimpleStringProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,5 +17,9 @@ public class User {
 
     protected String getAuthorId(){
         return authorId;
+    }
+
+    protected int getAuthorizationLevel(){
+        return authorizationLevel;
     }
 }

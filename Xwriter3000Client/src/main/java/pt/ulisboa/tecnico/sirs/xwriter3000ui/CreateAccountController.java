@@ -13,7 +13,7 @@ public class CreateAccountController {
         boolean hasLowercase = !password.equals(password.toUpperCase());
         boolean hasNumber = password.matches(".*\\d+.*");
         boolean hasSpace = password.contains(" ");
-        return length > 5 && length < 21 && m.find() && hasUppercase && hasLowercase && hasNumber && !hasSpace;
+        return length > 5 && length < 129 && m.find() && hasUppercase && hasLowercase && hasNumber && !hasSpace;
     }
 
     protected static boolean verifyUserId(String userId) {
@@ -21,7 +21,4 @@ public class CreateAccountController {
         return length > 3 && length < 129;
     }
 
-    protected static boolean createUser(String userId, String password) {
-        return Main.client.createUser(userId, password);
-    }
 }

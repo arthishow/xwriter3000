@@ -1,28 +1,32 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
 import javafx.animation.PauseTransition;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class AccessAuthorization {
 
     private static int HEIGHT = 350;
-    private static int WIDTH = 600;
+    private static int WIDTH = 630;
 
     static void initAccessAuthorizationWindow(Stage stage) {
 
@@ -47,13 +51,27 @@ class AccessAuthorization {
         grid.add(authorizedAuthors, 0, 1);
 
         TableView<User> authors = new TableView<>();
-        if (comboBox.getSelectionModel().getSelectedItem() != null) {
-            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
-        }
-        comboBox.valueProperty().addListener(e -> {
-            authors.getItems().removeAll();
-            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
+        authors.setEditable(false);
+        TableColumn userIdCol = new TableColumn("User ID");
+        userIdCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User,String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> data) {
+                return new ReadOnlyStringWrapper(data.getValue().getAuthorId());
+            }
         });
+        TableColumn levelCol = new TableColumn("Level");
+        levelCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User,String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> data) {
+                return new ReadOnlyStringWrapper(String.valueOf(data.getValue().getAuthorizationLevel()));
+            }
+        });
+        authors.getColumns().addAll(userIdCol, levelCol);
+        userIdCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.7));
+        levelCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.3));
+        userIdCol.setResizable(false);
+        levelCol.setResizable(false);
+        authors.setPlaceholder(new Label("No authors to display."));
         grid.add(authors, 1, 1);
 
         Button addAuthor = new Button("Add author");
@@ -74,9 +92,9 @@ class AccessAuthorization {
         addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors));
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
         saveChanges.setOnAction(e -> {
-            List<String> authorsId = new ArrayList<>();
+            Map<String, Integer> authorsId = new HashMap<>();
             for(User user: authors.getItems()){
-                authorsId.add(user.getAuthorId());
+                authorsId.put(user.getAuthorId(), user.getAuthorizationLevel());
             }
             if(Main.client.addAuthorsAuth(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID()), authorsId)){
                 actionText.setFill(Color.GREEN);
@@ -90,6 +108,14 @@ class AccessAuthorization {
             }
         });
         cancel.setOnAction(e -> stage.close());
+
+        if (comboBox.getSelectionModel().getSelectedItem() != null) {
+            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
+        }
+        comboBox.valueProperty().addListener(e -> {
+            authors.getItems().clear();
+            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
+        });
 
         Scene scene = new Scene(grid, WIDTH, HEIGHT);
         stage.setScene(scene);
