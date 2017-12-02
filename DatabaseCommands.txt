@@ -4,6 +4,13 @@ CREATE TABLE author(
     PRIMARY KEY(authorName)
 );
 
+CREATE TABLE salt(
+	authorName VARCHAR(100) NOT NULL,
+	salt VARCHAR(100) NOT NULL,
+	PRIMARY KEY(authorName),
+	FOREIGN KEY (authorName) REFERENCES author(authorName) ON DELETE CASCADE    
+);
+
 CREATE TABLE book(
     bookId INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
@@ -19,3 +26,5 @@ CREATE TABLE userbook(
     FOREIGN KEY (bookId) REFERENCES book(bookId) ON DELETE CASCADE ,
     FOREIGN KEY (authorName) REFERENCES author(authorName) ON DELETE CASCADE    
 );
+
+

@@ -6,6 +6,7 @@
 package pt.ulisboa.tecnico.sirs.databaseconnection;
 
 import pt.ulisboa.tecnico.sirs.xwriter3000server.domain.Book;
+import pt.ulisboa.tecnico.sirs.xwriter3000server.domain.CypherUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,39 +15,45 @@ import java.util.List;
 
 public class ConnectionDB {
     
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/xwriter3000?zeroDateTimeBehavior=convertToNull&useSSL=false";
+    private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private final String DB_URL = "jdbc:mysql://localhost:3306/xwriter3000?zeroDateTimeBehavior=convertToNull&useSSL=false";
 
-    static final String USER = "root";
-    static final String PASS = "Io8JbOCc";
+    private final String USER = "root";
+    private final String PASS = "Io8JbOCc";
+
+    private CypherUtil cypherUtil = new CypherUtil();
 
 
 
     public Boolean login(String username, String password){
 
-        String query = "select authorName, authorPass from author " +
-                       "where authorName = ? and authorPass = ?";
+        String query = "select authorName, authorPass from author where authorName = ?";
+
+        String getSalt = "select salt from salt where authorName = ?";
 
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-             PreparedStatement login = conn.prepareStatement(query)){
+             PreparedStatement login = conn.prepareStatement(query);
+             PreparedStatement getSaltStatement = conn.prepareStatement(getSalt)){
 
 
             login.setString(1, username);
 
-            login.setString(2, password);
+            getSaltStatement.setString(1, username);
 
             ResultSet rs = login.executeQuery();
 
-            if(rs.next()){
-                String dataUsername = rs.getString("authorName");
+            ResultSet saltResult = getSaltStatement.executeQuery();
 
-                String dataPassword = rs.getString("authorPass");
+            if(rs.next() && saltResult.next()){
+                String passHash = rs.getString("authorPass");
 
-                conn.close();
+                String salt = saltResult.getString("salt");
 
-                login.close();
+                String enteredPass = cypherUtil.hashPass(password, salt);
 
-                if (username.equals(dataUsername) &&  password.equals(dataPassword)){
+                System.out.println(enteredPass);
+
+                if (passHash.equals(enteredPass)){
                     return true;
                 }
                 else{
@@ -65,21 +72,35 @@ public class ConnectionDB {
         return false;
     }
 
+    //fixme return false if username exists
     public Boolean createAuthor(String username, String password){
 
         String insert = "INSERT INTO author(authorName, authorPass) VALUES (?, ?)" ;
+        String insertSalt = "INSERT INTO salt(authorName, salt) VALUES (?, ?)" ;
+
 
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-             PreparedStatement insertAuthor = conn.prepareStatement(insert)){
+             PreparedStatement insertAuthor = conn.prepareStatement(insert);
+             PreparedStatement insertSaltStat = conn.prepareStatement(insertSalt)){
 
             insertAuthor.setString(1, username);
 
-            insertAuthor.setString(2, password);
+            insertSaltStat.setString(1, username);
 
-            int result = insertAuthor.executeUpdate();
+            String salt = cypherUtil.generateSalt();
+
+            String hash = cypherUtil.hashPass(password, salt);
 
 
-            if (result == 1){
+            insertAuthor.setString(2, hash);
+
+            insertSaltStat.setString(2, salt);
+
+            int firstResult = insertAuthor.executeUpdate();
+
+            int secondResult = insertSaltStat.executeUpdate();
+
+            if (firstResult == 1 && secondResult == 1){
                 return true;
             } else {
                 return false;
@@ -192,9 +213,6 @@ public class ConnectionDB {
              PreparedStatement bookStatement = conn.prepareStatement(query)){
 
             bookStatement.setString(1, username);
-
-            //String sql = "SELECT DISTINCT B.bookId, title FROM book as B JOIN userbook as U WHERE authorName = '" +
-            //        username + "' AND authorization <= 1 AND B.bookid = U.bookid"  ;
 
 
             ResultSet rs = bookStatement.executeQuery();

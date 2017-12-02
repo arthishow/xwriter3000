@@ -1,41 +1,76 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
-import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.SignatureException;
+import java.math.BigInteger;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import java.util.Random;
+import javax.crypto.*;
+import javax.crypto.spec.PBEKeySpec;
+import java.security.cert.X509Certificate;
 
 public class CypherUtil {
     
     private PrivateKey privateKey;
     private PublicKey publicKey;
-    private final String algoritmo = "RSA";
+    private final String algorithm = "RSA";
     private final int comprimentoChave = 2048;
     private Map<String, PublicKey> publicKeyMap;
-    
+    private Random random;
+
+
     public CypherUtil() {
+        random = new Random();
         publicKeyMap = new HashMap<>();
         generateKeyPair();
     }
 
+    public void test(){
+        try {
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance(algorithm);
+            kpg.initialize(comprimentoChave);
+            KeyPair kp = kpg.generateKeyPair();
+            privateKey = kp.getPrivate();
+            publicKey = kp.getPublic();
+            KeyStore keyStore = KeyStore.getInstance("JKS");
+
+        } catch (Exception e){
+
+        }
+    }
+
+
+
+    public String generateSalt(){
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt);
+    }
+
+    public String hashPass(String password, String salt) {
+        try {
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), Base64.getDecoder().decode(salt), 65536, 128);
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            byte[] hash = factory.generateSecret(spec).getEncoded();
+            return Base64.getEncoder().encodeToString(hash);
+        } catch (NoSuchAlgorithmException e){
+            System.out.println();
+        } catch (InvalidKeySpecException e){
+            System.out.println();
+        }
+        return null;
+    }
+
+
+
     /* gera um par de chaves assimetrica */
     private void generateKeyPair() {
         try {
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance(algoritmo);
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance(algorithm);
             kpg.initialize(comprimentoChave);
             KeyPair kp = kpg.generateKeyPair();
             privateKey = kp.getPrivate();
@@ -48,7 +83,7 @@ public class CypherUtil {
     private String cypherMessage(String msg, String user){
         try {
             PublicKey keyPublic = publicKeyMap.get(user);
-            Cipher c = Cipher.getInstance(algoritmo);
+            Cipher c = Cipher.getInstance(algorithm);
             c.init(Cipher.ENCRYPT_MODE, keyPublic);
             byte[] msgCifrada = c.doFinal(msg.getBytes());
             return Base64.getEncoder().encodeToString(msgCifrada);
@@ -61,7 +96,7 @@ public class CypherUtil {
     private String decypherMsg(String msgCifrada, String user){
         try {
             byte[] msgBytes = Base64.getDecoder().decode(msgCifrada);
-            Cipher c = Cipher.getInstance(algoritmo);
+            Cipher c = Cipher.getInstance(algorithm);
             c.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] msgDecifrada = c.doFinal(msgBytes);
             return Base64.getEncoder().encodeToString(msgDecifrada);
@@ -76,7 +111,7 @@ public class CypherUtil {
         try {
             byte[] publicKeyBytes = Base64.getDecoder().decode(publicKey);
             X509EncodedKeySpec ks = new X509EncodedKeySpec(publicKeyBytes);
-            KeyFactory kf = KeyFactory.getInstance(algoritmo);
+            KeyFactory kf = KeyFactory.getInstance(algorithm);
             PublicKey keyPublic = kf.generatePublic(ks);
             publicKeyMap.put(user, keyPublic);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
@@ -112,7 +147,7 @@ public class CypherUtil {
         try {
             byte[] base64decodedBytes = Base64.getDecoder().decode(key);
             X509EncodedKeySpec ks = new X509EncodedKeySpec(base64decodedBytes);
-            KeyFactory kf = KeyFactory.getInstance(algoritmo);
+            KeyFactory kf = KeyFactory.getInstance(algorithm);
             PublicKey keyPublic = kf.generatePublic(ks);
 
             Signature sigV = Signature.getInstance("SHA1withRSA");
