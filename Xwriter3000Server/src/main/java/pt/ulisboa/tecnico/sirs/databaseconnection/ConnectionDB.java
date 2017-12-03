@@ -21,9 +21,11 @@ public class ConnectionDB {
     private final String USER = "root";
     private final String PASS = "Io8JbOCc";
 
-    private CypherUtil cypherUtil = new CypherUtil();
+    private CypherUtil cypherUtil;
 
-
+    public ConnectionDB(CypherUtil cypherUtil){
+        this.cypherUtil = cypherUtil;
+    }
 
     public Boolean login(String username, String password){
 
@@ -73,43 +75,70 @@ public class ConnectionDB {
     }
 
     //fixme return false if username exists
-    public Boolean createAuthor(String username, String password){
+    public Boolean createAuthor(String username, String password, String secret, String publicKey){
 
         String insert = "INSERT INTO author(authorName, authorPass) VALUES (?, ?)" ;
         String insertSalt = "INSERT INTO salt(authorName, salt) VALUES (?, ?)" ;
 
+        String insertSecretKey = "INSERT INTO authorKeys(authorName, secretKey, keyType) VALUES (?, ?, ?)" ;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-             PreparedStatement insertAuthor = conn.prepareStatement(insert);
-             PreparedStatement insertSaltStat = conn.prepareStatement(insertSalt)){
+        String insertPublicKey = "INSERT INTO authorKeys(authorName, secretKey, keyType) VALUES (?, ?, ?)" ;
 
-            insertAuthor.setString(1, username);
+        if (!authorExists(username)) {
 
-            insertSaltStat.setString(1, username);
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                 PreparedStatement insertAuthor = conn.prepareStatement(insert);
+                 PreparedStatement insertSaltStat = conn.prepareStatement(insertSalt);
+                 PreparedStatement insertSecretStatement = conn.prepareStatement(insertSecretKey);
+                 PreparedStatement insertPublicStatement = conn.prepareStatement(insertPublicKey)) {
 
-            String salt = cypherUtil.generateSalt();
+                insertAuthor.setString(1, username);
 
-            String hash = cypherUtil.hashPass(password, salt);
+                insertSaltStat.setString(1, username);
+
+                String salt = cypherUtil.generateSalt();
+
+                String hash = cypherUtil.hashPass(password, salt);
 
 
-            insertAuthor.setString(2, hash);
+                insertAuthor.setString(2, hash);
 
-            insertSaltStat.setString(2, salt);
+                insertSaltStat.setString(2, salt);
 
-            int firstResult = insertAuthor.executeUpdate();
+                int firstResult = insertAuthor.executeUpdate();
 
-            int secondResult = insertSaltStat.executeUpdate();
+                int secondResult = insertSaltStat.executeUpdate();
 
-            if (firstResult == 1 && secondResult == 1){
-                return true;
-            } else {
+                if (firstResult == 1 && secondResult == 1) {
+
+                    insertSecretStatement.setString(1, username);
+
+                    insertSecretStatement.setString(2, secret);
+
+                    insertSecretStatement.setString(3, "secret");
+
+                    insertPublicStatement.setString(1, username);
+
+                    insertPublicStatement.setString(2, publicKey);
+
+                    insertPublicStatement.setString(3, "public");
+
+                    firstResult = insertSecretStatement.executeUpdate();
+
+                    secondResult = insertPublicStatement.executeUpdate();
+
+
+                    if (firstResult == 1 && secondResult == 1){
+                        return true;
+                    }
+                }
                 return false;
-            }
 
-        } catch(SQLException e){
-            e.printStackTrace();
-        } catch(Exception e) {
-            e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -419,6 +448,36 @@ public class ConnectionDB {
             }
 
             return authors;
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getPublicKey(String username){
+
+        String query = "SELECT authorName FROM authorKeys WHERE authorName = ? and keyType = 'public' ";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, username);
+
+            ResultSet rs = statement.executeQuery();
+
+
+
+            if(rs.next()){
+                String publicKey = rs.getString("secretKey");
+                return publicKey;
+            }
+
+            return null;
 
 
         } catch(SQLException e){

@@ -69,16 +69,26 @@ public class MessageParser {
         return null;
     }
 
+    public List<String> parseCreateUser(String message){
+        String[] array = message.split("(username:|password:|MAC:)");
+        if(array.length == 4){
+            List<String> infoUser = new ArrayList<>();
+            infoUser.add(array[1]);
+            infoUser.add(array[2]);
+            infoUser.add(array[3]);
+            return infoUser;
+        }
+        return null;
+    }
+
     public List<String> parseUserInfo(String message){
-        String username;
-        String password;
-        if (message.startsWith("username:") && message.contains("password:")) {
-            username = message.substring(9, message.indexOf("password:"));
-            password = message.substring(message.indexOf("password:") + 9).toString();
-            List<String> credentials = new ArrayList<>();
-            credentials.add(username);
-            credentials.add(password);
-            return credentials;
+        String[] array = message.split("(username:|password:|newMachine:)");
+        if (array.length == 4) {
+            List<String> auth = new ArrayList<>();
+            auth.add(array[1]);
+            auth.add(array[2]);
+            auth.add(array[3]);
+            return auth;
         }
         return null;
     }
@@ -101,9 +111,6 @@ public class MessageParser {
 
     //untested
     public List<String> parseReceiveBookChanges(String message){
-        String sessionID;
-        String bookID;
-        String bookContent;
         String[] array = message.split("(sessionID:|bookID:|bookContent:)");
         if (array.length == 4){
             List<String> info = new ArrayList<>();

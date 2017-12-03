@@ -1,69 +1,228 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000client;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.io.*;
+import java.math.BigInteger;
+import java.security.*;
+import java.security.spec.*;
+import java.util.*;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import static javax.xml.bind.DatatypeConverter.printHexBinary;
+
 public class CypherUtil {
     
     private PrivateKey privateKey;
     private PublicKey publicKey;
+
+
+    private PublicKey serverPublicKey;
+
+
+
+
     private final String algorithm = "RSA";
     private final String symAlgorithm = "AES/CBC/PKCS5Padding";
+    private final String signAlgorithm = "SHA512withRSA";
     private final String algoritmoSimetrica = "AES/CBC/PKCS5Padding";
-    private final String algoritmoSimetricaAES = "AES";
     private final int keyLength = 2048;
-    private Map<Integer, SecretKey> bookKeyMap;
-    private Map<String, PublicKey> publicKeyMap;
     private byte[] iv;
     private Random random;
+
+    private Base64.Decoder decoder;
+    private Base64.Encoder encoder;
+
     
     public CypherUtil() {
-        bookKeyMap = new HashMap<>();
-        publicKeyMap = new HashMap<>();
         random = new Random();
-        generateKeyPair();
+    }
+
+    public SecretKey generateMac() {
+        try {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA512");
+            SecretKey secretKey = keyGenerator.generateKey();
+            return secretKey;
+        } catch(NoSuchAlgorithmException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String MAC(String message, SecretKey secretKey){
+        try{
+            byte[] messageBytes = message.getBytes();
+            Mac mac = Mac.getInstance("HmacSHA512");
+            mac.init(secretKey);
+            byte[] messageMac = mac.doFinal(messageBytes);
+            return Base64.getEncoder().encodeToString(messageMac);
+        } catch(NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch(InvalidKeyException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String generateSalt(){
         byte[] salt = new byte[16];
         random.nextBytes(salt);
-        return Base64.getEncoder().encodeToString(salt);
+        return encoder.encodeToString(salt);
     }
 
-    private String cipherPrivate(String password, String salt, PrivateKey key) {
+
+    //fixme:random IV
+    public String cipherPrivate(String password, String salt, String key) {
         try {
-            KeySpec spec = new PBEKeySpec(password.toCharArray(), Base64.getDecoder().decode(salt), 65536, 256);
+            byte[] saltBytes = Base64.getDecoder().decode(salt);
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, 65536, 128);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            SecretKey secretKey = factory.generateSecret(spec);
-            Cipher AesCipher = Cipher.getInstance("symAlgorithm");
-            KeyFactory fact = KeyFactory.getInstance("DSA");
-            byte[] keyEnconded = key.getEncoded();
-            AesCipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] byteCipherText = AesCipher.doFinal(keyEnconded);
+            SecretKey tempKey = factory.generateSecret(spec);
+            SecretKey secretKey = new SecretKeySpec(tempKey.getEncoded(), "AES");
+            Cipher aesCipher = Cipher.getInstance(symAlgorithm);
+            aesCipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
+
+            byte[] byteCipherText = aesCipher.doFinal(key.getBytes());
+            return encoder.encodeToString(byteCipherText);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeySpecException e){
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e){
+            e.printStackTrace();
+        } catch (BadPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void decipherPrivate(String password, String salt, String cipheredKey){
+        try {
+            byte[] saltBytes = Base64.getDecoder().decode(salt);
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, 65536, 128);
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            SecretKey tempKey = factory.generateSecret(spec);
+            SecretKey secretKey = new SecretKeySpec(tempKey.getEncoded(), "AES");
+            Cipher aesCipher = Cipher.getInstance(symAlgorithm);
+            aesCipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
+            byte[] privateKeyBytes = aesCipher.doFinal(decoder.decode(cipheredKey));
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e){
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e){
+            e.printStackTrace();
+        } catch (BadPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e){
+            e.printStackTrace();
+        }
+    }
+
+    public List<String> generateKeyPair() {
+        try {
+            List<String> keys = new ArrayList<>();
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance(algorithm);
+            kpg.initialize(keyLength);
+            KeyPair keyPair = kpg.generateKeyPair();
+            privateKey = keyPair.getPrivate();
+            publicKey = keyPair.getPublic();
+
+            KeyFactory fact = KeyFactory.getInstance("RSA");
+
+            RSAPublicKeySpec pub = fact.getKeySpec(keyPair.getPublic(), RSAPublicKeySpec.class);
+            saveToFile("clientPub", pub.getModulus(), pub.getPublicExponent());
+
+            RSAPrivateKeySpec priv = fact.getKeySpec(keyPair.getPrivate(), RSAPrivateKeySpec.class);
+            saveToFile("clientPriv", priv.getModulus(), priv.getPrivateExponent());
+
+            keys.add(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
+
+            keys.add(Base64.getEncoder().encodeToString(privateKey.getEncoded()));
+
+            return keys;
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println(ex.getMessage());
+        } catch (InvalidKeySpecException ex){
+            System.out.println(ex.getMessage());
+        }
+
+        return null;
+    }
+
+
+    //Fixme: catch each exception
+    private static void saveToFile(String fileName, BigInteger mod, BigInteger exp) {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fileName)));
+            out.writeObject(mod);
+            out.writeObject(exp);
+            out.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    public void readServerPublicKey() {
+
+        try {
+            InputStream in = new FileInputStream("Pub");
+            ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(in));
+            BigInteger m = (BigInteger) oin.readObject();
+            BigInteger e = (BigInteger) oin.readObject();
+            RSAPublicKeySpec keySpec = new RSAPublicKeySpec(m, e);
+            KeyFactory fact = KeyFactory.getInstance("RSA");
+            serverPublicKey = fact.generatePublic(keySpec);
+            oin.close();
+            byte[] pubKeyEncoded = serverPublicKey.getEncoded();
+
+            System.out.println(printHexBinary(pubKeyEncoded));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String cypherMessage(String msg){
+        try {
+            Cipher cipher = Cipher.getInstance(algorithm);
+            cipher.init(Cipher.ENCRYPT_MODE, serverPublicKey);
+            byte[] cipheredMsg = cipher.doFinal(msg.getBytes());
+            return Base64.getEncoder().encodeToString(cipheredMsg);
+        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
+            System.out.println(ex.getMessage());
+            return "";
+        }
+    }
+
+    public String decypherMessage(String cypheredMessage){
+        try{
+            Cipher cipher = Cipher.getInstance(algorithm);
+            cipher.init(Cipher.DECRYPT_MODE, privateKey);
+            byte[] cypheredBytes = Base64.getDecoder().decode(cypheredMessage);
+            byte[] decypheredBytes = cipher.doFinal(cypheredBytes);
+        } catch (NoSuchAlgorithmException e){
             e.printStackTrace();
         } catch (NoSuchPaddingException e){
             e.printStackTrace();
@@ -77,32 +236,76 @@ public class CypherUtil {
         return null;
     }
 
-    private KeyPair generateClientKeyPair(){
+    public String getSiganture(String message){
         try{
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance(algorithm);
-            kpg.initialize(keyLength);
-            KeyPair keyPair = kpg.generateKeyPair();
-            return keyPair;
-        } catch (NoSuchAlgorithmException ex) {
-            System.out.println(ex.getMessage());
+            Signature signature = Signature.getInstance(signAlgorithm);
+            signature.initSign(privateKey);
+            byte[] messageBytes = message.getBytes();
+            signature.update(messageBytes);
+            byte[] signatureResult = signature.sign();
+            return Base64.getEncoder().encodeToString(signatureResult);
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
         }
         return null;
     }
+    
+    public Boolean verifySignature(String message, String sign){
+        try{
+            Signature signature = Signature.getInstance(signAlgorithm);
+            signature.initVerify(serverPublicKey);
+            signature.update(message.getBytes());
+            return signature.verify(Base64.getDecoder().decode(sign));
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        } catch (SignatureException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-    /* gera um par de chaves assimetrica */
-    private void generateKeyPair() {
+    /*public String signMessage(String message) {
         try {
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance(algorithm);
-            kpg.initialize(keyLength);
-            KeyPair kp = kpg.generateKeyPair();
-            privateKey = kp.getPrivate();
-            publicKey = kp.getPublic();
-        } catch (NoSuchAlgorithmException ex) {
+            Signature sign = Signature.getInstance("SHA1withRSA");
+            sign.initSign(privateKey);
+            sign.update(bookOrMsg.getBytes(), 0, bookOrMsg.getBytes().length);
+            byte[] realSig = sign.sign();
+            return Base64.getEncoder().encodeToString(realSig);
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException ex) {
+            System.out.println(ex.getMessage());
+            return "";
+        }
+    }*/
+
+/*
+    public void readServerPubKey(String pubKeyPath){
+        try{
+            FileInputStream fis = new FileInputStream(pubKeyPath);
+            byte[] encoded = new byte[fis.available()];
+            fis.read(encoded);
+            fis.close();
+            SecretKeySpec secretKeySpec = new SecretKeySpec(encoded, "RSA");
+
+            pubKey = secretKeySpec;
+
+
+            byte[] pubKeyEncoded = publicKey.getEncoded();
+
+            System.out.println(printHexBinary(pubKeyEncoded));
+
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-    }
-    
-    /* gera uma chave necessaria para a cifra simetrica */
+    }*/
+
+
+    /*
     private void generateKeys(int bookId) {
         try {
             KeyGenerator hg = KeyGenerator.getInstance(algoritmoSimetricaAES);
@@ -172,20 +375,9 @@ public class CypherUtil {
             System.out.println(ex.getMessage());
             return "";
         }
-    }
+    }*/
     
-    private String cypherMessage(String msg, String user){
-        try {
-            PublicKey keyPublic = publicKeyMap.get(user);
-            Cipher c = Cipher.getInstance(algorithm);
-            c.init(Cipher.ENCRYPT_MODE, keyPublic);
-            byte[] msgCifrada = c.doFinal(msg.getBytes());
-            return Base64.getEncoder().encodeToString(msgCifrada);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            System.out.println(ex.getMessage());
-            return "";
-        }        
-    }
+
     
     private String decypherMsg(String msgCifrada, String user){
         try {
@@ -200,7 +392,7 @@ public class CypherUtil {
         }
     }
     
-    /* adiciona a public key de um user */
+    /*
     public void addPublicKey(String user, String publicKey) {
         try {
             byte[] publicKeyBytes = Base64.getDecoder().decode(publicKey);
@@ -224,22 +416,9 @@ public class CypherUtil {
     public String getIv() {
         return Base64.getEncoder().encodeToString(iv);
     }
-    
-    /* criação da assinatura para o book ou mensagem */
-    public String getSign(String bookOrMsg) {
-        try {
-            Signature sign = Signature.getInstance("SHA1withRSA");
-            sign.initSign(privateKey);
-            sign.update(bookOrMsg.getBytes(), 0, bookOrMsg.getBytes().length);
-            byte[] realSig = sign.sign();
-            return Base64.getEncoder().encodeToString(realSig);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException ex) {
-            System.out.println(ex.getMessage());
-            return "";
-        }
-    }
-    
-    /* verifica a assinatura recebida de um book*/
+
+
+
     public boolean verifySign(String book, String sign, String user) {
         try {
             Signature sigV = Signature.getInstance("SHA1withRSA");
@@ -253,8 +432,7 @@ public class CypherUtil {
             return false;
         }
     }
-    
-    /* verifica a assinatura da public key recebida */
+
     public boolean verifySignPublicKey(String book, String sign, String key) {
         try {
             byte[] base64decodedBytes = Base64.getDecoder().decode(key);
@@ -272,5 +450,5 @@ public class CypherUtil {
             System.out.println(ex.getMessage());
             return false;
         }
-    }
+    }*/
 }

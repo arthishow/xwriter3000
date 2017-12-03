@@ -10,17 +10,19 @@ public class Server {
 
     ServerSocket serverSocket;
 
+    CypherUtil cypherUtil;
+
     public Server(int port) throws Exception {
-        communicationServer = new CommunicationServer();
+        cypherUtil = new CypherUtil();
         serverSocket = new ServerSocket(port);
+        communicationServer = new CommunicationServer(cypherUtil);
     }
 
     public void run() throws Exception{
-
         while (true) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                new ServerThread(clientSocket, communicationServer).start();
+                new ServerThread(clientSocket, communicationServer, cypherUtil).start();
             } catch (IOException e) {
                 System.out.println("I/O error: " + e);
             }

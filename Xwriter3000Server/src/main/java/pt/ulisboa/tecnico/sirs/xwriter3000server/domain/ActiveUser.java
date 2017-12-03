@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
+import java.security.PublicKey;
 import java.util.Date;
 
 public class ActiveUser {
@@ -7,6 +8,8 @@ public class ActiveUser {
     private String sessionID;
 
     private String username;
+
+    private PublicKey publicKey;
 
     private Date timestamp;
 
@@ -18,6 +21,14 @@ public class ActiveUser {
         timestamp = new Date();
     }
 
+    public ActiveUser(String sessionID, String username, PublicKey publicKey) {
+        this.sessionID = sessionID;
+        this.username = username;
+        this.publicKey = publicKey;
+        timestamp = new Date();
+    }
+
+
     public String getSessionID() {
         return sessionID;
     }
@@ -28,5 +39,13 @@ public class ActiveUser {
 
     public Date getTimestamp() {
         return timestamp;
+    }
+
+    public PublicKey getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(PublicKey publicKey) {
+        this.publicKey = publicKey;
     }
 }

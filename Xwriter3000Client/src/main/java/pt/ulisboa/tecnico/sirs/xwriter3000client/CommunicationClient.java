@@ -5,28 +5,58 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import pt.ulisboa.tecnico.sirs.xwriter3000.Message;
 import pt.ulisboa.tecnico.sirs.xwriter3000ui.Book;
 
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.security.KeyPair;
+import java.security.PublicKey;
 import java.util.*;
 
 public class CommunicationClient {
 
     private String sessionID;
 
+    private CypherUtil cypherUtil;
+
+    private String salt;
+
     public CommunicationClient() {
+        cypherUtil = new CypherUtil();
+        cypherUtil.readServerPublicKey();
     }
 
     public Boolean createUser(String username, String password){
-        String messageContent;
-        messageContent = "type:" + "createUser" + "username:" + username + "password:" + password;
-        //ciphermessage
-        Message message = new Message(messageContent, "");
+        List<String> keyPair = cypherUtil.generateKeyPair();
 
-        Message replay = sendMessageReplay(message);
-            //add decipher
-            //add some more important stuff
+        salt = cypherUtil.generateSalt();
+        System.out.println(salt);
+
+        SecretKey macKey = cypherUtil.generateMac();
+        String encodedMacKey = Base64.getEncoder().encodeToString(macKey.getEncoded());
+
+
+
+        String messageContent;
+        messageContent = "type:" + "createUser" + "username:" + username + "password:" + password + "MAC:" + encodedMacKey;
+
+        messageContent = cypherUtil.cypherMessage(messageContent);
+        Message messageAccount = new Message(messageContent, "");
+
+        String secretString = cypherUtil.cipherPrivate(password, salt,keyPair.get(1));
+
+        String secretMac = cypherUtil.MAC(secretString, macKey);
+
+        Message secret = new Message(secretString, secretMac);
+
+        String publicKeyString = keyPair.get(0);
+
+        String publicKeyMac = cypherUtil.MAC(publicKeyString, macKey);
+
+        Message publicKey = new Message(publicKeyString, publicKeyMac);
+
+        Message replay = loginMessage(messageAccount, secret, publicKey);
         if (Boolean.valueOf(replay.getMessage())) {
             return true;
                 //add decipher
@@ -34,15 +64,15 @@ public class CommunicationClient {
         return false;
     }
 
-
+    //fixme
     public Boolean authenticateUser(String username, String password) {
         String messageContent;
-        messageContent = "type:" + "authenticateUser" + "username:" + username + "password:" + password;
-        //ciphermessage
+        messageContent = "type:" + "authenticateUser" + "username:" + username + "password:" + password
+                            + "newMachine:" ;
+        messageContent = cypherUtil.cypherMessage(messageContent);
         Message message = new Message(messageContent, "");
-            Message replay = sendMessageReplay(message);
-            //add decipher
-            //add some verification
+        Message replay = sendMessageReplay(message);
+        replay.setMessage(cypherUtil.decypherMessage(replay.getMessage()));
         sessionID = replay.getMessage();
             //add check
         if (sessionID != null) {
@@ -106,7 +136,6 @@ public class CommunicationClient {
         messageContent = "type:getBookListsessionID:" + sessionID;
         Message message = new Message(messageContent, "");
         Message replay = sendMessageReplay(message);
-        System.out.println(replay.getMessage());
         //add decipher
         String[] bookListString = replay.getMessage().split("book(ID:|Title:)");
         ArrayList<Book> bookList = new ArrayList<>();
@@ -170,7 +199,7 @@ public class CommunicationClient {
             objectOut.close();
             clientSocket.close();
         } catch (IOException e){
-            System.out.println("ServerProblems");
+            e.printStackTrace();
         }
     }
 
@@ -183,13 +212,30 @@ public class CommunicationClient {
             Message replay = (Message) objectIn.readObject();
         return replay;
         } catch (IOException e) {
-            System.out.println("ServerProblems");
+            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            System.out.println("Server problems");
+            e.printStackTrace();
         }
         return null;
     }
 
+    public Message loginMessage(Message messageAccount, Message secret, Message publicKey) {
+        try{
+            Socket clientSocket = new Socket("localhost", 8001);
+            ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
+            objectOut.writeObject(messageAccount);
+            objectOut.writeObject(secret);
+            objectOut.writeObject(publicKey);
+            ObjectInputStream objectIn = new ObjectInputStream(clientSocket.getInputStream());
+            Message replay = (Message) objectIn.readObject();
+            return replay;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 }

@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
 import pt.ulisboa.tecnico.sirs.databaseconnection.ConnectionDB;
 
+import java.security.PublicKey;
 import java.util.*;
 
 public class CommunicationServer {
@@ -14,27 +15,31 @@ public class CommunicationServer {
 
     private List<ActiveUser> activeUsers;
 
+    private CypherUtil cypherUtil;
 
-    public CommunicationServer(){
-        database = new ConnectionDB();
+
+    public CommunicationServer(CypherUtil cypherUtil){
+        database = new ConnectionDB(cypherUtil);
         activeUsers = Collections.synchronizedList(new ArrayList<ActiveUser>());
         symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
         random = new Random();
     }
 
-    public Boolean createUser(String username, String password){
-        Boolean success = database.createAuthor(username, password);
+    public Boolean createUser(String username, String password, String secret, String publicKey){
+        Boolean success = database.createAuthor(username, password, secret, publicKey);
         return success;
     }
 
     public String authenticateUser(String username, String password){
         Boolean success = database.login(username, password);
         if (success){
+            String publicKeyString = database.getPublicKey(username);
+            PublicKey publicKey = cypherUtil.getPublicKeyFromString(publicKeyString);
             char[] sessionID = new char[20];
             for (int i = 0; i < 20; i++){
                 sessionID[i] = symbols.toCharArray()[random.nextInt(symbols.toCharArray().length)];
             }
-            ActiveUser user = new ActiveUser(new String(sessionID), username);
+            ActiveUser user = new ActiveUser(new String(sessionID), username, publicKey);
             activeUsers.add(user);
             return new String(sessionID);
         }

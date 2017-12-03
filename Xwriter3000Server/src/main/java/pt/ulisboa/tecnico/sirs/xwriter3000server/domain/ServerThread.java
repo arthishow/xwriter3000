@@ -2,7 +2,11 @@ package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
 import pt.ulisboa.tecnico.sirs.xwriter3000.Message;
 
-import java.io.*;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
 
@@ -11,14 +15,21 @@ public class ServerThread extends Thread {
 
     private CommunicationServer communicationServer;
 
+    private CypherUtil cypherUtil;
+
     private MessageParser parser;
 
     private Message message;
 
-    public ServerThread(Socket clientSocket, CommunicationServer communicationServer){
+    private ActiveUser currentUser;
+
+    public ServerThread(Socket clientSocket, CommunicationServer communicationServer, CypherUtil cypherUtil){
         this.clientSocket = clientSocket;
         this.communicationServer = communicationServer;
+        this.cypherUtil = cypherUtil;
         parser = new MessageParser();
+
+
     }
 
     public void run(){
@@ -26,10 +37,15 @@ public class ServerThread extends Thread {
         try {
             ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
             message = (Message) inFromClient.readObject();
+
+            message.setMessage(cypherUtil.decypherMessage(message.getMessage()));
             message = parser.parseType(message);
+
             switch (message.getType()) {
                 case "createUser":
-                    createUser(message);
+                    Message secret = (Message) inFromClient.readObject();
+                    Message publicKey = (Message) inFromClient.readObject();
+                    createUser(message, secret, publicKey);
                     break;
                 case "authenticateUser":
                     authenticateUser(message);
@@ -69,11 +85,20 @@ public class ServerThread extends Thread {
     }
 
 
-    public void createUser(Message message){
-        List<String> userInfo = parser.parseUserInfo(message.getMessage());
+    public void createUser(Message message, Message secret, Message publicKey){
+        List<String> userInfo = parser.parseCreateUser(message.getMessage());
         if (userInfo != null) {
-            Boolean success = communicationServer.createUser(userInfo.get(0), userInfo.get(1));
-            //add cypher
+            Boolean success = false;
+            byte[] macKeyBytes = Base64.getDecoder().decode(userInfo.get(2));
+
+            SecretKey macKey = new SecretKeySpec(macKeyBytes, 0, macKeyBytes.length, "HmacSHA512");
+
+
+            if(cypherUtil.checkMac(secret.getMessage(), secret.getSignature(), macKey) &&
+                    cypherUtil.checkMac(publicKey.getMessage(), publicKey.getSignature(), macKey)){
+                success = communicationServer.createUser(userInfo.get(0), userInfo.get(1), secret.getMessage(), publicKey.getMessage());
+            }
+
             Message replay = new Message(success.toString(), "");
             sendMessage(replay);
         }
@@ -185,7 +210,7 @@ public class ServerThread extends Thread {
             ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
             outToClient.writeObject(message);
         } catch (IOException e) {
-            System.out.println("Problem");
+            e.printStackTrace();
         }
     }
 

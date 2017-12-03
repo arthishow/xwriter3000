@@ -1,49 +1,76 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
+import javax.crypto.*;
+import javax.crypto.spec.PBEKeySpec;
+import java.io.*;
 import java.math.BigInteger;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
-import javax.crypto.*;
-import javax.crypto.spec.PBEKeySpec;
-import java.security.cert.X509Certificate;
+
+import static javax.xml.bind.DatatypeConverter.printHexBinary;
 
 public class CypherUtil {
-    
+
     private PrivateKey privateKey;
     private PublicKey publicKey;
     private final String algorithm = "RSA";
-    private final int comprimentoChave = 2048;
-    private Map<String, PublicKey> publicKeyMap;
+    private final String signAlgorithm = "SHA512withRSA";
+    private final int keyLength = 2048;
     private Random random;
 
 
     public CypherUtil() {
         random = new Random();
-        publicKeyMap = new HashMap<>();
-        generateKeyPair();
+        readServerPrivateKey();
     }
 
-    public void test(){
+    public void readServerPrivateKey() {
+
         try {
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance(algorithm);
-            kpg.initialize(comprimentoChave);
-            KeyPair kp = kpg.generateKeyPair();
-            privateKey = kp.getPrivate();
-            publicKey = kp.getPublic();
-            KeyStore keyStore = KeyStore.getInstance("JKS");
+            InputStream in = new FileInputStream("Priv");
+            ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(in));
+            BigInteger m = (BigInteger) oin.readObject();
+            BigInteger e = (BigInteger) oin.readObject();
+            RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec(m, e);
+            KeyFactory fact = KeyFactory.getInstance("RSA");
+            privateKey = fact.generatePrivate(keySpec);
+            oin.close();
+            byte[] pubKeyEncoded = privateKey.getEncoded();
 
-        } catch (Exception e){
-
+            System.out.println(printHexBinary(pubKeyEncoded));
+        } catch (Exception e) {
+            System.out.println();
         }
     }
 
-
+    public String decypherMessage(String cipheredMsg){
+        try {
+            byte[] msgBytes = Base64.getDecoder().decode(cipheredMsg);
+            Cipher c = Cipher.getInstance(algorithm);
+            c.init(Cipher.DECRYPT_MODE, privateKey);
+            System.out.println(msgBytes.length);
+            byte[] decipheredBytes = c.doFinal(msgBytes);
+            String message = new String(decipheredBytes);
+            return message;
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e){
+            e.printStackTrace();
+        } catch (BadPaddingException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public String generateSalt(){
         byte[] salt = new byte[16];
@@ -65,21 +92,98 @@ public class CypherUtil {
         return null;
     }
 
+    public Boolean checkMac(String message, String messageMac, SecretKey macKey){
+        try {
+            byte[] messageBytes = message.getBytes();
+            Mac mac = Mac.getInstance("HmacSHA512");
+            mac.init(macKey);
+            byte[] realMac = mac.doFinal(messageBytes);
+            byte[] messageMacBytes = Base64.getDecoder().decode(messageMac);
+            if (Arrays.equals(realMac, messageMacBytes)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
+    public PublicKey getPublicKeyFromString(String publicKeyString){
+        try{
+            byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyString);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            return keyFactory.generatePublic(new X509EncodedKeySpec(publicKeyBytes));
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-    /* gera um par de chaves assimetrica */
-    private void generateKeyPair() {
+    public void generateKeyPair() {
         try {
             KeyPairGenerator kpg = KeyPairGenerator.getInstance(algorithm);
-            kpg.initialize(comprimentoChave);
+            kpg.initialize(keyLength);
             KeyPair kp = kpg.generateKeyPair();
             privateKey = kp.getPrivate();
             publicKey = kp.getPublic();
+            byte[] privKeyEncoded = privateKey.getEncoded();
+            byte[] pubKeyEncoded = publicKey.getEncoded();
+
+            FileOutputStream privFos = new FileOutputStream("Priv");
+            privFos.write(privKeyEncoded);
+            privFos.close();
+            FileOutputStream pubFos = new FileOutputStream("Pub");
+            pubFos.write(pubKeyEncoded);
+            pubFos.close();
         } catch (NoSuchAlgorithmException ex) {
+            System.out.println(ex.getMessage());
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
-    
+
+    public String getSiganture(String message){
+        try{
+            Signature signature = Signature.getInstance(signAlgorithm);
+            signature.initSign(privateKey);
+            byte[] messageBytes = message.getBytes();
+            signature.update(messageBytes);
+            byte[] signatureResult = signature.sign();
+            return Base64.getEncoder().encodeToString(signatureResult);
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Boolean verifySignature(String message, String sign, PublicKey publicKey){
+        try{
+            Signature signature = Signature.getInstance(signAlgorithm);
+            signature.initVerify(publicKey);
+            signature.update(message.getBytes());
+            return signature.verify(Base64.getDecoder().decode(sign));
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        } catch (SignatureException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /*
     private String cypherMessage(String msg, String user){
         try {
             PublicKey keyPublic = publicKeyMap.get(user);
@@ -93,20 +197,8 @@ public class CypherUtil {
         }        
     }
     
-    private String decypherMsg(String msgCifrada, String user){
-        try {
-            byte[] msgBytes = Base64.getDecoder().decode(msgCifrada);
-            Cipher c = Cipher.getInstance(algorithm);
-            c.init(Cipher.DECRYPT_MODE, privateKey);
-            byte[] msgDecifrada = c.doFinal(msgBytes);
-            return Base64.getEncoder().encodeToString(msgDecifrada);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            System.out.println(ex.getMessage());
-            return "";
-        }
-    }
-    
-    /* adiciona a public key de um user */
+
+
     public void addPublicKey(String user, String publicKey) {
         try {
             byte[] publicKeyBytes = Base64.getDecoder().decode(publicKey);
@@ -126,8 +218,7 @@ public class CypherUtil {
     public String getPublicKey() {
         return Base64.getEncoder().encodeToString(publicKey.getEncoded());
     }
-    
-    /* verifica a assinatura recebida de uma mensagem*/
+
     public boolean verifySign(String msg, String sign, String user) {
         try {
             Signature sigV = Signature.getInstance("SHA1withRSA");
@@ -141,8 +232,7 @@ public class CypherUtil {
             return false;
         }
     }
-    
-    /* verifica a assinatura da public key recebida */
+
     public boolean verifySignPublicKey(String msg, String sign, String key) {
         try {
             byte[] base64decodedBytes = Base64.getDecoder().decode(key);
@@ -160,5 +250,5 @@ public class CypherUtil {
             System.out.println(ex.getMessage());
             return false;
         }
-    }
+    }*/
 }
