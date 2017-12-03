@@ -21,6 +21,6 @@ CREATE TABLE userbook(
     authorization INT NOT NULL,
     PRIMARY KEY(bookId, authorName),
     FOREIGN KEY (bookId) REFERENCES book(bookId) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (authorName) REFERENCES author(authorName) ON DELETE CASCADE ON UPDATE 	CASCADE,
+    FOREIGN KEY (authorName) REFERENCES author(authorName) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT CHK_level CHECK(authorization >= 0 AND authorization <=2)
 );

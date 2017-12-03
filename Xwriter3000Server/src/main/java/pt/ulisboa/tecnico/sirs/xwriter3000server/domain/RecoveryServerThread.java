@@ -11,19 +11,19 @@ import java.util.List;
 public class RecoveryServerThread extends Thread {
 
         private MessageParser parser;
-        private Socket brotherSocket;
+        private ObjectInputStream stream;
         private Message message;
 
-        public RecoveryServerThread(Socket brotherSocket){
+        public RecoveryServerThread(ObjectInputStream inFromClient){
             this.parser = new MessageParser();
-            this.brotherSocket = brotherSocket;
+            this.stream = inFromClient;
         }
 
     public void run(){
 
         try {
-            ObjectInputStream inFromClient = new ObjectInputStream(brotherSocket.getInputStream());
-            //message = (Message) CypherUtil.decypher(inFromClient.readObject());
+            //message = (Message) CypherUtil.decypher(stream.readObject());
+            message = (Message) stream.readObject();
             message = parser.parseType(message);
             switch (message.getType()) {
                 case "alarm":
@@ -31,7 +31,9 @@ public class RecoveryServerThread extends Thread {
                     break;
             }
         } catch (IOException e) {
-            System.out.println("Problem");
+            System.out.println("Problem1");
+        } catch (ClassNotFoundException e){
+            System.out.println("Problem2");
         }
     }
 
