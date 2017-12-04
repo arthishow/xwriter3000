@@ -47,15 +47,17 @@ public class CommunicationServer {
         return null;
     }
 
-    public int createBook(ActiveUser activeUser, String title){
+    public int createBook(ActiveUser activeUser, String title, String secretKey){
         Book book = new Book(title);
-        int bookID = database.createBook(book, activeUser.getUsername());
+        int bookID = database.createBook(book, activeUser.getUsername(), secretKey);
         return bookID;
     }
 
     public String sendBook(ActiveUser activeUser, String bookID){
         String bookContent = database.getBook(Integer.parseInt(bookID), activeUser.getUsername());
-        return bookContent;
+        String key = database.getSecretKey(activeUser.getUsername(), Integer.valueOf(bookID));
+        String message = "sendBook:" + bookContent + "key:" + key;
+        return message;
     }
 
 

@@ -152,8 +152,6 @@ public class CypherUtil {
             saveToFile("clientPriv", priv.getModulus(), priv.getPrivateExponent());
 
             keys.add(encoder.encodeToString(publicKey.getEncoded()));
-            System.out.println("me Public");
-            System.out.println(new String(publicKey.getEncoded()));
 
             keys.add(encoder.encodeToString(privateKey.getEncoded()));
 
@@ -194,7 +192,6 @@ public class CypherUtil {
             oin.close();
             byte[] pubKeyEncoded = serverPublicKey.getEncoded();
 
-            System.out.println(printHexBinary(pubKeyEncoded));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -249,7 +246,7 @@ public class CypherUtil {
         return null;
     }
 
-    public String getSiganture(String message){
+    public String getSignature(String message){
         try{
             Signature signature = Signature.getInstance(signAlgorithm);
             signature.initSign(privateKey);
@@ -282,6 +279,129 @@ public class CypherUtil {
         }
         return false;
     }
+
+    public SecretKey generateSecretKey(){
+        try{
+            KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+            keyGen.init(128);
+            SecretKey secretKey = keyGen.generateKey();
+            return secretKey;
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String cypherSecretKey(String password, String salt, SecretKey simKey){
+        try {
+            byte[] saltBytes = decoder.decode(salt);
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, 65536, 128);
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            SecretKey tempKey = factory.generateSecret(spec);
+            SecretKey secretKey = new SecretKeySpec(tempKey.getEncoded(), "AES");
+            Cipher aesCipher = Cipher.getInstance(symAlgorithm);
+            aesCipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
+            System.out.println("originalKey");
+            System.out.println(new String(simKey.getEncoded()));
+            byte[] byteCipherText = aesCipher.doFinal(simKey.getEncoded());
+            System.out.println(encoder.encodeToString(byteCipherText));
+            return encoder.encodeToString(byteCipherText);
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e){
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e){
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public SecretKey decypherSecretKey(String cipheredKey, String password, String salt){
+        try {
+            System.out.println(cipheredKey);
+            byte[] saltBytes = decoder.decode(salt);
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, 65536, 128);
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            SecretKey tempKey = factory.generateSecret(spec);
+            SecretKey secretKey = new SecretKeySpec(tempKey.getEncoded(), "AES");
+            Cipher aesCipher = Cipher.getInstance(symAlgorithm);
+            aesCipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
+            byte[] secretKetBytes = aesCipher.doFinal(decoder.decode(cipheredKey));
+            System.out.println("decipheredSecretKeyBytes");
+            System.out.println(new String(secretKetBytes));
+            return new SecretKeySpec(secretKetBytes, 0, secretKetBytes.length, "AES");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e){
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e){
+            e.printStackTrace();
+        } catch (BadPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String cypherBook(String bookContent, SecretKey secretKey, String salt){
+        try {
+            byte[] saltBytes = decoder.decode(salt);
+            Cipher cipher = Cipher.getInstance(symAlgorithm);
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
+            byte[] cypheredBook = cipher.doFinal(bookContent.getBytes());
+            return encoder.encodeToString(cypheredBook);
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e){
+            e.printStackTrace();
+        } catch (BadPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String decypherBook(String bookContent, SecretKey secretKey, String salt){
+        try {
+            byte[] saltBytes = decoder.decode(salt);
+            Cipher cipher = Cipher.getInstance(symAlgorithm);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
+            byte[] decypheredBook = cipher.doFinal(decoder.decode(bookContent));
+            return new String(decypheredBook);
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e){
+            e.printStackTrace();
+        } catch (BadPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     /*public String signMessage(String message) {
         try {

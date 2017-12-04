@@ -143,15 +143,18 @@ public class ConnectionDB {
         return false;
     }
 
-    public int createBook(Book book, String username){
+    public int createBook(Book book, String username, String secreyKey){
 
         String insertBook = "INSERT INTO book(bookId, title, content) VALUES (?, ?, ?)" ;
 
         String insertAuth = "INSERT INTO userbook(bookId, authorName, authorization) VALUES (?, ?, ?)";
 
+        String insertKey = "INSERT INTO authorSymKeys(authorName, bookId, secretKey) VALUES (?, ?, ?)";
+
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
              PreparedStatement insertBookStatement = conn.prepareStatement(insertBook);
-             PreparedStatement insertAuthStatement = conn.prepareStatement(insertAuth)){
+             PreparedStatement insertAuthStatement = conn.prepareStatement(insertAuth);
+             PreparedStatement insertKeyStatement = conn.prepareStatement(insertKey)){
 
             insertBookStatement.setInt(1, book.getBookID());
 
@@ -165,16 +168,20 @@ public class ConnectionDB {
 
             insertAuthStatement.setInt(3, 0);
 
+            insertKeyStatement.setString(1, username);
 
+            insertKeyStatement.setInt(2, book.getBookID());
+
+            insertKeyStatement.setString(3, secreyKey);
 
             int firstResult = insertBookStatement.executeUpdate();
 
             int secondResult = insertAuthStatement.executeUpdate();
 
-
+            int thirdResult = insertKeyStatement.executeUpdate();
 
             //FIXME
-            if (firstResult == 1 && secondResult == 1){
+            if (firstResult == 1 && secondResult == 1 && thirdResult == 1){
                 return book.getBookID();
 
             } else {
@@ -488,5 +495,34 @@ public class ConnectionDB {
         return null;
     }
 
+    public String getSecretKey(String username, int bookID){
+
+        String query = "SELECT secretKey FROM authorSymKeys WHERE authorName = ? and bookId = ? ";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, username);
+
+            statement.setInt(2, bookID);
+
+            ResultSet rs = statement.executeQuery();
+
+
+
+            if(rs.next()){
+                String secretKey = rs.getString("secretKey");
+                return secretKey;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

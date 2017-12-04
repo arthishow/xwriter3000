@@ -41,10 +41,10 @@ public class ServerThread extends Thread {
             message.setMessage(cypherUtil.decypherMessage(message.getMessage()));
             message = parser.parseType(message);
             ActiveUser activeUser;
-
+            Message secret;
             switch (message.getType()) {
                 case "createUser":
-                    Message secret = (Message) inFromClient.readObject();
+                    secret = (Message) inFromClient.readObject();
                     Message publicKey = (Message) inFromClient.readObject();
                     createUser(message, secret, publicKey);
                     break;
@@ -52,11 +52,14 @@ public class ServerThread extends Thread {
                     authenticateUser(message);
                     break;
                 case "createBook":
+                    secret = (Message) inFromClient.readObject();
                     List<String> newBook = parser.parseNewBook(message.getMessage());
                     activeUser = communicationServer.activeUser(newBook.get(0));
                     if(activeUser != null){
-                        if(cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())){
-                            createBook(activeUser, newBook);
+                        if(cypherUtil.verifySignature(secret.getMessage(), secret.getSignature(), activeUser.getPublicKey()) &&
+                                cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())){
+                            String secretKey = cypherUtil.decypherMessage(secret.getMessage());
+                            createBook(activeUser, newBook, secretKey);
                         }
                     }
                     break;
@@ -145,15 +148,17 @@ public class ServerThread extends Thread {
         List<String> credentials = parser.parseUserInfo(message.getMessage());
         if (credentials != null) {
             ActiveUser activeUser = communicationServer.authenticateUser(credentials.get(0), credentials.get(1));
-            //add cypher
+            System.out.println(credentials.get(0));
+            System.out.println(credentials.get(1));
+            System.out.println(activeUser.getSessionID());
             String replay = activeUser.getSessionID();
             sendSecureMessage(replay, activeUser);
         }
     }
 
-    public void createBook(ActiveUser activeUser, List<String> newBook){
+    public void createBook(ActiveUser activeUser, List<String> newBook, String secretKey){
         if (newBook != null){
-            int bookID = communicationServer.createBook(activeUser, newBook.get(1));
+            int bookID = communicationServer.createBook(activeUser, newBook.get(1), secretKey);
             sendSecureMessage(String.valueOf(bookID), activeUser);
         }
     }
@@ -236,8 +241,8 @@ public class ServerThread extends Thread {
 
     public void sendSecureMessage(String replay, ActiveUser activeUser){
         try {
-            String signature = cypherUtil.getSiganture(replay);
             replay = cypherUtil.cypherMessage(replay, activeUser.getPublicKey());
+            String signature = cypherUtil.getSiganture(replay);
             Message message = new Message(replay, signature);
             ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
             outToClient.writeObject(message);
