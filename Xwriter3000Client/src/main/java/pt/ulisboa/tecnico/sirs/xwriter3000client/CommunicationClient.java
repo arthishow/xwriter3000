@@ -56,7 +56,7 @@ public class CommunicationClient {
 
         Message publicKey = new Message(publicKeyString, publicKeyMac);
 
-        Message replay = loginMessage(messageAccount, secret, publicKey);
+        Message replay = createUserMessage(messageAccount, secret, publicKey);
         if (Boolean.valueOf(replay.getMessage())) {
             return true;
                 //add decipher
@@ -65,14 +65,12 @@ public class CommunicationClient {
     }
 
     //fixme
-    public Boolean authenticateUser(String username, String password) {
+    public Boolean authenticateUser(String username, String password, Boolean newMachine) {
         String messageContent;
         messageContent = "type:" + "authenticateUser" + "username:" + username + "password:" + password
-                            + "newMachine:" ;
-        messageContent = cypherUtil.cypherMessage(messageContent);
+                            + "newMachine:" + newMachine.toString();
         Message message = new Message(messageContent, "");
         Message replay = sendMessageReplay(message);
-        replay.setMessage(cypherUtil.decypherMessage(replay.getMessage()));
         sessionID = replay.getMessage();
             //add check
         if (sessionID != null) {
@@ -203,14 +201,14 @@ public class CommunicationClient {
         }
     }
 
-    public Message sendMessageReplay(Message message) {
+    public Message sendLogin(Message message){
         try{
+            message.setMessage(cypherUtil.cypherMessage(message.getMessage()));
             Socket clientSocket = new Socket("localhost", 8001);
             ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
             objectOut.writeObject(message);
             ObjectInputStream objectIn = new ObjectInputStream(clientSocket.getInputStream());
             Message replay = (Message) objectIn.readObject();
-        return replay;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -219,7 +217,30 @@ public class CommunicationClient {
         return null;
     }
 
-    public Message loginMessage(Message messageAccount, Message secret, Message publicKey) {
+    public Message sendMessageReplay(Message message) {
+        try{
+            message.setMessage(cypherUtil.cypherMessage(message.getMessage()));
+            message.setSignature(cypherUtil.getSiganture(message.getMessage()));
+            Socket clientSocket = new Socket("localhost", 8001);
+            ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
+            objectOut.writeObject(message);
+            ObjectInputStream objectIn = new ObjectInputStream(clientSocket.getInputStream());
+            Message replay = (Message) objectIn.readObject();
+            System.out.println("check server");
+            System.out.println(cypherUtil.verifySignature(replay.getMessage(), replay.getSignature()));
+            if (true/*cypherUtil.verifySignature(replay.getMessage(), replay.getSignature())*/){
+                replay.setMessage(cypherUtil.decypherMessage(replay.getMessage()));
+                return replay;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Message createUserMessage(Message messageAccount, Message secret, Message publicKey) {
         try{
             Socket clientSocket = new Socket("localhost", 8001);
             ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());

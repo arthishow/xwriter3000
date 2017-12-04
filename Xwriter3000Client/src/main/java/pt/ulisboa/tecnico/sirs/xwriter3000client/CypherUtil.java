@@ -36,6 +36,8 @@ public class CypherUtil {
 
     
     public CypherUtil() {
+        decoder = Base64.getDecoder();
+        encoder = Base64.getEncoder();
         random = new Random();
     }
 
@@ -149,9 +151,11 @@ public class CypherUtil {
             RSAPrivateKeySpec priv = fact.getKeySpec(keyPair.getPrivate(), RSAPrivateKeySpec.class);
             saveToFile("clientPriv", priv.getModulus(), priv.getPrivateExponent());
 
-            keys.add(Base64.getEncoder().encodeToString(publicKey.getEncoded()));
+            keys.add(encoder.encodeToString(publicKey.getEncoded()));
+            System.out.println("me Public");
+            System.out.println(new String(publicKey.getEncoded()));
 
-            keys.add(Base64.getEncoder().encodeToString(privateKey.getEncoded()));
+            keys.add(encoder.encodeToString(privateKey.getEncoded()));
 
             return keys;
         } catch (NoSuchAlgorithmException ex) {
@@ -210,10 +214,18 @@ public class CypherUtil {
             cipher.init(Cipher.ENCRYPT_MODE, serverPublicKey);
             byte[] cipheredMsg = cipher.doFinal(msg.getBytes());
             return Base64.getEncoder().encodeToString(cipheredMsg);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            System.out.println(ex.getMessage());
-            return "";
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e){
+            e.printStackTrace();
+        } catch (BadPaddingException e){
+            e.printStackTrace();
         }
+        return null;
     }
 
     public String decypherMessage(String cypheredMessage){
@@ -222,6 +234,7 @@ public class CypherUtil {
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] cypheredBytes = Base64.getDecoder().decode(cypheredMessage);
             byte[] decypheredBytes = cipher.doFinal(cypheredBytes);
+            return new String(decypheredBytes);
         } catch (NoSuchAlgorithmException e){
             e.printStackTrace();
         } catch (NoSuchPaddingException e){
@@ -259,7 +272,7 @@ public class CypherUtil {
             Signature signature = Signature.getInstance(signAlgorithm);
             signature.initVerify(serverPublicKey);
             signature.update(message.getBytes());
-            return signature.verify(Base64.getDecoder().decode(sign));
+            return signature.verify(decoder.decode(sign));
         } catch (NoSuchAlgorithmException e){
             e.printStackTrace();
         } catch (InvalidKeyException e){

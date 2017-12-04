@@ -49,6 +49,26 @@ public class CypherUtil {
         }
     }
 
+    public String cypherMessage(String msg, PublicKey publicKey){
+        try {
+            Cipher cipher = Cipher.getInstance(algorithm);
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+            byte[] cipheredMsg = cipher.doFinal(msg.getBytes());
+            return Base64.getEncoder().encodeToString(cipheredMsg);
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e){
+            e.printStackTrace();
+        } catch (BadPaddingException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public String decypherMessage(String cipheredMsg){
         try {
             byte[] msgBytes = Base64.getDecoder().decode(cipheredMsg);
@@ -85,14 +105,14 @@ public class CypherUtil {
             byte[] hash = factory.generateSecret(spec).getEncoded();
             return Base64.getEncoder().encodeToString(hash);
         } catch (NoSuchAlgorithmException e){
-            System.out.println();
+            e.printStackTrace();
         } catch (InvalidKeySpecException e){
-            System.out.println();
+            e.printStackTrace();
         }
         return null;
     }
 
-    public Boolean checkMac(String message, String messageMac, SecretKey macKey){
+    public Boolean checkHmac(String message, String messageMac, SecretKey macKey){
         try {
             byte[] messageBytes = message.getBytes();
             Mac mac = Mac.getInstance("HmacSHA512");
@@ -117,7 +137,8 @@ public class CypherUtil {
         try{
             byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyString);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            return keyFactory.generatePublic(new X509EncodedKeySpec(publicKeyBytes));
+            X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(publicKeyBytes);
+            return keyFactory.generatePublic(X509publicKey);
         } catch (NoSuchAlgorithmException e){
             e.printStackTrace();
         } catch (InvalidKeySpecException e){

@@ -22,6 +22,7 @@ public class CommunicationServer {
         database = new ConnectionDB(cypherUtil);
         activeUsers = Collections.synchronizedList(new ArrayList<ActiveUser>());
         symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
+        this.cypherUtil = cypherUtil;
         random = new Random();
     }
 
@@ -30,7 +31,7 @@ public class CommunicationServer {
         return success;
     }
 
-    public String authenticateUser(String username, String password){
+    public ActiveUser authenticateUser(String username, String password){
         Boolean success = database.login(username, password);
         if (success){
             String publicKeyString = database.getPublicKey(username);
@@ -39,80 +40,52 @@ public class CommunicationServer {
             for (int i = 0; i < 20; i++){
                 sessionID[i] = symbols.toCharArray()[random.nextInt(symbols.toCharArray().length)];
             }
-            ActiveUser user = new ActiveUser(new String(sessionID), username, publicKey);
-            activeUsers.add(user);
-            return new String(sessionID);
+            ActiveUser activeUser = new ActiveUser(new String(sessionID), username, publicKey);
+            activeUsers.add(activeUser);
+            return activeUser;
         }
         return null;
     }
 
-    public int createBook(String sessionID, String title){
-        for (ActiveUser activeUser : activeUsers) {
-            if (sessionID.equals(activeUser.getSessionID())) {
-                Book book = new Book(title);
-                int bookID = database.createBook(book, activeUser.getUsername());
-                return bookID;
-            }
-        }
-        return -1;
+    public int createBook(ActiveUser activeUser, String title){
+        Book book = new Book(title);
+        int bookID = database.createBook(book, activeUser.getUsername());
+        return bookID;
     }
 
-    public String sendBook(String sessionID, String bookID){
-        for (ActiveUser activeUser : activeUsers){
-            if(sessionID.equals(activeUser.getSessionID())){
-                String bookContent = database.getBook(Integer.parseInt(bookID), activeUser.getUsername());
-                return bookContent;
-            }
-        }
-        return null;
-    }
-
-    //todo: implement this methods
-    public Boolean receiveBookChanges(String sessionID, String bookID, String bookContent){
-        for (ActiveUser activeUser : activeUsers){
-            if(sessionID.equals(activeUser.getSessionID())){
-                Boolean result = database.changeBook(activeUser.getUsername(), Integer.parseInt(bookID), bookContent);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<Book> getBookList(String sessionID){
-        for (ActiveUser activeUser : activeUsers){
-            if(sessionID.equals(activeUser.getSessionID())){
-                List<Book> bookList = database.getBookList(activeUser.getUsername());
-                return bookList;
-            }
-        }
-        return null;
+    public String sendBook(ActiveUser activeUser, String bookID){
+        String bookContent = database.getBook(Integer.parseInt(bookID), activeUser.getUsername());
+        return bookContent;
     }
 
 
-    public Boolean addAuthorAuth(String sessionID, String bookID, Map<String, Integer> authorsAuth){
-        for (ActiveUser activeUser : activeUsers){
-            if(sessionID.equals(activeUser.getSessionID())){
-                for (Map.Entry<String, Integer> authorAuth : authorsAuth.entrySet()){
-                    database.addAuthorAuth(Integer.valueOf(bookID), activeUser.getUsername(), authorAuth.getKey(), authorAuth.getValue());
-                }
-                return true;
+    public Boolean receiveBookChanges(ActiveUser activeUser, String bookID, String bookContent){
+        Boolean result = database.changeBook(activeUser.getUsername(), Integer.parseInt(bookID), bookContent);
+        return result;
+    }
 
+    public List<Book> getBookList(ActiveUser activeUser){
+        List<Book> bookList = database.getBookList(activeUser.getUsername());
+        return bookList;
+    }
+
+
+    public Boolean addAuthorAuth(ActiveUser activeUser, String bookID, Map<String, Integer> authorsAuth){
+        Boolean success = true;
+        for (Map.Entry<String, Integer> authorAuth : authorsAuth.entrySet()){
+            if(!database.addAuthorAuth(Integer.valueOf(bookID), activeUser.getUsername(), authorAuth.getKey(), authorAuth.getValue())){
+                success = false;
             }
         }
-        return false;
+        return success;
     }
 
     public Boolean authorExists(String username) {
         return database.authorExists(username);
     }
 
-    public List<String> getAuthorsFromBook(String sessionID, String bookID){
-        for (ActiveUser activeUser : activeUsers) {
-            if (sessionID.equals(activeUser.getSessionID())) {
-                return database.getAuthorsFromBook(bookID, activeUser.getUsername());
-            }
-        }
-        return null;
+    public List<String> getAuthorsFromBook(ActiveUser activeUser, String bookID){
+        return database.getAuthorsFromBook(bookID, activeUser.getUsername());
     }
 
     public Boolean logout(String sessionID, String username) {
@@ -134,5 +107,14 @@ public class CommunicationServer {
         return true;
     }
 
+
+    public ActiveUser activeUser(String sessionID){
+        for (ActiveUser activeUser : activeUsers) {
+            if (sessionID.equals(activeUser.getSessionID())) {
+                return activeUser;
+            }
+        }
+        return null;
+    }
 
 }

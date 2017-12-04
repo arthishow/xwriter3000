@@ -82,6 +82,7 @@ public class MessageParser {
     }
 
     public List<String> parseUserInfo(String message){
+        System.out.println(message);
         String[] array = message.split("(username:|password:|newMachine:)");
         if (array.length == 4) {
             List<String> auth = new ArrayList<>();

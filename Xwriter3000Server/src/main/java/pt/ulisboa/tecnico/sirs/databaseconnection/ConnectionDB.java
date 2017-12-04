@@ -460,7 +460,7 @@ public class ConnectionDB {
 
     public String getPublicKey(String username){
 
-        String query = "SELECT authorName FROM authorKeys WHERE authorName = ? and keyType = 'public' ";
+        String query = "SELECT secretKey FROM authorKeys WHERE authorName = ? and keyType = 'public' ";
 
 
         try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
