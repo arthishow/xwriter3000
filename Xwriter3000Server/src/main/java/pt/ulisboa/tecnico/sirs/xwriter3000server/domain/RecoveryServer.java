@@ -5,10 +5,7 @@ import pt.ulisboa.tecnico.sirs.xwriter3000.Message;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.Executors;
@@ -17,59 +14,47 @@ import java.util.concurrent.TimeUnit;
 
 public class RecoveryServer {
 
-    CommunicationServer communicationServer;
-    Socket serverSocket;
-    String brotherIp;
-    int brotherPort;
+    private CommunicationServer communicationServer;
+    private ServerSocket serverSocket;
+    private String brotherIp;
+    private int brotherPort;
     private MessageParser parser;
-    private int counter;
+    private boolean recoveryMode;
 
-    public RecoveryServer(String brotherIp, int brotherPort) throws Exception {
+    public RecoveryServer(String brotherIp, int brotherPort) throws Exception{
         this.communicationServer = new CommunicationServer();
         this.brotherIp = brotherIp;
         this.brotherPort = brotherPort;
-        this.serverSocket = new Socket();
+        this.serverSocket = new ServerSocket();
         this.parser = new MessageParser();
-        this.counter = 0;
+        this.recoveryMode = true;
     }
 
     public void run() throws Exception {
         serverSocket.bind(new InetSocketAddress(brotherIp, brotherPort));
-        checkEveryGivenSeconds(5);
-    }
-
-    private void checkEveryGivenSeconds(int seconds){
-        Runnable alive = new Runnable() {
-            public void run() {
-                try {
-                    ObjectInputStream inFromClient = new ObjectInputStream(serverSocket.getInputStream());
-                    //message = (Message) CypherUtil.decypher(stream.readObject());
-                    Message message = (Message) inFromClient.readObject();
-                    message = parser.parseType(message);
-                    switch (message.getType()) {
-                        case "alarm":
-                            checkAlarm(message);
-                            counter = 0;
-                            break;
-                    }
-                } catch (IOException e) {
-                    System.out.println("Problem1");
-                    counter++;
-                } catch (ClassNotFoundException e) {
-                    System.out.println("Problem2");
+        serverSocket.setSoTimeout(15000);
+        while(recoveryMode){
+            try {
+                Socket brother = serverSocket.accept();
+                RecoveryServerThread t = new RecoveryServerThread(brother);
+                new Thread(t).start();
+                t.join();
+                if(t.getMainServerDown()){
+                    switchServer();
                 }
+            }catch (SocketTimeoutException e){
+                System.out.println("Timed out");
+                switchServer();
             }
-        };
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(alive, 0, seconds, TimeUnit.SECONDS);
+        }
+
+        Server server = new Server(8001, null, -1);
+        server.run();
+
     }
 
-    public void checkAlarm(Message message){
-        Date alarmDate = parser.parseAlarm(message.getMessage());
-        Date currentDate = new Date();
-        long timeDifference = currentDate.getTime() - alarmDate.getTime();
-        if (timeDifference > 5000) {
-            System.out.println("Main server down.");
-        }
+    public void switchServer(){
+        System.out.println("Let's switch servers");
+        recoveryMode = false;
     }
 }

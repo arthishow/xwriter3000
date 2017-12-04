@@ -59,13 +59,20 @@ class SelectBook {
 
         Button refresh = new Button("Refresh");
 
-        HBox hbBtn = new HBox(10);
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(createBook);
-        hbBtn.getChildren().add(manageAuthorizations);
-        hbBtn.getChildren().add(refresh);
-        hbBtn.getChildren().add(selectBook);
-        grid.add(hbBtn, 0, 2);
+        HBox hbBtn1 = new HBox(10);
+        hbBtn1.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn1.getChildren().add(createBook);
+        hbBtn1.getChildren().add(manageAuthorizations);
+        hbBtn1.getChildren().add(refresh);
+        hbBtn1.getChildren().add(selectBook);
+        grid.add(hbBtn1, 0, 2);
+
+        Button options = new Button("Options");
+
+        HBox hbBtn2 = new HBox(10);
+        hbBtn2.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn1.getChildren().add(options);
+        grid.add(hbBtn2, 0, 3);
 
         createBook.setOnAction(e -> BookCreation.initBookCreationWindow(new Stage()));
         manageAuthorizations.setOnAction(e -> {
@@ -86,6 +93,8 @@ class SelectBook {
                 Popup.initPopupWindow(new Stage(), "No book selected.");
             }
         });
+
+        options.setOnAction(e -> Options.initOptionsWindow(new Stage()));
 
         bookList.getItems().addAll(Main.client.getBookList());
 

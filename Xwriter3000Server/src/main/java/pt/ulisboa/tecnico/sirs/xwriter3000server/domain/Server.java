@@ -1,5 +1,7 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
+import pt.ulisboa.tecnico.sirs.xwriter3000.Message;
+
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.*;
@@ -19,7 +21,6 @@ public class Server {
     CommunicationServer communicationServer;
     String brotherIp;
     int brotherPort;
-    Socket brotherSocket;
 
     public Server(int port, String brotherIp, int brotherPort) throws Exception {
         this.serverSocket = new ServerSocket(8001);
@@ -27,12 +28,12 @@ public class Server {
         this.communicationServer = new CommunicationServer();
         this.brotherIp = brotherIp;
         this.brotherPort = brotherPort;
-        this.brotherSocket = new Socket(brotherIp, 8002);
     }
 
     public void run() throws Exception{
-        System.out.println("Sisi");
-        alertEveryGivenSeconds(5);
+        if(brotherPort != -1 && brotherIp != null) {
+            alertEveryGivenSeconds(5);
+        }
 
         while (true) {
                 try {
@@ -49,16 +50,17 @@ public class Server {
         Runnable alive = new Runnable() {
             public void run() {
                 try {
+                        Socket brotherSocket = new Socket(brotherIp, 8002);
                         ObjectOutputStream outToClient = new ObjectOutputStream(brotherSocket.getOutputStream());
                         String alarm = "type:alarm:";
                         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
                         alarm = alarm.concat(timeStamp);
                         //timeStamp = CypherUtil.cypherAndSign(alarm);
-                        System.out.print("Just sent " + alarm);
-                        outToClient.writeObject(alarm);
-
+                        System.out.println("Just sent " + alarm);
+                        Message message = new Message(alarm, "");
+                        outToClient.writeObject(message);
                 } catch (Exception e) {
-                    System.out.println("Problem");
+                    System.out.println("Problem sending " + e.getMessage());
                 }
             }
         };
