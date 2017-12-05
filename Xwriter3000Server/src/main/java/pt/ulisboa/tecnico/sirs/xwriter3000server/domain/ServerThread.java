@@ -45,6 +45,7 @@ public class ServerThread extends Thread {
             outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
             message = (Message) inFromClient.readObject();
             String originalMessage = message.getMessage();
+
             message.setMessage(cypherUtil.decypherMessage(message.getMessage()));
             message = parser.parseType(message);
             ActiveUser activeUser;

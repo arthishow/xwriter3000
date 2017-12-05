@@ -285,6 +285,7 @@ public class CommunicationClient {
             message.setMessage(cypherUtil.cypherMessage(message.getMessage()));
             Socket clientSocket = new Socket("localhost", 8001);
             ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
+            System.out.println(message.getMessage());
             objectOut.writeObject(message);
             ObjectInputStream objectIn = new ObjectInputStream(clientSocket.getInputStream());
             Message replay = (Message) objectIn.readObject();

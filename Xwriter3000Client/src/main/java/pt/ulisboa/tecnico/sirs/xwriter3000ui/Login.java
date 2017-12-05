@@ -64,7 +64,7 @@ public class Login {
         //TODO
         signIn.setOnAction(e -> {
             // if(StorageAccess.getPersonalCode(userTextField.getText()) != null) {
-                if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText())) {
+                if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText(), false)) {
                     actionTarget.setFill(Color.GREEN);
                     actionTarget.setText("Log-in successful.");
                     currentUserId = userTextField.getText();

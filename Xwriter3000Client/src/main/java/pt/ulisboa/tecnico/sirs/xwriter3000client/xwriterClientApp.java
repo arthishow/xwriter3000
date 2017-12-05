@@ -12,8 +12,8 @@ public class xwriterClientApp {
         CommunicationClient communicationClient = new CommunicationClient();
 
 
-        System.out.println(communicationClient.authenticateUser("d", "es"));
-
+        System.out.println(communicationClient.authenticateUser("bolinhas", "stupid", false));
+/*
         System.out.println(communicationClient.getBook("13"));
 
         System.out.println(communicationClient.getBook("14"));
@@ -24,7 +24,7 @@ public class xwriterClientApp {
             System.out.println(book.getBookID());
             System.out.println(book.getTitle());
             System.out.println(book.getText());
-        }
+        }*/
 
         //System.out.println(addAuthorsAuth(13, ));
     }

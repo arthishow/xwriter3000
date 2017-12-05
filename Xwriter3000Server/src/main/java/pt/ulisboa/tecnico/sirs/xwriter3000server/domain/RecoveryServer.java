@@ -16,7 +16,7 @@ public class RecoveryServer {
     private boolean recoveryMode;
 
     public RecoveryServer(String brotherIp, int brotherPort) throws Exception{
-        this.communicationServer = new CommunicationServer();
+        this.communicationServer = new CommunicationServer(new CypherUtil());
         this.brotherIp = brotherIp;
         this.brotherPort = brotherPort;
         this.serverSocket = new ServerSocket();
