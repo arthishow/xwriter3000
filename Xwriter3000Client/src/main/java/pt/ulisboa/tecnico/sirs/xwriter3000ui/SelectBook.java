@@ -70,16 +70,17 @@ class SelectBook {
         Button options = new Button("Options");
 
         HBox hbBtn2 = new HBox(10);
-        hbBtn2.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn1.getChildren().add(options);
+        hbBtn2.setAlignment(Pos.BOTTOM_LEFT);
+        hbBtn2.getChildren().add(options);
         grid.add(hbBtn2, 0, 3);
 
         createBook.setOnAction(e -> BookCreation.initBookCreationWindow(new Stage()));
         manageAuthorizations.setOnAction(e -> {
-            if (!bookList.getSelectionModel().isEmpty()) {
+            if (!bookList.getItems().isEmpty()) {
                 AccessAuthorization.initAccessAuthorizationWindow(new Stage());
             } else {
-                Popup.initPopupWindow(new Stage(), "No books to manage.");
+                PopupMessage.initPopupMessageWindow(new Stage(), "Warning",
+                        "No books to manage.",100, 75);
             }
         });
         refresh.setOnAction(e -> {
@@ -90,7 +91,8 @@ class SelectBook {
             if (bookList.getSelectionModel().getSelectedItem() != null) {
                 Writing.initTextEditingWindow(stage, bookList.getSelectionModel().getSelectedItem());
             } else {
-                Popup.initPopupWindow(new Stage(), "No book selected.");
+                PopupMessage.initPopupMessageWindow(new Stage(), "Warning",
+                        "No book selected.", 100, 75);
             }
         });
 

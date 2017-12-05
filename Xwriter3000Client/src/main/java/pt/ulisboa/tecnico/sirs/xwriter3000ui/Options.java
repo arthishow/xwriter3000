@@ -2,14 +2,17 @@ package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import pt.ulisboa.tecnico.sirs.xwriter3000client.StorageAccess;
 
 public class Options {
 
-    private static int HEIGHT = 300;
-    private static int WIDTH = 250;
+    private static int HEIGHT = 150;
+    private static int WIDTH = 225;
 
     static void initOptionsWindow(Stage stage) {
 
@@ -23,6 +26,14 @@ public class Options {
         Button displayCode = new Button("Display personal code");
         grid.add(displayCode, 0 ,0);
 
-        displayCode.setOnAction(e -> Popup.initPopupWindow(new Stage(), "Your personal code is\n" + OptionsController.getPersonalCode() ));
+        displayCode.setOnAction(e -> PopupMessage.initPopupMessageWindow(new Stage(), "Info",
+                "Your personal code is\n" + StorageAccess.getPersonalCode(Login.currentUserId),
+                125, 100));
+
+        Scene scene = new Scene(grid, WIDTH, HEIGHT);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
     }
 }

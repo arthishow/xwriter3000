@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -23,11 +24,19 @@ public class Server {
     int brotherPort;
 
     public Server(int port, String brotherIp, int brotherPort) throws Exception {
-        this.serverSocket = new ServerSocket(8001);
+        this.serverSocket = new ServerSocket(port);
         this.port = port;
         this.communicationServer = new CommunicationServer();
         this.brotherIp = brotherIp;
         this.brotherPort = brotherPort;
+    }
+
+    public Server(int port) throws Exception {
+        this.serverSocket = new ServerSocket(port);
+        this.port = port;
+        this.communicationServer = new CommunicationServer();
+        this.brotherIp = null;
+        this.brotherPort = -1;
     }
 
     public void run() throws Exception{
@@ -50,7 +59,7 @@ public class Server {
         Runnable alive = new Runnable() {
             public void run() {
                 try {
-                        Socket brotherSocket = new Socket(brotherIp, 8002);
+                        Socket brotherSocket = new Socket(brotherIp, brotherPort);
                         ObjectOutputStream outToClient = new ObjectOutputStream(brotherSocket.getOutputStream());
                         String alarm = "type:alarm:";
                         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());

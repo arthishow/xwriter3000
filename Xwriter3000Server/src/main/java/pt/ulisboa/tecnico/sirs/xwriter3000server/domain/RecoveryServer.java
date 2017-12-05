@@ -47,8 +47,8 @@ public class RecoveryServer {
                 switchServer();
             }
         }
-
-        Server server = new Server(8001, null, -1);
+        serverSocket.close();
+        Server server = new Server(8001);
         server.run();
 
     }

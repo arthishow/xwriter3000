@@ -67,8 +67,8 @@ class AccessAuthorization {
             }
         });
         authors.getColumns().addAll(userIdCol, levelCol);
-        userIdCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.7));
-        levelCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.3));
+        userIdCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.8));
+        levelCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.2));
         userIdCol.setResizable(false);
         levelCol.setResizable(false);
         authors.setPlaceholder(new Label("No authors to display."));

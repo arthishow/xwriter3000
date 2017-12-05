@@ -1,11 +1,11 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Writing {
@@ -24,13 +24,12 @@ public class Writing {
 
         //File Menu
         Menu menuFile = new Menu("File");
-        MenuItem createBook = new MenuItem("Create book...");
         MenuItem saveBook = new MenuItem("Save to the cloud");
-        MenuItem selectBook = new MenuItem("Select book");
+        MenuItem manageBooks = new MenuItem("Manage books");
 
         //Edit Menu
         Menu menuEdit = new Menu("Edit");
-        MenuItem access = new MenuItem("Manage access level");
+        MenuItem authorizations = new MenuItem("Manage authorizations");
 
         //User Menu
         Menu menuUser = new Menu("User");
@@ -44,25 +43,46 @@ public class Writing {
             text.setText(Main.client.getBook(String.valueOf(currentBook.getBookID())));
         }
 
-        selectBook.setOnAction(e -> {
-            Main.client.sendBookChanges(String.valueOf(currentBook.getBookID()), text.getText());
-            SelectBook.initSelectBookWindow(stage);
+        manageBooks.setOnAction(e -> {
+            PopupChoice window = new PopupChoice();
+            window.initPopupChoiceWindow(new Stage(),"Warning",
+                    "Are you sure you want to leave?\nChanges will not be saved.", 110, 275);
+            if(window.getChoice()) {
+                SelectBook.initSelectBookWindow(stage);
+            }
         });
-        createBook.setOnAction(e -> BookCreation.initBookCreationWindow(new Stage()));
-        saveBook.setOnAction(e -> Main.client.sendBookChanges(String.valueOf(currentBook.getBookID()), text.getText()));
-        access.setOnAction(e -> AccessAuthorization.initAccessAuthorizationWindow(new Stage()));
-        logout.setOnAction(e -> WritingController.logout(stage));
+        saveBook.setOnAction(e -> {
+            if(Main.client.sendBookChanges(String.valueOf(currentBook.getBookID()), text.getText())){
+                PopupMessage.initPopupMessageWindow(new Stage(), "Info", "Changes saved",
+                100, 70);
+            }else{
+                PopupMessage.initPopupMessageWindow(new Stage(), "Warning",
+                        "An error occured:\nChanges weren't saved.", 100, 75);
+            }
+        });
+        authorizations.setOnAction(e -> AccessAuthorization.initAccessAuthorizationWindow(new Stage()));
+        logout.setOnAction(e -> {
+            PopupChoice window = new PopupChoice();
+            window.initPopupChoiceWindow(new Stage(),"Warning",
+                    "Are you sure you want to log-out?\nChanges will not be saved.", 110, 275);
+            if(window.getChoice()) {
+                WritingController.logout(stage);
+            }
+        });
 
         //Menus
-        menuFile.getItems().addAll(createBook, saveBook, selectBook);
-        menuEdit.getItems().addAll(access);
+        menuFile.getItems().addAll(saveBook, manageBooks);
+        menuEdit.getItems().addAll(authorizations);
         menuUser.getItems().addAll(logout);
         menuBar.getMenus().addAll(menuFile, menuEdit, menuUser);
+
+        Label statusBar = new Label("Working on "+ currentBook.getTitle());
+        statusBar.setFont(Font.font(11));
 
         text.setPrefHeight(HEIGHT-30);
         text.setPrefWidth(WIDTH);
 
-        ((VBox) scene.getRoot()).getChildren().addAll(menuBar, text);
+        ((VBox) scene.getRoot()).getChildren().addAll(menuBar, text, statusBar);
         stage.setResizable(false);
         stage.setScene(scene);
     }
