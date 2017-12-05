@@ -3,14 +3,8 @@ package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 import pt.ulisboa.tecnico.sirs.xwriter3000.Message;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class RecoveryServer {
 
@@ -41,14 +35,16 @@ public class RecoveryServer {
                 t.join();
                 if(t.getMainServerDown()){
                     switchServer();
+                    adviseFirewall();
                 }
             }catch (SocketTimeoutException e){
                 System.out.println("Timed out");
                 switchServer();
+                adviseFirewall();
             }
         }
         serverSocket.close();
-        Server server = new Server(8001);
+        Server server = new Server(brotherPort);
         server.run();
 
     }
@@ -56,5 +52,16 @@ public class RecoveryServer {
     public void switchServer(){
         System.out.println("Let's switch servers");
         recoveryMode = false;
+    }
+
+    public void adviseFirewall(){
+        try {
+            Socket firewall = new Socket("firewall ip", 8003);
+            Message message = new Message("type:switch", "");
+            ObjectOutputStream objectOut = new ObjectOutputStream(firewall.getOutputStream());
+            objectOut.writeObject(message);
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
