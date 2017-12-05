@@ -477,11 +477,10 @@ public class CypherUtil {
         return null;
     }
 
-    public String cypherBook(String bookContent, SecretKey secretKey, String salt){
+    public String cypherBook(String bookContent, SecretKey secretKey){
         try {
-            byte[] saltBytes = decoder.decode(salt);
-            Cipher cipher = Cipher.getInstance(symAlgorithm);
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             byte[] cypheredBook = cipher.doFinal(bookContent.getBytes());
             return encoder.encodeToString(cypheredBook);
         } catch (NoSuchAlgorithmException e){
@@ -494,17 +493,14 @@ public class CypherUtil {
             e.printStackTrace();
         } catch (BadPaddingException e){
             e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e){
-            e.printStackTrace();
         }
         return null;
     }
 
-    public String decypherBook(String bookContent, SecretKey secretKey, String salt){
+    public String decypherBook(String bookContent, SecretKey secretKey){
         try {
-            byte[] saltBytes = decoder.decode(salt);
-            Cipher cipher = Cipher.getInstance(symAlgorithm);
-            cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] decypheredBook = cipher.doFinal(decoder.decode(bookContent));
             return new String(decypheredBook);
         } catch (NoSuchAlgorithmException e){
@@ -515,9 +511,7 @@ public class CypherUtil {
             e.printStackTrace();
         } catch (IllegalBlockSizeException e){
             e.printStackTrace();
-        } catch (BadPaddingException e){
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
         }
         return null;
