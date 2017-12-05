@@ -54,7 +54,7 @@ public class CommunicationServer {
     }
 
     public String sendBook(ActiveUser activeUser, String bookID){
-        String bookContent = database.getBook(Integer.parseInt(bookID), activeUser.getUsername());
+        String bookContent = database.getBook(Integer.valueOf(bookID), activeUser.getUsername());
 
         String tempKey = database.getTempKey(activeUser.getUsername(), Integer.valueOf(bookID));
 

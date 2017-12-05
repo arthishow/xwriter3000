@@ -288,7 +288,7 @@ public class CypherUtil {
         try {
             PublicKey authorKey = getPublicKeyFromString(publicKey);
             Cipher cipher = Cipher.getInstance(algorithm);
-            cipher.init(Cipher.ENCRYPT_MODE, serverPublicKey);
+            cipher.init(Cipher.ENCRYPT_MODE, authorKey);
             byte[] cipheredKey = cipher.doFinal(simKey.getEncoded());
             return encoder.encodeToString(cipheredKey);
         } catch (NoSuchAlgorithmException e){
@@ -320,6 +320,27 @@ public class CypherUtil {
         } catch (NoSuchAlgorithmException e){
             e.printStackTrace();
         } catch (InvalidKeySpecException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String decypherBookKey(String cypheredMessage){
+        try{
+            Cipher cipher = Cipher.getInstance(algorithm);
+            cipher.init(Cipher.DECRYPT_MODE, privateKey);
+            byte[] cypheredBytes = Base64.getDecoder().decode(cypheredMessage);
+            byte[] decypheredBytes = cipher.doFinal(cypheredBytes);
+            return encoder.encodeToString(decypheredBytes);
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e){
+            e.printStackTrace();
+        } catch (BadPaddingException e){
             e.printStackTrace();
         }
         return null;

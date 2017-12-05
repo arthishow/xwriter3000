@@ -188,6 +188,8 @@ public class ServerThread extends Thread {
                 String publicKey = communicationServer.getPublicKey(username);
                 sendPublicKeyMessage(publicKey, activeUser);
                 tempKey = receiveMessage(activeUser);
+                System.out.println("this is tempKey");
+                System.out.println(tempKey);
                 communicationServer.storeTempKey(username, bookID,tempKey);
             }
 
