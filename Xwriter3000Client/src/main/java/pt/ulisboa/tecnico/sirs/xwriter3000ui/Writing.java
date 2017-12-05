@@ -34,6 +34,7 @@ public class Writing {
         MenuItem logout = new MenuItem("Log-out");
 
         TextArea text = new TextArea();
+        text.setWrapText(true);
         if (book == null) {
             text.setText("Once upon a time...");
         } else {
