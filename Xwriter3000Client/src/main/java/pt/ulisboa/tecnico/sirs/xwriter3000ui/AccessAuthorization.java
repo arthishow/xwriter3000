@@ -2,14 +2,11 @@ package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
 import javafx.animation.PauseTransition;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -18,7 +15,6 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,8 +63,8 @@ class AccessAuthorization {
             }
         });
         authors.getColumns().addAll(userIdCol, levelCol);
-        userIdCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.7));
-        levelCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.3));
+        userIdCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.8));
+        levelCol.prefWidthProperty().bind(authors.widthProperty().multiply(0.2));
         userIdCol.setResizable(false);
         levelCol.setResizable(false);
         authors.setPlaceholder(new Label("No authors to display."));

@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.*;
 
 public class ServerThread extends Thread {
+
     private Socket clientSocket;
 
     private CommunicationServer communicationServer;

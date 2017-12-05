@@ -1,6 +1,5 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
-import com.sun.org.apache.bcel.internal.generic.Select;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,11 +8,9 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 class SelectBook {
@@ -59,20 +56,28 @@ class SelectBook {
 
         Button refresh = new Button("Refresh");
 
-        HBox hbBtn = new HBox(10);
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(createBook);
-        hbBtn.getChildren().add(manageAuthorizations);
-        hbBtn.getChildren().add(refresh);
-        hbBtn.getChildren().add(selectBook);
-        grid.add(hbBtn, 0, 2);
+        HBox hbBtn1 = new HBox(10);
+        hbBtn1.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn1.getChildren().add(createBook);
+        hbBtn1.getChildren().add(manageAuthorizations);
+        hbBtn1.getChildren().add(refresh);
+        hbBtn1.getChildren().add(selectBook);
+        grid.add(hbBtn1, 0, 2);
+
+        Button options = new Button("Options");
+
+        HBox hbBtn2 = new HBox(10);
+        hbBtn2.setAlignment(Pos.BOTTOM_LEFT);
+        hbBtn2.getChildren().add(options);
+        grid.add(hbBtn2, 0, 3);
 
         createBook.setOnAction(e -> BookCreation.initBookCreationWindow(new Stage()));
         manageAuthorizations.setOnAction(e -> {
-            if (!bookList.getSelectionModel().isEmpty()) {
+            if (!bookList.getItems().isEmpty()) {
                 AccessAuthorization.initAccessAuthorizationWindow(new Stage());
             } else {
-                Popup.initPopupWindow(new Stage(), "No books to manage.");
+                PopupMessage.initPopupMessageWindow(new Stage(), "Warning",
+                        "No books to manage.",100, 75);
             }
         });
         refresh.setOnAction(e -> {
@@ -83,10 +88,12 @@ class SelectBook {
             if (bookList.getSelectionModel().getSelectedItem() != null) {
                 Writing.initTextEditingWindow(stage, bookList.getSelectionModel().getSelectedItem());
             } else {
-                System.out.print("sisi");
-                Popup.initPopupWindow(new Stage(), "No book selected.");
+                PopupMessage.initPopupMessageWindow(new Stage(), "Warning",
+                        "No book selected.", 100, 75);
             }
         });
+
+        options.setOnAction(e -> Options.initOptionsWindow(new Stage()));
 
         bookList.getItems().addAll(Main.client.getBookList());
 

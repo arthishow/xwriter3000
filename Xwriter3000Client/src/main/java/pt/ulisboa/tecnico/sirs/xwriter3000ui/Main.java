@@ -4,9 +4,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import pt.ulisboa.tecnico.sirs.xwriter3000client.CommunicationClient;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class Main extends Application{
 

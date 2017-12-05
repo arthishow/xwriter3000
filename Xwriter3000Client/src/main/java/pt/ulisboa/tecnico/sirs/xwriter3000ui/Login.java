@@ -61,17 +61,24 @@ public class Login {
         grid.add(actionTarget, 1, 6);
 
         createAccount.setOnAction(e -> CreateAccount.initCreateAccountWindow(new Stage()));
+        //TODO
         signIn.setOnAction(e -> {
-            if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText())) {
-                actionTarget.setFill(Color.GREEN);
-                actionTarget.setText("Log-in successful.");
-                currentUserId = userTextField.getText();
-                SelectBook.initSelectBookWindow(stage);
-            } else {
-                pwBox.setText("");
-                actionTarget.setFill(Color.RED);
-                actionTarget.setText("Error, please retry.");
-            }
+            // if(StorageAccess.getPersonalCode(userTextField.getText()) != null) {
+                if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText())) {
+                    actionTarget.setFill(Color.GREEN);
+                    actionTarget.setText("Log-in successful.");
+                    currentUserId = userTextField.getText();
+                    SelectBook.initSelectBookWindow(stage);
+                } else {
+                    pwBox.setText("");
+                    actionTarget.setFill(Color.RED);
+                    actionTarget.setText("Error, please retry.");
+                }
+            //} else {
+            //  PopupFirstTimeLogin newLogin = new PopupFirstTimeLogin();
+            //  String personalCode = newLogin.getPersonalCode();
+            //  StorageAccess.storePersonalCode(personalCode);
+            //}
         });
 
         signIn.setOnKeyPressed(ke -> {

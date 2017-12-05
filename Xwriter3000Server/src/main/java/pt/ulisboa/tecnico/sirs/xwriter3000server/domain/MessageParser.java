@@ -1,8 +1,13 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
+
 import pt.ulisboa.tecnico.sirs.xwriter3000.Message;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MessageParser {
@@ -63,6 +68,11 @@ public class MessageParser {
             else if(messageInside.indexOf("getAuthorsFromBook") == 5){
                 message.setType("getAuthorsFromBook");
                 message.setMessage(messageInside.split("getAuthorsFromBook")[1]);
+                return message;
+            }
+            else if(messageInside.indexOf("alarm") == 5) {
+                message.setType("alarm");
+                message.setMessage(messageInside.substring(11));
                 return message;
             }
         }
@@ -180,4 +190,16 @@ public class MessageParser {
         return null;
     }
 
-}
+    public Date parseAlarm(String message){
+            try {
+                DateFormat format = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+                Date date = format.parse(message);
+                return date;
+            }catch(ParseException e) {
+                System.out.print("Error in parseAlarm");
+                return null;
+            }
+        }
+    }
+
+
