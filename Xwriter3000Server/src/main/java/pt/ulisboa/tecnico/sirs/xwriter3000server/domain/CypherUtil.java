@@ -13,8 +13,6 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
 
-import static javax.xml.bind.DatatypeConverter.printHexBinary;
-
 public class CypherUtil {
 
     private PrivateKey privateKey;
@@ -41,11 +39,8 @@ public class CypherUtil {
             KeyFactory fact = KeyFactory.getInstance("RSA");
             privateKey = fact.generatePrivate(keySpec);
             oin.close();
-            byte[] pubKeyEncoded = privateKey.getEncoded();
-
-            System.out.println(printHexBinary(pubKeyEncoded));
         } catch (Exception e) {
-            System.out.println();
+            e.printStackTrace();
         }
     }
 
@@ -74,7 +69,6 @@ public class CypherUtil {
             byte[] msgBytes = Base64.getDecoder().decode(cipheredMsg);
             Cipher c = Cipher.getInstance(algorithm);
             c.init(Cipher.DECRYPT_MODE, privateKey);
-            System.out.println(msgBytes.length);
             byte[] decipheredBytes = c.doFinal(msgBytes);
             String message = new String(decipheredBytes);
             return message;
@@ -163,10 +157,10 @@ public class CypherUtil {
             FileOutputStream pubFos = new FileOutputStream("Pub");
             pubFos.write(pubKeyEncoded);
             pubFos.close();
-        } catch (NoSuchAlgorithmException ex) {
-            System.out.println(ex.getMessage());
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -204,72 +198,4 @@ public class CypherUtil {
         return false;
     }
 
-    /*
-    private String cypherMessage(String msg, String user){
-        try {
-            PublicKey keyPublic = publicKeyMap.get(user);
-            Cipher c = Cipher.getInstance(algorithm);
-            c.init(Cipher.ENCRYPT_MODE, keyPublic);
-            byte[] msgCifrada = c.doFinal(msg.getBytes());
-            return Base64.getEncoder().encodeToString(msgCifrada);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            System.out.println(ex.getMessage());
-            return "";
-        }        
-    }
-    
-
-
-    public void addPublicKey(String user, String publicKey) {
-        try {
-            byte[] publicKeyBytes = Base64.getDecoder().decode(publicKey);
-            X509EncodedKeySpec ks = new X509EncodedKeySpec(publicKeyBytes);
-            KeyFactory kf = KeyFactory.getInstance(algorithm);
-            PublicKey keyPublic = kf.generatePublic(ks);
-            publicKeyMap.put(user, keyPublic);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-    
-    public boolean havePublicKey(String nome) {
-        return publicKeyMap.containsKey(nome);
-    }
-
-    public String getPublicKey() {
-        return Base64.getEncoder().encodeToString(publicKey.getEncoded());
-    }
-
-    public boolean verifySign(String msg, String sign, String user) {
-        try {
-            Signature sigV = Signature.getInstance("SHA1withRSA");
-            sigV.initVerify(publicKeyMap.get(user));
-
-            sigV.update(msg.getBytes(), 0, msg.getBytes().length);
-            byte[] signByte = Base64.getDecoder().decode(sign);
-            return sigV.verify(signByte);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        }
-    }
-
-    public boolean verifySignPublicKey(String msg, String sign, String key) {
-        try {
-            byte[] base64decodedBytes = Base64.getDecoder().decode(key);
-            X509EncodedKeySpec ks = new X509EncodedKeySpec(base64decodedBytes);
-            KeyFactory kf = KeyFactory.getInstance(algorithm);
-            PublicKey keyPublic = kf.generatePublic(ks);
-
-            Signature sigV = Signature.getInstance("SHA1withRSA");
-            sigV.initVerify(keyPublic);
-
-            sigV.update(msg.getBytes(), 0, msg.getBytes().length);
-            byte[] signByte = Base64.getDecoder().decode(sign);
-            return sigV.verify(signByte);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException | InvalidKeySpecException ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        }
-    }*/
 }

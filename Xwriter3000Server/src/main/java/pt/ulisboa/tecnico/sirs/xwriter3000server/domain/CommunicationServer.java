@@ -55,9 +55,20 @@ public class CommunicationServer {
 
     public String sendBook(ActiveUser activeUser, String bookID){
         String bookContent = database.getBook(Integer.parseInt(bookID), activeUser.getUsername());
-        String key = database.getSecretKey(activeUser.getUsername(), Integer.valueOf(bookID));
-        String message = "sendBook:" + bookContent + "key:" + key;
-        return message;
+
+        String tempKey = database.getTempKey(activeUser.getUsername(), Integer.valueOf(bookID));
+
+        System.out.println(bookContent);
+
+        if(tempKey == null){
+            String key = database.getSecretKey(activeUser.getUsername(), Integer.valueOf(bookID));
+            String message = "sendBook:" + bookContent + "key:" + key;
+            return message;
+        }
+        else{
+            String message = "sendBook:" + bookContent + "tempKey:" + tempKey;
+            return message;
+        }
     }
 
 
@@ -90,6 +101,15 @@ public class CommunicationServer {
         return database.getAuthorsFromBook(bookID, activeUser.getUsername());
     }
 
+
+    public String getSecretKey(String username, String bookId){
+        return database.getSecretKey(username, Integer.valueOf(bookId));
+    }
+
+    public String getPublicKey(String username){
+        return database.getPublicKey(username);
+    }
+
     public Boolean logout(String sessionID, String username) {
         int removeIndex = -1;
         for (int i = 0; i < activeUsers.size(); i++) {
@@ -102,6 +122,10 @@ public class CommunicationServer {
             return true;
         }
         return false;
+    }
+
+    public void storeTempKey(String username, String bookID, String tempKey){
+        database.storeTempKey(username, Integer.valueOf(bookID), tempKey);
     }
 
     //TODO: fix this method
@@ -117,6 +141,10 @@ public class CommunicationServer {
             }
         }
         return null;
+    }
+
+    public void setSecretKey(String username, String bookID, String symKey){
+        database.setSecretKey(username, Integer.valueOf(bookID), symKey);
     }
 
 }

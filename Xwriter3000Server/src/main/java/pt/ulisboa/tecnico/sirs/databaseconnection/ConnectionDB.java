@@ -495,6 +495,68 @@ public class ConnectionDB {
         return null;
     }
 
+    public void storeTempKey(String username, int bookID, String tempKey){
+
+        String query = "insert into tempSymKeys(authorName, bookId, secretKey) values (?, ?, ?)";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, username);
+
+            statement.setInt(2, bookID);
+
+            statement.setString(3, tempKey);
+
+            statement.executeUpdate();
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public String getTempKey(String username, int bookID){
+
+        String query = "SELECT secretKey FROM tempSymKeys WHERE authorName = ? and bookId = ? ";
+
+        String delete = "DELETE FROM tempSymKeys WHERE authorName = ? and bookId = ? ";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query);
+            PreparedStatement deleteStatement = conn.prepareStatement(delete)){
+
+            statement.setString(1, username);
+
+            statement.setInt(2, bookID);
+
+            deleteStatement.setString(1, username);
+
+            deleteStatement.setInt(2, bookID);
+
+            ResultSet rs = statement.executeQuery();
+
+            int result = deleteStatement.executeUpdate();
+
+            if(rs.next() || result == 1 ){
+                String secretKey = rs.getString("secretKey");
+                return secretKey;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public String getSecretKey(String username, int bookID){
 
         String query = "SELECT secretKey FROM authorSymKeys WHERE authorName = ? and bookId = ? ";
@@ -523,6 +585,28 @@ public class ConnectionDB {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void setSecretKey(String username, int bookID, String symKey){
+
+        String query = "insert into authorSymKeys(authorName, bookId, secretKey) values (?, ?, ?)";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, username);
+
+            statement.setInt(2, bookID);
+
+            statement.setString(3, symKey);
+
+            int result = statement.executeUpdate();
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
 }

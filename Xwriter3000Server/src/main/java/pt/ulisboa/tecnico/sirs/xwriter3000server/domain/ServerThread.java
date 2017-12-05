@@ -23,6 +23,11 @@ public class ServerThread extends Thread {
 
     private ActiveUser currentUser;
 
+    private ObjectInputStream inFromClient;
+
+    private ObjectOutputStream outToClient;
+
+
     public ServerThread(Socket clientSocket, CommunicationServer communicationServer, CypherUtil cypherUtil){
         this.clientSocket = clientSocket;
         this.communicationServer = communicationServer;
@@ -35,13 +40,15 @@ public class ServerThread extends Thread {
     public void run(){
 
         try {
-            ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
+            inFromClient = new ObjectInputStream(clientSocket.getInputStream());
+            outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
             message = (Message) inFromClient.readObject();
             String originalMessage = message.getMessage();
             message.setMessage(cypherUtil.decypherMessage(message.getMessage()));
             message = parser.parseType(message);
             ActiveUser activeUser;
             Message secret;
+            System.out.println(message.getMessage());
             switch (message.getType()) {
                 case "createUser":
                     secret = (Message) inFromClient.readObject();
@@ -139,7 +146,7 @@ public class ServerThread extends Thread {
                 success = communicationServer.createUser(userInfo.get(0), userInfo.get(1), secret.getMessage(), publicKey.getMessage());
             }
 
-            Message replay = new Message(success.toString(), "");
+            Message replay = new Message(success.toString(), cypherUtil.getSiganture(success.toString()));
             sendMessage(replay);
         }
     }
@@ -164,22 +171,68 @@ public class ServerThread extends Thread {
     }
 
     public void addAuthorAuth(ActiveUser activeUser, List<String> bookAuthorsAuth){
-        if (bookAuthorsAuth != null && activeUser != null){
+        if (bookAuthorsAuth != null && activeUser != null) {
             String bookID = bookAuthorsAuth.get(1);
             Map<String, Integer> authorAuth = new HashMap<>();
-            for (int i = 2; i < bookAuthorsAuth.size(); i += 2){
+
+            String secretKey = communicationServer.getSecretKey(activeUser.getUsername(), bookID);
+
+            for (int i = 2; i < bookAuthorsAuth.size(); i += 2) {
                 authorAuth.put(bookAuthorsAuth.get(i), Integer.valueOf(bookAuthorsAuth.get(i + 1)));
             }
+
+            String tempKey;
             Boolean success = communicationServer.addAuthorAuth(activeUser, bookID, authorAuth);
+            sendSecureMessage(secretKey, activeUser);
+            for (String username : authorAuth.keySet()) {
+                String publicKey = communicationServer.getPublicKey(username);
+                sendPublicKeyMessage(publicKey, activeUser);
+                tempKey = receiveMessage(activeUser);
+                communicationServer.storeTempKey(username, bookID,tempKey);
+            }
+
             sendSecureMessage(success.toString(), activeUser);
         }
+    }
 
+    public String receiveMessage(ActiveUser activeUser){
+        try{
+            Message message = (Message) inFromClient.readObject();
+            if (message != null){
+                if (cypherUtil.verifySignature(message.getMessage(), message.getSignature(), activeUser.getPublicKey())){
+                    return message.getMessage();
+                }
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void getBook(ActiveUser activeUser, List<String> bookInfo){
         if (bookInfo != null) {
             String book = communicationServer.sendBook(activeUser, bookInfo.get(1));
-            sendSecureMessage(book, activeUser);
+            if(book.contains("tempKey")){
+                try {
+                    Message message = new Message(book, cypherUtil.getSiganture(book));
+                    sendMessage(message);
+                    Message newKey = (Message) inFromClient.readObject();
+                    if (cypherUtil.verifySignature(newKey.getMessage(), newKey.getSignature(), activeUser.getPublicKey())){
+                        String symKey = cypherUtil.decypherMessage(newKey.getMessage());
+                        communicationServer.setSecretKey(activeUser.getUsername(), bookInfo.get(1), symKey);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                Message message = new Message(book, cypherUtil.getSiganture(book));
+                sendMessage(message);
+            }
         }
     }
 
@@ -231,8 +284,6 @@ public class ServerThread extends Thread {
 
     public void sendMessage(Message message){
         try {
-            //cipher and sign message
-            ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
             outToClient.writeObject(message);
         } catch (IOException e) {
             e.printStackTrace();
@@ -244,7 +295,16 @@ public class ServerThread extends Thread {
             replay = cypherUtil.cypherMessage(replay, activeUser.getPublicKey());
             String signature = cypherUtil.getSiganture(replay);
             Message message = new Message(replay, signature);
-            ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+            outToClient.writeObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendPublicKeyMessage(String publicKey, ActiveUser activeUser){
+        try {
+            String signature = cypherUtil.getSiganture(publicKey);
+            Message message = new Message(publicKey, signature);
             outToClient.writeObject(message);
         } catch (IOException e) {
             e.printStackTrace();

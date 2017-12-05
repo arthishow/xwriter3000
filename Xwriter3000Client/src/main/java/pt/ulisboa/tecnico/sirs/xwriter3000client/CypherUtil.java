@@ -67,10 +67,45 @@ public class CypherUtil {
         return null;
     }
 
-    public String generateSalt(){
+    public String generateSalt(String username){
         byte[] salt = new byte[16];
         random.nextBytes(salt);
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(username + "Salt"));
+            System.out.println(encoder.encodeToString(salt));
+            out.write(encoder.encodeToString(salt));
+            out.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         return encoder.encodeToString(salt);
+    }
+
+    public void writeSalt(String username, String salt){
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(username + "Salt"));
+            out.write(salt);
+            out.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public String readSalt(String username){
+        try{
+            BufferedReader in = new BufferedReader(new FileReader(username + "Salt"));
+            String salt = "";
+            String line = in.readLine();
+            while (line != null) {
+                salt += line;
+                line = in.readLine();
+            }
+            in.close();
+            return salt;
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
@@ -134,7 +169,7 @@ public class CypherUtil {
         }
     }
 
-    public List<String> generateKeyPair() {
+    public List<String> generateKeyPair(String username) {
         try {
             List<String> keys = new ArrayList<>();
             KeyPairGenerator kpg = KeyPairGenerator.getInstance(algorithm);
@@ -146,10 +181,10 @@ public class CypherUtil {
             KeyFactory fact = KeyFactory.getInstance("RSA");
 
             RSAPublicKeySpec pub = fact.getKeySpec(keyPair.getPublic(), RSAPublicKeySpec.class);
-            saveToFile("clientPub", pub.getModulus(), pub.getPublicExponent());
+            saveToFile(username + "Pub", pub.getModulus(), pub.getPublicExponent());
 
             RSAPrivateKeySpec priv = fact.getKeySpec(keyPair.getPrivate(), RSAPrivateKeySpec.class);
-            saveToFile("clientPriv", priv.getModulus(), priv.getPrivateExponent());
+            saveToFile(username+ "Priv", priv.getModulus(), priv.getPrivateExponent());
 
             keys.add(encoder.encodeToString(publicKey.getEncoded()));
 
@@ -167,7 +202,7 @@ public class CypherUtil {
 
 
     //Fixme: catch each exception
-    private static void saveToFile(String fileName, BigInteger mod, BigInteger exp) {
+    public void saveToFile(String fileName, BigInteger mod, BigInteger exp) {
         try {
             ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fileName)));
             out.writeObject(mod);
@@ -176,6 +211,30 @@ public class CypherUtil {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public Boolean readFromFile(String username){
+        try {
+            InputStream in = new FileInputStream(username + "Priv");
+            ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(in));
+            BigInteger m = (BigInteger) oin.readObject();
+            BigInteger e = (BigInteger) oin.readObject();
+            RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec(m, e);
+            KeyFactory fact = KeyFactory.getInstance("RSA");
+            privateKey = fact.generatePrivate(keySpec);
+            oin.close();
+        } catch (FileNotFoundException e){
+            return false;
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
@@ -220,6 +279,47 @@ public class CypherUtil {
         } catch (IllegalBlockSizeException e){
             e.printStackTrace();
         } catch (BadPaddingException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String cipherBookKey(SecretKey simKey, String publicKey){
+        try {
+            PublicKey authorKey = getPublicKeyFromString(publicKey);
+            Cipher cipher = Cipher.getInstance(algorithm);
+            cipher.init(Cipher.ENCRYPT_MODE, serverPublicKey);
+            byte[] cipheredKey = cipher.doFinal(simKey.getEncoded());
+            return encoder.encodeToString(cipheredKey);
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e){
+            e.printStackTrace();
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e){
+            e.printStackTrace();
+        } catch (BadPaddingException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public SecretKey stringToKey(String keyString){
+        byte[] secretKetBytes = decoder.decode(keyString);
+        return new SecretKeySpec(secretKetBytes, 0, secretKetBytes.length, "AES");
+    }
+
+
+    public PublicKey getPublicKeyFromString(String publicKeyString){
+        try{
+            byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyString);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(publicKeyBytes);
+            return keyFactory.generatePublic(X509publicKey);
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e){
             e.printStackTrace();
         }
         return null;

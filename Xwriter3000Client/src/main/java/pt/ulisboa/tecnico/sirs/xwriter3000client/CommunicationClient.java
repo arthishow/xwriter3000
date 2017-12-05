@@ -32,9 +32,9 @@ public class CommunicationClient {
     }
 
     public Boolean createUser(String username, String password){
-        List<String> keyPair = cypherUtil.generateKeyPair();
+        List<String> keyPair = cypherUtil.generateKeyPair(username);
 
-        salt = cypherUtil.generateSalt();
+        salt = cypherUtil.generateSalt(username);
         System.out.println(salt);
 
         SecretKey macKey = cypherUtil.generateMac();
@@ -64,6 +64,12 @@ public class CommunicationClient {
     public Boolean authenticateUser(String username, String password, Boolean newMachine) {
         this.password = password;
         String messageContent;
+        salt = cypherUtil.readSalt(username);
+
+        if(!newMachine){
+            cypherUtil.readFromFile(username);
+        }
+
         messageContent = "type:" + "authenticateUser" + "username:" + username + "password:" + password
                             + "newMachine:" + newMachine.toString();
         Message message = new Message(messageContent, "");
@@ -100,16 +106,30 @@ public class CommunicationClient {
     public String getBook(String bookID) {
         String messageContent;
         messageContent = "type:" + "getBook" + "sessionID:" + sessionID + "bookID:" + bookID;
-        //ciphermessage
         Message message = new Message(messageContent, "");
         Message replay = sendMessageReplay(message);
         System.out.println(replay.getMessage());
-        String[] array = replay.getMessage().split("(sendBook:|key:)");
+        String[] array = replay.getMessage().split("(sendBook:|tempKey:)");
+
+        if (array.length == 3){
+            if (!array[1].isEmpty()) {
+                String keyString = array[2];
+                keyString = cypherUtil.decypherMessage(keyString);
+                currentBookKey = cypherUtil.stringToKey(keyString);
+                String bookContent = cypherUtil.decypherBook(array[1], currentBookKey, salt);
+                String cipheredKey = cypherUtil.cypherSecretKey(password, salt, currentBookKey);
+                cipheredKey = cypherUtil.cypherMessage(cipheredKey);
+                Message secretKey = new Message(cipheredKey, cypherUtil.getSignature(cipheredKey));
+                sendMessage(secretKey);
+                return bookContent;
+            }
+        }
+
+        array = replay.getMessage().split("(sendBook:|key:)");
         System.out.println("length");
         System.out.println(array.length);
 
         if (array.length == 3){
-
             System.out.println("1");
             System.out.println(array[1]);
             System.out.println("2");
@@ -120,6 +140,8 @@ public class CommunicationClient {
                 return bookContent;
             }
         }
+
+
         return null;
     }
 
@@ -167,10 +189,50 @@ public class CommunicationClient {
             messageContent += "username:" + authorAuth.getKey();
             messageContent += "auth:" + authorAuth.getValue();
         }
-        Message message = new Message(messageContent, "");
-        Message replay = sendMessageReplay(message);
-        if (Boolean.valueOf(replay.getMessage())) {
-            return true;
+
+        Boolean result = sendAuthorAuth(messageContent, authorsAuth);
+
+        return result;
+    }
+
+    public Boolean sendAuthorAuth(String messageContent, Map<String, Integer> authorAuth){
+        try{
+            messageContent = cypherUtil.cypherMessage(messageContent);
+            String signature = cypherUtil.getSignature(messageContent);
+            Message message =  new Message(messageContent, signature);
+            Socket clientSocket = new Socket("localhost", 8001);
+            ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
+            objectOut.writeObject(message);
+            ObjectInputStream objectIn = new ObjectInputStream(clientSocket.getInputStream());
+
+            SecretKey symKey;
+            Message secretKey = (Message) objectIn.readObject();
+            if (cypherUtil.verifySignature(secretKey.getMessage(), secretKey.getSignature())){
+                secretKey.setMessage(cypherUtil.decypherMessage(secretKey.getMessage()));
+                symKey = cypherUtil.decypherSecretKey(secretKey.getMessage(), password, salt);
+                for (String key : authorAuth.keySet()) {
+                    Message publicKey = (Message) objectIn.readObject();
+                    if (cypherUtil.verifySignature(publicKey.getMessage(), publicKey.getSignature())) {
+                        String cipheredKey = cypherUtil.cipherBookKey(symKey, publicKey.getMessage());
+                        String keySignature = cypherUtil.getSignature(cipheredKey);
+                        Message secretMessage = new Message(cipheredKey, keySignature);
+                        objectOut.writeObject(secretMessage);
+                    }
+                }
+
+            }
+
+            Message replay = (Message) objectIn.readObject();
+            if (cypherUtil.verifySignature(replay.getMessage(), replay.getSignature())){
+                replay.setMessage(cypherUtil.decypherMessage(replay.getMessage()));
+                return Boolean.valueOf(replay.getMessage());
+            }
+            objectOut.close();
+            objectIn.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
         }
         return false;
     }
@@ -216,6 +278,8 @@ public class CommunicationClient {
                 replay.setMessage(cypherUtil.decypherMessage(replay.getMessage()));
                 return replay;
             }
+            objectOut.close();
+            objectIn.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -246,6 +310,18 @@ public class CommunicationClient {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void sendMessage(Message message) {
+        try {
+            Socket clientSocket = new Socket("localhost", 8001);
+            ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
+            objectOut.writeObject(message);
+            objectOut.close();
+            clientSocket.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public Message sendMessageReplay(Message message) {
