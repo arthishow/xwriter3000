@@ -23,7 +23,7 @@ public class BookCreation {
     private static int HEIGHT = 350;
     private static int WIDTH = 600;
 
-    protected static void initBookCreationWindow(Stage stage){
+    protected static void initBookCreationWindow(Stage stage) {
 
         stage.setTitle("Create book");
 
@@ -45,14 +45,14 @@ public class BookCreation {
         TableView<User> authors = new TableView<>();
         authors.setEditable(false);
         TableColumn userIdCol = new TableColumn("User ID");
-        userIdCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User,String>, ObservableValue<String>>() {
+        userIdCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> data) {
                 return new ReadOnlyStringWrapper(data.getValue().getAuthorId());
             }
         });
         TableColumn levelCol = new TableColumn("Level");
-        levelCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User,String>, ObservableValue<String>>() {
+        levelCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> data) {
                 return new ReadOnlyStringWrapper(String.valueOf(data.getValue().getAuthorizationLevel()));
@@ -79,13 +79,13 @@ public class BookCreation {
         grid.add(cancel, 3, 3);
 
         Text actionText = new Text();
-        grid.add(actionText, 4, 3);
+        grid.add(actionText, 2, 4);
 
         addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors));
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
         createBook.setOnAction(e -> {
             Map<String, Integer> authorsId = new HashMap<>();
-            for(User user: authors.getItems()){
+            for (User user : authors.getItems()) {
                 authorsId.put(user.getAuthorId().toString(), user.getAuthorizationLevel());
             }
             if (Main.client.createBook(title.getText(), authorsId) >= 0) {

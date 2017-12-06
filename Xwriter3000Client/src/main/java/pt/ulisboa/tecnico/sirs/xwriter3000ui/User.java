@@ -10,11 +10,11 @@ public class User {
         this.authorizationLevel = authorizationLevel;
     }
 
-    protected String getAuthorId(){
+    protected String getAuthorId() {
         return authorId;
     }
 
-    protected int getAuthorizationLevel(){
+    protected int getAuthorizationLevel() {
         return authorizationLevel;
     }
 }

@@ -77,7 +77,7 @@ public class CreateAccount {
             } else if (!CreateAccountController.verifyUserId(author.getText())) {
                 actionTextUserId.setFill(Color.RED);
                 actionTextUserId.setText("User ID too short/long.");
-            }else {
+            } else {
                 actionTextUserId.setFill(Color.GREEN);
                 actionTextUserId.setText("Valid User ID.");
             }
@@ -87,22 +87,22 @@ public class CreateAccount {
             if (CreateAccountController.verifyPassword(psw1.getText())) {
                 actionTextPassword.setFill(Color.GREEN);
                 actionTextPassword.setText("OK.");
-            }else{
+            } else {
                 actionTextPassword.setFill(Color.RED);
                 actionTextPassword.setText("Password is too weak.");
             }
 
-            if(psw1.getText().equals(psw2.getText())) {
+            if (psw1.getText().equals(psw2.getText())) {
                 actionTextRepeatPassword.setFill(Color.GREEN);
                 actionTextRepeatPassword.setText("OK.");
             }
         });
 
         psw2.textProperty().addListener(e -> {
-            if(psw1.getText().equals(psw2.getText())){
+            if (psw1.getText().equals(psw2.getText())) {
                 actionTextRepeatPassword.setFill(Color.GREEN);
                 actionTextRepeatPassword.setText("OK.");
-            }else{
+            } else {
                 actionTextRepeatPassword.setFill(Color.RED);
                 actionTextRepeatPassword.setText("Passwords are different.");
             }

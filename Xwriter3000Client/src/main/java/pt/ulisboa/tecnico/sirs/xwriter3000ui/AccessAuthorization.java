@@ -49,14 +49,14 @@ class AccessAuthorization {
         TableView<User> authors = new TableView<>();
         authors.setEditable(false);
         TableColumn userIdCol = new TableColumn("User ID");
-        userIdCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User,String>, ObservableValue<String>>() {
+        userIdCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> data) {
                 return new ReadOnlyStringWrapper(data.getValue().getAuthorId());
             }
         });
         TableColumn levelCol = new TableColumn("Level");
-        levelCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User,String>, ObservableValue<String>>() {
+        levelCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> data) {
                 return new ReadOnlyStringWrapper(String.valueOf(data.getValue().getAuthorizationLevel()));
@@ -83,22 +83,22 @@ class AccessAuthorization {
         grid.add(cancel, 3, 3);
 
         Text actionText = new Text();
-        grid.add(actionText, 3, 4);
+        grid.add(actionText, 2, 4);
 
         addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors));
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
         saveChanges.setOnAction(e -> {
             Map<String, Integer> authorsId = new HashMap<>();
-            for(User user: authors.getItems()){
+            for (User user : authors.getItems()) {
                 authorsId.put(user.getAuthorId(), user.getAuthorizationLevel());
             }
-            if(Main.client.addAuthorsAuth(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID()), authorsId)){
+            if (Main.client.addAuthorsAuth(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID()), authorsId)) {
                 actionText.setFill(Color.GREEN);
                 actionText.setText("Changes saved.");
                 PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
                 delay.setOnFinished(e2 -> stage.close());
                 delay.play();
-            }else{
+            } else {
                 actionText.setFill(Color.RED);
                 actionText.setText("An error has occurred.");
             }

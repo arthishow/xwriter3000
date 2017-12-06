@@ -7,20 +7,9 @@ public class Book {
     private String title;
     private String text;
 
-    public Book(int bookID, String title){
+    public Book(int bookID, String title) {
         this.bookID = bookID;
         this.title = title;
-    }
-
-    public Book(String title, String text){
-        this.title = title;
-        this.text = text;
-    }
-
-    public Book(int bookID, String title, String text){
-        this.bookID = bookID;
-        this.title = title;
-        this.text = text;
     }
 
     public int getBookID() {

@@ -24,7 +24,7 @@ public class Options {
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         Button displayCode = new Button("Display personal code");
-        grid.add(displayCode, 0 ,0);
+        grid.add(displayCode, 0, 0);
 
         displayCode.setOnAction(e -> PopupMessage.initPopupMessageWindow(new Stage(), "Info",
                 "Your personal code is\n" + StorageAccess.getPersonalCode(Login.currentUserId),

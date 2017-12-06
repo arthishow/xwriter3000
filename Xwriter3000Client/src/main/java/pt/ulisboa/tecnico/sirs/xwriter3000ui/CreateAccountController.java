@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 public class CreateAccountController {
 
+    //TODO check the field size
     protected static boolean verifyPassword(String password) {
         int length = password.length();
         Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
@@ -16,6 +17,7 @@ public class CreateAccountController {
         return length > 5 && length < 129 && m.find() && hasUppercase && hasLowercase && hasNumber && !hasSpace;
     }
 
+    //TODO check the field size
     protected static boolean verifyUserId(String userId) {
         int length = userId.length();
         return length > 3 && length < 129;

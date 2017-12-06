@@ -15,15 +15,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import pt.ulisboa.tecnico.sirs.xwriter3000client.StorageAccess;
 
 public class Login {
 
     private static int HEIGHT = 280;
-    private static int WIDTH = 320;
+    private static int WIDTH = 350;
 
     protected static String currentUserId;
 
-    protected static void initLogInWindow(Stage stage){
+    protected static void initLogInWindow(Stage stage) {
 
         stage.setTitle("Xwriter 3000 - Log-in");
 
@@ -49,43 +50,46 @@ public class Login {
         PasswordField pwBox = new PasswordField();
         grid.add(pwBox, 1, 2);
 
+        Label personalCode = new Label("Personal code: ");
+        grid.add(personalCode, 0, 3);
+
+        TextField personalCodeBox = new TextField();
+        grid.add(personalCodeBox, 1, 3);
+
         Button signIn = new Button("Sign in");
         Button createAccount = new Button("Create account");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(createAccount);
         hbBtn.getChildren().add(signIn);
-        grid.add(hbBtn, 1, 4);
+        grid.add(hbBtn, 1, 5);
 
         Text actionTarget = new Text();
-        grid.add(actionTarget, 1, 6);
+        grid.add(actionTarget, 1, 7);
 
         createAccount.setOnAction(e -> CreateAccount.initCreateAccountWindow(new Stage()));
         //TODO
         signIn.setOnAction(e -> {
-            // if(StorageAccess.getPersonalCode(userTextField.getText()) != null) {
-                if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText())) {
-                    actionTarget.setFill(Color.GREEN);
-                    actionTarget.setText("Log-in successful.");
-                    currentUserId = userTextField.getText();
-                    SelectBook.initSelectBookWindow(stage);
-                } else {
-                    pwBox.setText("");
-                    actionTarget.setFill(Color.RED);
-                    actionTarget.setText("Error, please retry.");
-                }
-            //} else {
-            //  PopupFirstTimeLogin newLogin = new PopupFirstTimeLogin();
-            //  String personalCode = newLogin.getPersonalCode();
-            //  StorageAccess.storePersonalCode(personalCode);
-            //}
+            if (personalCodeBox.getText() != null) {
+                StorageAccess.storePersonalCode(personalCodeBox.getText());
+            }
+
+            if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText())) {
+                actionTarget.setFill(Color.GREEN);
+                actionTarget.setText("Log-in successful.");
+                currentUserId = userTextField.getText();
+                SelectBook.initSelectBookWindow(stage);
+            } else {
+                pwBox.setText("");
+                actionTarget.setFill(Color.RED);
+                actionTarget.setText("Error, please retry.");
+            }
         });
 
         signIn.setOnKeyPressed(ke -> {
-                if (ke.getCode().equals(KeyCode.ENTER))
-                {
-                   signIn.getOnAction();
-                }
+            if (ke.getCode().equals(KeyCode.ENTER)) {
+                signIn.getOnAction();
+            }
         });
 
         signIn.setDefaultButton(true);

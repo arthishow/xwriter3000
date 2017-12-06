@@ -10,10 +10,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 class AddAuthor {
 
-    private static int HEIGHT = 130;
+    private static int HEIGHT = 150;
     private static int WIDTH = 330;
 
     static void initAddAuthorWindow(Stage stage, TableView<User> authors) {
@@ -33,7 +36,7 @@ class AddAuthor {
         grid.add(author, 1, 0);
 
         Text actionText = new Text();
-        grid.add(actionText, 2, 0);
+        grid.add(actionText, 1, 3);
 
         ToggleGroup group = new ToggleGroup();
         RadioButton read = new RadioButton("Read");
@@ -53,13 +56,17 @@ class AddAuthor {
         grid.add(cancel, 1, 2);
 
         addAuthor.setOnAction(e -> {
-            if (Main.client.authorExists(author.getText()) && !author.getText().equals(Login.currentUserId) && !authors.getItems().contains(author.getText())) {
+            List<String> authorIds = new ArrayList<>();
+            for (User u : authors.getItems()) {
+                authorIds.add(u.getAuthorId());
+            }
+            if (Main.client.authorExists(author.getText()) && !author.getText().equals(Login.currentUserId) && !authorIds.contains(author.getText())) {
                 int authLvl = (int) group.getSelectedToggle().getUserData();
                 authors.getItems().add(new User(author.getText(), authLvl));
                 actionText.setFill(Color.GREEN);
                 actionText.setText(author.getText() + " added.");
                 author.setText("");
-            }else{
+            } else {
                 actionText.setFill(Color.RED);
                 actionText.setText("Incorrect User ID.");
             }

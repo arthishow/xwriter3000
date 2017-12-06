@@ -44,17 +44,17 @@ public class Writing {
 
         manageBooks.setOnAction(e -> {
             PopupChoice window = new PopupChoice();
-            window.initPopupChoiceWindow(new Stage(),"Warning",
+            window.initPopupChoiceWindow(new Stage(), "Warning",
                     "Are you sure you want to leave?\nChanges will not be saved.", 110, 275);
-            if(window.getChoice()) {
+            if (window.getChoice()) {
                 SelectBook.initSelectBookWindow(stage);
             }
         });
         saveBook.setOnAction(e -> {
-            if(Main.client.sendBookChanges(String.valueOf(currentBook.getBookID()), text.getText())){
+            if (Main.client.sendBookChanges(String.valueOf(currentBook.getBookID()), text.getText())) {
                 PopupMessage.initPopupMessageWindow(new Stage(), "Info", "Changes saved",
-                100, 70);
-            }else{
+                        100, 70);
+            } else {
                 PopupMessage.initPopupMessageWindow(new Stage(), "Warning",
                         "An error occured:\nChanges weren't saved.", 100, 75);
             }
@@ -62,9 +62,9 @@ public class Writing {
         authorizations.setOnAction(e -> AccessAuthorization.initAccessAuthorizationWindow(new Stage()));
         logout.setOnAction(e -> {
             PopupChoice window = new PopupChoice();
-            window.initPopupChoiceWindow(new Stage(),"Warning",
+            window.initPopupChoiceWindow(new Stage(), "Warning",
                     "Are you sure you want to log-out?\nChanges will not be saved.", 110, 275);
-            if(window.getChoice()) {
+            if (window.getChoice()) {
                 WritingController.logout(stage);
             }
         });
@@ -75,10 +75,10 @@ public class Writing {
         menuUser.getItems().addAll(logout);
         menuBar.getMenus().addAll(menuFile, menuEdit, menuUser);
 
-        Label statusBar = new Label("Working on "+ currentBook.getTitle());
+        Label statusBar = new Label("Working on " + currentBook.getTitle());
         statusBar.setFont(Font.font(11));
 
-        text.setPrefHeight(HEIGHT-30);
+        text.setPrefHeight(HEIGHT - 30);
         text.setPrefWidth(WIDTH);
 
         ((VBox) scene.getRoot()).getChildren().addAll(menuBar, text, statusBar);

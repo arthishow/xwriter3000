@@ -65,10 +65,11 @@ class SelectBook {
         grid.add(hbBtn1, 0, 2);
 
         Button options = new Button("Options");
+        Button logout = new Button("Log-out");
 
         HBox hbBtn2 = new HBox(10);
         hbBtn2.setAlignment(Pos.BOTTOM_LEFT);
-        hbBtn2.getChildren().add(options);
+        hbBtn2.getChildren().addAll(options, logout);
         grid.add(hbBtn2, 0, 3);
 
         createBook.setOnAction(e -> BookCreation.initBookCreationWindow(new Stage()));
@@ -77,7 +78,7 @@ class SelectBook {
                 AccessAuthorization.initAccessAuthorizationWindow(new Stage());
             } else {
                 PopupMessage.initPopupMessageWindow(new Stage(), "Warning",
-                        "No books to manage.",100, 75);
+                        "No books to manage.", 100, 75);
             }
         });
         refresh.setOnAction(e -> {
@@ -94,6 +95,7 @@ class SelectBook {
         });
 
         options.setOnAction(e -> Options.initOptionsWindow(new Stage()));
+        logout.setOnAction(e -> WritingController.logout(stage));
 
         bookList.getItems().addAll(Main.client.getBookList());
 

@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 import pt.ulisboa.tecnico.sirs.xwriter3000client.CommunicationClient;
 
 
-public class Main extends Application{
+public class Main extends Application {
 
     static CommunicationClient client;
 
