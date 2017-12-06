@@ -2,28 +2,38 @@ package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import pt.ulisboa.tecnico.sirs.xwriter3000client.CommunicationClient;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
 
+public class Main extends Application {
 
-public class Main extends Application{
+    protected static CommunicationClient client;
 
-    protected static User currentUser;
-    protected static List<Book> currentUserBooks = new ArrayList<>();
-
+    /**
+     * The starting function of the program. It will run the start() function automatically.
+     * It is not expecting any program arguments.
+     * @param args the program arguments
+     */
     public static void main(String[] args) {
-        currentUser = new User("abc12345", "Assa");
-        Book a = new Book("yo part 1", currentUser);
-        Book b = new Book("yo part 2", currentUser);
-        currentUserBooks.add(a);
-        currentUserBooks.add(b);
+        client = new CommunicationClient();
         Application.launch(Main.class, args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage){
         Login.initLogInWindow(primaryStage);
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() {
+        Main.client.logout();
+        System.out.println("Stage is closing");
     }
 }
