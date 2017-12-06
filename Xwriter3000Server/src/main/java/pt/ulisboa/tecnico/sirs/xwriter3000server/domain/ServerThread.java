@@ -102,10 +102,6 @@ public class ServerThread extends Thread {
                         }
                     }
                     break;
-                case "forwardSymKey":
-                    //fixme
-                    //server.forwardSymKey();
-                    break;
                 case "addAuthorsAuth":
                     List<String> bookAuthorsAuth = parser.parseAddAuthorAuth(message.getMessage());
                     activeUser = communicationServer.activeUser(bookAuthorsAuth.get(0));
@@ -136,6 +132,29 @@ public class ServerThread extends Thread {
                         }
                     }
                     break;
+                case "logout":
+                    sessionID = parser.getSessionID(message.getMessage());
+                    activeUser = communicationServer.activeUser(sessionID);
+                    if(activeUser != null) {
+                        if (cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
+                            Boolean logout = communicationServer.logout(sessionID, activeUser.getUsername());
+                            System.out.println("went");
+                            if (logout){
+                                System.out.println(logout);
+                                sendSecureMessage(logout.toString(), activeUser);
+                            }
+                        }
+                    }
+                    break;
+                case "getAuthFromBook":
+                    List<String> bookAuth = parser.parseRemoveAuthor(message.getMessage());
+                    activeUser = communicationServer.activeUser(bookAuth.get(0));
+                    if(activeUser != null) {
+                        if (cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
+                            getAuthFromBook(activeUser, bookAuth.get(1), bookAuth.get(2));
+                        }
+                    }
+                    break;
             }
             clientSocket.close();
         } catch (IOException e) {
@@ -145,10 +164,24 @@ public class ServerThread extends Thread {
         }
     }
 
+    public void getAuthFromBook(ActiveUser activeUser, String bookID, String username){
+        Integer auth = communicationServer.getAuthFromBook(bookID, username);
+        sendSecureMessage(auth.toString(), activeUser);
+    }
+
     public Boolean remAuthor(ActiveUser activeUser, String bookID, String exiledAuthor) throws IOException, ClassNotFoundException{
         Boolean success = communicationServer.removeUser(bookID, exiledAuthor);
         System.out.println(success.toString());
         if (success){
+            if(communicationServer.checkSymKey(bookID, exiledAuthor)){
+                System.out.println("remSymKey");
+                communicationServer.removeSymKey(bookID, exiledAuthor);
+            }
+            else if(communicationServer.checkTempKey(bookID, exiledAuthor)){
+                System.out.println("remTempKey");
+                communicationServer.removeTempKey(bookID, exiledAuthor);
+            }
+
             System.out.println("entered?");
             List<String> authors = communicationServer.getAuthorsFromBook(activeUser, bookID);
             for(String author: authors){
@@ -160,9 +193,11 @@ public class ServerThread extends Thread {
                 if(cypherUtil.verifySignature(newKey.getMessage(), newKey.getSignature(), activeUser.getPublicKey())){
                     System.out.println("adding keys?");
                     if(communicationServer.checkSymKey(bookID, author)){
+                        System.out.println("remSymKey");
                         communicationServer.removeSymKey(bookID, author);
                     }
                     else if(communicationServer.checkTempKey(bookID, author)){
+                        System.out.println("remTempKey");
                         communicationServer.removeTempKey(bookID, author);
                     }
                     communicationServer.storeTempKey(author, bookID, newKey.getMessage());
@@ -174,7 +209,7 @@ public class ServerThread extends Thread {
             }
             Message authorKey = (Message) inFromClient.readObject();
             if(cypherUtil.verifySignature(authorKey.getMessage(), authorKey.getSignature(), activeUser.getPublicKey())){
-                communicationServer.setSecretKey(activeUser.getUsername(), bookID, authorKey.getMessage());
+                communicationServer.updateSecretKey(activeUser.getUsername(), bookID, authorKey.getMessage());
             }
         }
         return false;
@@ -207,8 +242,19 @@ public class ServerThread extends Thread {
             System.out.println(credentials.get(0));
             System.out.println(credentials.get(1));
             System.out.println(activeUser.getSessionID());
-            String replay = activeUser.getSessionID();
-            sendSecureMessage(replay, activeUser);
+
+
+            if (Boolean.valueOf(credentials.get(2))){
+                Message secret = new Message(communicationServer.getPrivateKey(activeUser.getUsername()), "");
+                secret.setSignature(cypherUtil.getSiganture(secret.getMessage()));
+                sendMessage(secret);
+                String replay = activeUser.getSessionID();
+                sendSecureMessage(replay, activeUser);
+            }
+            else {
+                String replay = activeUser.getSessionID();
+                sendSecureMessage(replay, activeUser);
+            }
         }
     }
 
@@ -239,7 +285,9 @@ public class ServerThread extends Thread {
                 tempKey = receiveMessage(activeUser);
                 System.out.println("this is tempKey");
                 System.out.println(tempKey);
-                communicationServer.storeTempKey(username, bookID,tempKey);
+                if(!communicationServer.checkTempKey(bookID, username)){
+                    communicationServer.storeTempKey(username, bookID,tempKey);
+                }
             }
 
             sendSecureMessage(success.toString(), activeUser);

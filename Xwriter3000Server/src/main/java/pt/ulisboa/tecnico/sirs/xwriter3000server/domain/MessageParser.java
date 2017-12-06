@@ -70,6 +70,28 @@ public class MessageParser {
                 message.setMessage(messageInside.split("removeAuthor")[1]);
                 return message;
             }
+            else if(messageInside.indexOf("logout") == 5){
+                message.setType("logout");
+                message.setMessage(messageInside.split("logout")[1]);
+                return message;
+            }
+            else if(messageInside.indexOf("getAuthFromBook") == 5){
+                message.setType("getAuthFromBook");
+                message.setMessage(messageInside.split("getAuthFromBook")[1]);
+                return message;
+            }
+        }
+        return null;
+    }
+
+    public List<String> parseGetAuthFromBook(String message){
+        String[] array = message.split("(sessionID:|bookID:|username:)");
+        if(array.length == 4){
+            List<String> infoUser = new ArrayList<>();
+            infoUser.add(array[1]);
+            infoUser.add(array[2]);
+            infoUser.add(array[3]);
+            return infoUser;
         }
         return null;
     }
@@ -197,6 +219,14 @@ public class MessageParser {
             info.add(array[1]);
             info.add(array[2]);
             return info;
+        }
+        return null;
+    }
+
+    public String getSessionID(String message){
+        String[] array = message.split("sessionID:");
+        if (array.length == 2){
+            return array[1];
         }
         return null;
     }

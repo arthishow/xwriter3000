@@ -48,8 +48,7 @@ public class CommunicationServer {
     }
 
     public int createBook(ActiveUser activeUser, String title, String secretKey){
-        Book book = new Book(title);
-        int bookID = database.createBook(book, activeUser.getUsername(), secretKey);
+        int bookID = database.createBook(title, activeUser.getUsername(), secretKey);
         return bookID;
     }
 
@@ -86,7 +85,8 @@ public class CommunicationServer {
     public Boolean addAuthorAuth(ActiveUser activeUser, String bookID, Map<String, Integer> authorsAuth){
         Boolean success = true;
         for (Map.Entry<String, Integer> authorAuth : authorsAuth.entrySet()){
-            if(!database.addAuthorAuth(Integer.valueOf(bookID), activeUser.getUsername(), authorAuth.getKey(), authorAuth.getValue())){
+            Boolean temp = database.addAuthorAuth(Integer.valueOf(bookID), activeUser.getUsername(), authorAuth.getKey(), authorAuth.getValue());
+            if(!temp){
                 success = false;
             }
         }
@@ -110,13 +110,18 @@ public class CommunicationServer {
         return database.getPublicKey(username);
     }
 
+    public String getPrivateKey(String username){
+        return database.getPrivateKey(username);
+    }
+
     public Boolean logout(String sessionID, String username) {
         int removeIndex = -1;
         for (int i = 0; i < activeUsers.size(); i++) {
-            if (sessionID.equals(activeUsers.get(i))) {
+            if (sessionID.equals(activeUsers.get(i).getSessionID())) {
                 removeIndex = i;
             }
         }
+        System.out.println(removeIndex);
         if (removeIndex != -1){
             activeUsers.remove(removeIndex);
             return true;
@@ -147,6 +152,10 @@ public class CommunicationServer {
         database.setSecretKey(username, Integer.valueOf(bookID), symKey);
     }
 
+    public void updateSecretKey(String username, String bookID, String symKey){
+        database.updateSecretKey(username, Integer.valueOf(bookID), symKey);
+    }
+
     public Boolean removeUser(String bookID, String remAuthor){
         return database.removeUser(Integer.valueOf(bookID), remAuthor);
     }
@@ -167,6 +176,9 @@ public class CommunicationServer {
         return database.checkSymKey(Integer.valueOf(bookID), remAuthor);
     }
 
+    public Integer getAuthFromBook(String bookID, String username){
+        return database.getAuthFromBook(Integer.valueOf(bookID), username);
+    }
 
 
 }

@@ -10,7 +10,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import static javax.xml.bind.DatatypeConverter.printHexBinary;
 
 public class CypherUtil {
     
@@ -118,7 +117,7 @@ public class CypherUtil {
             Cipher aesCipher = Cipher.getInstance(symAlgorithm);
             aesCipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
 
-            byte[] byteCipherText = aesCipher.doFinal(key.getBytes());
+            byte[] byteCipherText = aesCipher.doFinal(decoder.decode(key));
             return encoder.encodeToString(byteCipherText);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -138,7 +137,7 @@ public class CypherUtil {
         return null;
     }
 
-    public void decipherPrivate(String password, String salt, String cipheredKey){
+    public void decipherPrivate(String username, String password, String salt, String cipheredKey){
         try {
             byte[] saltBytes = Base64.getDecoder().decode(salt);
             KeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, 65536, 128);
@@ -148,8 +147,12 @@ public class CypherUtil {
             Cipher aesCipher = Cipher.getInstance(symAlgorithm);
             aesCipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
             byte[] privateKeyBytes = aesCipher.doFinal(decoder.decode(cipheredKey));
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
+            KeyFactory fact = KeyFactory.getInstance("RSA");
+            privateKey = fact.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
+
+            RSAPrivateKeySpec priv = fact.getKeySpec(privateKey, RSAPrivateKeySpec.class);
+            saveToFile(username+ "Priv", priv.getModulus(), priv.getPrivateExponent());
+
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeySpecException e){
@@ -247,7 +250,6 @@ public class CypherUtil {
             KeyFactory fact = KeyFactory.getInstance("RSA");
             serverPublicKey = fact.generatePublic(keySpec);
             oin.close();
-            byte[] pubKeyEncoded = serverPublicKey.getEncoded();
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -315,6 +317,21 @@ public class CypherUtil {
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(publicKeyBytes);
             return keyFactory.generatePublic(X509publicKey);
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public PrivateKey getPrivateKeyFromString(String privateKeyString){
+        try{
+            byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyString);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            KeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
+            PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
+            return privateKey;
         } catch (NoSuchAlgorithmException e){
             e.printStackTrace();
         } catch (InvalidKeySpecException e){
