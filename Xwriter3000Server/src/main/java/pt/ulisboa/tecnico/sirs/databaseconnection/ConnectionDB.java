@@ -243,7 +243,7 @@ public class ConnectionDB {
     public List<Book> getBookList(String username){
 
         String query = "SELECT DISTINCT B.bookId, title FROM book as B JOIN userbook as U " +
-                        "WHERE authorName = ? AND authorization <= 1 AND B.bookId = U.bookId";
+                        "WHERE authorName = ? AND authorization <= 2 AND B.bookId = U.bookId";
 
         try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
              PreparedStatement bookStatement = conn.prepareStatement(query)){
@@ -608,5 +608,128 @@ public class ConnectionDB {
             e.printStackTrace();
         }
     }
+
+    public Boolean removeUser(int bookID, String remAuthor){
+
+        String update = "DELETE FROM userbook WHERE authorName = ? and bookId = ? ";
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(update)){
+
+            statement.setString(1, remAuthor);
+
+            statement.setInt(2, bookID);
+
+            int result = statement.executeUpdate();
+
+            if (result == 1){
+                return true;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Boolean removeTempKey(int bookID, String remAuthor){
+
+        String update = "DELETE FROM tempSymKeys WHERE authorName = ? and bookId = ? ";
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(update)){
+
+            statement.setString(1, remAuthor);
+
+            statement.setInt(2, bookID);
+
+            int result = statement.executeUpdate();
+
+            if (result == 1){
+                return true;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Boolean removeSymKey(int bookID, String remAuthor){
+
+        String update = "DELETE FROM authorSymKeys WHERE authorName = ? and bookId = ? ";
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(update)){
+
+            statement.setString(1, remAuthor);
+
+            statement.setInt(2, bookID);
+
+            int result = statement.executeUpdate();
+
+            if (result == 1){
+                return true;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
+    public Boolean checkTempKey(int bookID, String remAuthor){
+
+        String update = "Select * FROM tempSymKeys WHERE authorName = ? and bookId = ? ";
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(update)){
+
+            statement.setString(1, remAuthor);
+
+            statement.setInt(2, bookID);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()){
+                return true;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Boolean checkSymKey(int bookID, String remAuthor){
+
+        String update = "Select * FROM authorSymKeys WHERE authorName = ? and bookId = ? ";
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(update)){
+
+            statement.setString(1, remAuthor);
+
+            statement.setInt(2, bookID);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()){
+                return true;
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 
 }

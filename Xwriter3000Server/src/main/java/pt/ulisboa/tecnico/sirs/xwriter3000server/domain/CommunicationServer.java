@@ -147,4 +147,26 @@ public class CommunicationServer {
         database.setSecretKey(username, Integer.valueOf(bookID), symKey);
     }
 
+    public Boolean removeUser(String bookID, String remAuthor){
+        return database.removeUser(Integer.valueOf(bookID), remAuthor);
+    }
+
+    public Boolean removeTempKey(String bookID, String remAuthor){
+        return database.removeTempKey(Integer.valueOf(bookID), remAuthor);
+    }
+
+    public Boolean removeSymKey(String bookID, String remAuthor){
+        return database.removeSymKey(Integer.valueOf(bookID), remAuthor);
+    }
+
+    public Boolean checkTempKey(String bookID, String remAuthor){
+        return database.checkTempKey(Integer.valueOf(bookID), remAuthor);
+    }
+
+    public Boolean checkSymKey(String bookID, String remAuthor){
+        return database.checkSymKey(Integer.valueOf(bookID), remAuthor);
+    }
+
+
+
 }

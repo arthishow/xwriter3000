@@ -62,7 +62,7 @@ public class Login {
 
         createAccount.setOnAction(e -> CreateAccount.initCreateAccountWindow(new Stage()));
         signIn.setOnAction(e -> {
-            if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText())) {
+            if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText(),false)) {
                 actionTarget.setFill(Color.GREEN);
                 actionTarget.setText("Log-in successful.");
                 currentUserId = userTextField.getText();

@@ -26,9 +26,7 @@ public class CypherUtil {
     private final String algorithm = "RSA";
     private final String symAlgorithm = "AES/CBC/PKCS5Padding";
     private final String signAlgorithm = "SHA512withRSA";
-    private final String algoritmoSimetrica = "AES/CBC/PKCS5Padding";
     private final int keyLength = 2048;
-    private byte[] iv;
     private Random random;
 
     private Base64.Decoder decoder;
@@ -517,115 +515,6 @@ public class CypherUtil {
         return null;
     }
 
-
-    /*public String signMessage(String message) {
-        try {
-            Signature sign = Signature.getInstance("SHA1withRSA");
-            sign.initSign(privateKey);
-            sign.update(bookOrMsg.getBytes(), 0, bookOrMsg.getBytes().length);
-            byte[] realSig = sign.sign();
-            return Base64.getEncoder().encodeToString(realSig);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException ex) {
-            System.out.println(ex.getMessage());
-            return "";
-        }
-    }*/
-
-/*
-    public void readServerPubKey(String pubKeyPath){
-        try{
-            FileInputStream fis = new FileInputStream(pubKeyPath);
-            byte[] encoded = new byte[fis.available()];
-            fis.read(encoded);
-            fis.close();
-            SecretKeySpec secretKeySpec = new SecretKeySpec(encoded, "RSA");
-
-            pubKey = secretKeySpec;
-
-
-            byte[] pubKeyEncoded = publicKey.getEncoded();
-
-            System.out.println(printHexBinary(pubKeyEncoded));
-
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }*/
-
-
-    /*
-    private void generateKeys(int bookId) {
-        try {
-            KeyGenerator hg = KeyGenerator.getInstance(algoritmoSimetricaAES);
-            SecretKey key = hg.generateKey();
-            bookKeyMap.put(bookId, key);
-        } catch (NoSuchAlgorithmException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-    
-    private String cypherBookKey(int bookId){
-        try {
-            generateKeys(bookId);
-            PublicKey keyPublic = publicKeyMap.get(bookId);
-            Cipher c = Cipher.getInstance(algorithm);
-            c.init(Cipher.ENCRYPT_MODE, keyPublic);
-            byte[] chaveCifrada = c.doFinal(bookKeyMap.get(bookId).getEncoded());
-            return Base64.getEncoder().encodeToString(chaveCifrada);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            System.out.println(ex.getMessage());
-            return "";
-        }        
-    }
-    
-    private Boolean decypherBookKey(String bookCifrado, int bookId){
-        try {
-            byte[] chaveBytes = Base64.getDecoder().decode(bookCifrado);
-            Cipher c = Cipher.getInstance(algorithm);
-            c.init(Cipher.DECRYPT_MODE, privateKey);
-            byte[] chaveDecifrada = c.doFinal(chaveBytes);
-            SecretKeySpec sks = new SecretKeySpec(chaveDecifrada, algoritmoSimetricaAES);
-            bookKeyMap.put(bookId, sks);
-            return true;
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        }
-    }
-    
-    private String cypherBook(String book, int bookId){
-        try {
-            String messageString = Base64.getEncoder().encodeToString(book.getBytes("utf-8"));
-            byte[] messageBytes = Base64.getDecoder().decode(messageString);
-            Cipher c = Cipher.getInstance(algoritmoSimetrica);
-            c.init(Cipher.ENCRYPT_MODE, bookKeyMap.get(bookId));
-            byte[] mensagemCifrada = c.doFinal(messageBytes);
-            iv = c.getIV();
-            return Base64.getEncoder().encodeToString(mensagemCifrada);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException 
-                | BadPaddingException | UnsupportedEncodingException ex) {
-            System.out.println(ex.getMessage());
-            return "";
-        }
-    }
-    
-    private String decypherBook(String encrypedBook, int bookId, String ivString){
-        try {
-            byte[] messageBytes = Base64.getDecoder().decode(encrypedBook);
-            byte[] ivBytes = Base64.getDecoder().decode(ivString);
-            IvParameterSpec ivPS = new IvParameterSpec(ivBytes);
-            Cipher c = Cipher.getInstance(algoritmoSimetrica);
-            c.init(Cipher.DECRYPT_MODE, (SecretKeySpec) bookKeyMap.get(bookId), ivPS);
-            byte[] bookDecifrada = c.doFinal(messageBytes);
-            return new String(bookDecifrada, "utf-8");
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException 
-                | UnsupportedEncodingException | InvalidAlgorithmParameterException | BadPaddingException ex) {
-            System.out.println(ex.getMessage());
-            return "";
-        }
-    }*/
-    
-
     
     private String decypherMsg(String msgCifrada, String user){
         try {
@@ -639,64 +528,5 @@ public class CypherUtil {
             return "";
         }
     }
-    
-    /*
-    public void addPublicKey(String user, String publicKey) {
-        try {
-            byte[] publicKeyBytes = Base64.getDecoder().decode(publicKey);
-            X509EncodedKeySpec ks = new X509EncodedKeySpec(publicKeyBytes);
-            KeyFactory kf = KeyFactory.getInstance(algorithm);
-            PublicKey keyPublic = kf.generatePublic(ks);
-            publicKeyMap.put(user, keyPublic);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-    
-    public boolean havePublicKey(String nome) {
-        return publicKeyMap.containsKey(nome);
-    }
 
-    public String getPublicKey() {
-        return Base64.getEncoder().encodeToString(publicKey.getEncoded());
-    }
-    
-    public String getIv() {
-        return Base64.getEncoder().encodeToString(iv);
-    }
-
-
-
-    public boolean verifySign(String book, String sign, String user) {
-        try {
-            Signature sigV = Signature.getInstance("SHA1withRSA");
-            sigV.initVerify(publicKeyMap.get(user));
-
-            sigV.update(book.getBytes(), 0, book.getBytes().length);
-            byte[] signByte = Base64.getDecoder().decode(sign);
-            return sigV.verify(signByte);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        }
-    }
-
-    public boolean verifySignPublicKey(String book, String sign, String key) {
-        try {
-            byte[] base64decodedBytes = Base64.getDecoder().decode(key);
-            X509EncodedKeySpec ks = new X509EncodedKeySpec(base64decodedBytes);
-            KeyFactory kf = KeyFactory.getInstance(algorithm);
-            PublicKey keyPublic = kf.generatePublic(ks);
-
-            Signature sigV = Signature.getInstance("SHA1withRSA");
-            sigV.initVerify(keyPublic);
-
-            sigV.update(book.getBytes(), 0, book.getBytes().length);
-            byte[] signByte = Base64.getDecoder().decode(sign);
-            return sigV.verify(signByte);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException | InvalidKeySpecException ex) {
-            System.out.println(ex.getMessage());
-            return false;
-        }
-    }*/
 }

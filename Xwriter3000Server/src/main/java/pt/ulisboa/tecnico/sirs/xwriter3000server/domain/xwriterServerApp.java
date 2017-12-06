@@ -4,7 +4,7 @@ public class xwriterServerApp {
 
     public static void main(String[] args) throws Exception {
 
-        Server xwriterServer = new Server(8001);
+        Server xwriterServer = new Server(8005);
 
         xwriterServer.run();
     }

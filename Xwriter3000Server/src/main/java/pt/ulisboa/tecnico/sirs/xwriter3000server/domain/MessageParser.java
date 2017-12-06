@@ -65,6 +65,11 @@ public class MessageParser {
                 message.setMessage(messageInside.split("getAuthorsFromBook")[1]);
                 return message;
             }
+            else if(messageInside.indexOf("removeAuthor") == 5){
+                message.setType("removeAuthor");
+                message.setMessage(messageInside.split("removeAuthor")[1]);
+                return message;
+            }
         }
         return null;
     }
@@ -112,12 +117,11 @@ public class MessageParser {
 
     //untested
     public List<String> parseReceiveBookChanges(String message){
-        String[] array = message.split("(sessionID:|bookID:|bookContent:)");
-        if (array.length == 4){
+        String[] array = message.split("(sessionID:|bookID:)");
+        if (array.length == 3){
             List<String> info = new ArrayList<>();
             info.add(array[1]);
             info.add(array[2]);
-            info.add(array[3]);
             return info;
         }
         return null;
@@ -157,6 +161,23 @@ public class MessageParser {
                 ids.add(array[i]);
             }
             return ids;
+        }
+        return null;
+    }
+
+    public List<String> parseRemoveAuthor(String message){
+        List<String> remAuth = new ArrayList<>();
+        System.out.println(message);
+        String[] array = message.split("sessionID:|bookID:|username:");
+        System.out.println(array.length);
+        if(array.length == 4){
+            System.out.println(array[1]);
+            System.out.println(array[2]);
+            System.out.println(array[3]);
+            remAuth.add(array[1]);
+            remAuth.add(array[2]);
+            remAuth.add(array[3]);
+            return remAuth;
         }
         return null;
     }
