@@ -1,6 +1,7 @@
 drop table if exists userbook;
 drop table if exists authorSymKeys;
 drop table if exists authorKeys;
+drop table if exists tempSymKeys;
 drop table if exists salt;
 drop table if exists book;
 drop table if exists author;
@@ -39,6 +40,15 @@ create table authorSymKeys(
 	secretKey varchar(5000) not null,
 	PRIMARY KEY(authorName, bookId),	
     FOREIGN KEY (authorName) REFERENCES author(authorName) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (bookId) REFERENCES book(bookId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+create table tempSymKeys(
+	authorName varchar(100) not null,
+	bookId INT NOT NULL,
+	secretKey varchar(5000) not null,
+	PRIMARY KEY(authorName, bookId),	
+    FOREIGN KEY (authorName) REFERENCES author(authorName) ON DELETE CASCADE ON UPDATE CASCADE,   
 	FOREIGN KEY (bookId) REFERENCES book(bookId) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
