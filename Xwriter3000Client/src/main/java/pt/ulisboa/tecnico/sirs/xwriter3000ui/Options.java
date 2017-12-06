@@ -9,12 +9,18 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pt.ulisboa.tecnico.sirs.xwriter3000client.StorageAccess;
 
-public class Options {
+class Options {
 
     private static int HEIGHT = 150;
     private static int WIDTH = 225;
 
-    static void initOptionsWindow(Stage stage) {
+    /**
+     * Generate and display a window with options the user has.
+     * For now it only allows the user to see his personal code
+     * that is stored on his machine.
+     * @param stage the container the window will own
+     */
+    protected static void initOptionsWindow(Stage stage) {
 
         stage.setTitle("Options");
         GridPane grid = new GridPane();
@@ -27,8 +33,9 @@ public class Options {
         grid.add(displayCode, 0, 0);
 
         displayCode.setOnAction(e -> PopupMessage.initPopupMessageWindow(new Stage(), "Info",
-                "Your personal code is\n" + StorageAccess.getPersonalCode(Login.currentUserId),
-                125, 100));
+                "Your personal code is\n" + StorageAccess.getPersonalCode(Login.currentUserId)
+                        + "\nYou will need it to log-in on another machine.",
+                125, 120));
 
         Scene scene = new Scene(grid, WIDTH, HEIGHT);
         stage.setScene(scene);

@@ -1,6 +1,10 @@
-package pt.ulisboa.tecnico.sirs.xwriter3000ui;
+package pt.ulisboa.tecnico.sirs.xwriter3000;
 
 
+/**
+ * A class that defines a Book object.
+ * Made to make the displaying of book information easier in the UI.
+ */
 public class Book {
 
     private int bookID;
@@ -20,7 +24,7 @@ public class Book {
         return title;
     }
 
-    public String getText() {
+    public String getText(){
         return text;
     }
 

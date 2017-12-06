@@ -15,12 +15,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class CreateAccount {
-
+class CreateAccount {
 
     private static int HEIGHT = 180;
     private static int WIDTH = 480;
 
+    /**
+     * Generate and display a create account window.
+     * @param stage the container the window will own
+     */
     protected static void initCreateAccountWindow(Stage stage) {
 
         stage.setTitle("Create account");

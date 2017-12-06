@@ -14,6 +14,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import pt.ulisboa.tecnico.sirs.xwriter3000.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,10 @@ public class BookCreation {
     private static int HEIGHT = 350;
     private static int WIDTH = 600;
 
+    /**
+     * Generate and display a book creation Window.
+     * @param stage the container the window will own
+     */
     protected static void initBookCreationWindow(Stage stage) {
 
         stage.setTitle("Create book");

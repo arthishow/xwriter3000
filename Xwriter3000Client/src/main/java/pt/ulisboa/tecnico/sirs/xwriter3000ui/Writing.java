@@ -1,18 +1,27 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import pt.ulisboa.tecnico.sirs.xwriter3000.Book;
 
-public class Writing {
+class Writing {
 
     private static int HEIGHT = 600;
     private static int WIDTH = 500;
 
     private static Book currentBook;
 
+    /**
+     * Generate and display the text editing window.
+     * @param stage the container the window will own
+     * @param book the book to work on
+     */
     protected static void initTextEditingWindow(Stage stage, Book book) {
 
         stage.setTitle("Xwriter 3000");

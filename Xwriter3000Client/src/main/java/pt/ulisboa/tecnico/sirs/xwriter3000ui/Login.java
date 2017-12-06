@@ -17,13 +17,21 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import pt.ulisboa.tecnico.sirs.xwriter3000client.StorageAccess;
 
-public class Login {
+class Login {
 
     private static int HEIGHT = 280;
     private static int WIDTH = 350;
 
     protected static String currentUserId;
 
+    /**
+     * Generate and display a log-in window. It is the first window the application displays.
+     * It asks for a personal code in addition to the usual username and password, but
+     * this field only needs to be filled if it the first time logging-in on this computer.
+     * Once the first log-in has been done, the personal code is stored locally and the
+     * application will fill that field automatically (without displaying it).
+     * @param stage the container the window will own
+     */
     protected static void initLogInWindow(Stage stage) {
 
         stage.setTitle("Xwriter 3000 - Log-in");

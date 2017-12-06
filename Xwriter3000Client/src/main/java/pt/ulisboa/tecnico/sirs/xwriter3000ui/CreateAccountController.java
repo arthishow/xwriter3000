@@ -3,9 +3,15 @@ package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CreateAccountController {
+class CreateAccountController {
 
     //TODO check the field size
+    /**
+     * Verify if the given password is strong enough
+     * by verifying a few constraints.
+     * @param password the given password
+     * @return a boolean indicating if it is strong enough or not
+     */
     protected static boolean verifyPassword(String password) {
         int length = password.length();
         Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
@@ -18,6 +24,12 @@ public class CreateAccountController {
     }
 
     //TODO check the field size
+    /**
+     * Verify if the size of the given username is
+     * of respectable size.
+     * @param userId the given username
+     * @return a boolean indicating if the size is correct or not
+     */
     protected static boolean verifyUserId(String userId) {
         int length = userId.length();
         return length > 3 && length < 129;

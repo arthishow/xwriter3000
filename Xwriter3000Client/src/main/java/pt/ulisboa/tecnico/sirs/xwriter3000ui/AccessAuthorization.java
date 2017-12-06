@@ -1,6 +1,5 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
-import javafx.animation.PauseTransition;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -13,7 +12,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import javafx.util.Duration;
+import pt.ulisboa.tecnico.sirs.xwriter3000.Book;
+import pt.ulisboa.tecnico.sirs.xwriter3000.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +24,13 @@ class AccessAuthorization {
     private static int HEIGHT = 350;
     private static int WIDTH = 630;
 
-    static void initAccessAuthorizationWindow(Stage stage) {
+    /**
+     * Generate and display the access authorization modification window.
+     * When an author is added to the TableView, it is only added to the
+     * database once the Save Changes button has been pressed.
+     * @param stage the container the window will own
+     */
+    protected static void initAccessAuthorizationWindow(Stage stage) {
 
         stage.setTitle("Manage books authorizations");
 
@@ -95,9 +101,6 @@ class AccessAuthorization {
             if (Main.client.addAuthorsAuth(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID()), authorsId)) {
                 actionText.setFill(Color.GREEN);
                 actionText.setText("Changes saved.");
-                PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
-                delay.setOnFinished(e2 -> stage.close());
-                delay.play();
             } else {
                 actionText.setFill(Color.RED);
                 actionText.setText("An error has occurred.");

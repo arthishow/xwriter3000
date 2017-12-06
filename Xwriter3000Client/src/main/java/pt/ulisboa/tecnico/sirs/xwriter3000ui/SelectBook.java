@@ -12,13 +12,20 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import pt.ulisboa.tecnico.sirs.xwriter3000.Book;
 
 class SelectBook {
 
     private static int HEIGHT = 600;
     private static int WIDTH = 500;
 
-    static void initSelectBookWindow(Stage stage) {
+    /**
+     * Generate and display a window that allows the user to see the
+     * books he owns, to manage them, access options, log-out, and select
+     * the book he wants to work on.
+     * @param stage the container the window will own
+     */
+    protected static void initSelectBookWindow(Stage stage) {
 
         stage.setTitle("Xwriter 3000 - Book selection");
         GridPane grid = new GridPane();

@@ -1,7 +1,7 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000client;
 
 
-import pt.ulisboa.tecnico.sirs.xwriter3000ui.Book;
+import pt.ulisboa.tecnico.sirs.xwriter3000.Book;
 
 import java.util.List;
 
