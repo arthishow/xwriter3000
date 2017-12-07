@@ -2,42 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b05fb9bc-a8a8-4522-80d3-070daa0f0bc5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/.sisiSalt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000/Book.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000/Book.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000/Message.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000/Message.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000/User.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000/User.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorization.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorization.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorizationController.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorizationController.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AddAuthor.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/AddAuthor.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/BookCreation.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/BookCreation.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/CreateAccount.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/CreateAccount.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/CreateAccountController.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/CreateAccountController.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Login.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Login.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Main.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Main.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Options.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Options.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Popup.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Popup.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Writing.java" afterPath="$PROJECT_DIR$/src/main/java/pt/ulisboa/tecnico/sirs/xwriter3000ui/Writing.java" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000/User.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000/User.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000client/CommunicationClient.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000client/CypherUtil.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000client/CypherUtil.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorization.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorization.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorizationController.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/AccessAuthorizationController.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/AddAuthor.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/AddAuthor.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/BookCreation.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/BookCreation.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/CreateAccount.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/CreateAccount.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/Login.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/Login.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/Options.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/Options.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook$1.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook$1.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/SelectBook.class" />
-      <change beforePath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/Writing.class" afterPath="$PROJECT_DIR$/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000ui/Writing.class" />
       <change beforePath="$PROJECT_DIR$/../Xwriter3000Server/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../Xwriter3000Server/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/../Xwriter3000Server/target/classes/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.class" afterPath="$PROJECT_DIR$/../Xwriter3000Server/target/classes/pt/ulisboa/tecnico/sirs/databaseconnection/ConnectionDB.class" />
-      <change beforePath="$PROJECT_DIR$/../Xwriter3000Server/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Author.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/../Xwriter3000Server/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Book.class" afterPath="$PROJECT_DIR$/../Xwriter3000Server/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/Book.class" />
-      <change beforePath="$PROJECT_DIR$/../Xwriter3000Server/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.class" afterPath="$PROJECT_DIR$/../Xwriter3000Server/target/classes/pt/ulisboa/tecnico/sirs/xwriter3000server/domain/ServerThread.class" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -449,6 +414,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
