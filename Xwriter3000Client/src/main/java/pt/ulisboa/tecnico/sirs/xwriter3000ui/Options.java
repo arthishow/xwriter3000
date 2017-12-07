@@ -19,6 +19,7 @@ class Options {
      * Generate and display a window with options the user has.
      * For now it only allows the user to see his personal code
      * that is stored on his machine.
+     *
      * @param stage the container the window will own
      */
     protected static void initOptionsWindow(Stage stage) {

@@ -26,6 +26,7 @@ public class BookCreation {
 
     /**
      * Generate and display a book creation Window.
+     *
      * @param stage the container the window will own
      */
     protected static void initBookCreationWindow(Stage stage) {

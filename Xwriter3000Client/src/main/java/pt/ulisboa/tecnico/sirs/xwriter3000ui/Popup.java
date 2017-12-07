@@ -18,11 +18,12 @@ class PopupMessage {
 
     /**
      * Generate and display a popup window that display a message.
-     * @param stage the container the window will own
-     * @param title the title of the window
+     *
+     * @param stage   the container the window will own
+     * @param title   the title of the window
      * @param message the message to be displayed
-     * @param height the height of the window
-     * @param width the width of the window
+     * @param height  the height of the window
+     * @param width   the width of the window
      */
     protected static void initPopupMessageWindow(Stage stage, String title, String message, int height, int width) {
 
@@ -71,11 +72,12 @@ class PopupChoice {
      * so that the user has to make a choice. The choice is then saved in the
      * boolean choice and can be access in the function that called this function
      * thanks to the method at the end showAndWait() instead of the usual show()
-     * @param stage the container the window will own
-     * @param title the title of the window
+     *
+     * @param stage   the container the window will own
+     * @param title   the title of the window
      * @param message the message to be shown (a question generally)
-     * @param height the height of the window
-     * @param width the width of the window
+     * @param height  the height of the window
+     * @param width   the width of the window
      */
     protected void initPopupChoiceWindow(Stage stage, String title, String message, int height, int width) {
 

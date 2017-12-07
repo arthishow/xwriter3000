@@ -36,7 +36,7 @@ class Writing {
         //File Menu
         Menu menuFile = new Menu("File");
         MenuItem saveBook = new MenuItem();
-        if(currentAuthorizationLevel != 2) {
+        if (currentAuthorizationLevel != 2) {
             saveBook = new MenuItem("Save to the cloud");
         }
         MenuItem manageBooks = new MenuItem("Manage books");
@@ -55,14 +55,14 @@ class Writing {
 
 
         manageBooks.setOnAction(e -> {
-            if(currentAuthorizationLevel != 2) {
+            if (currentAuthorizationLevel != 2) {
                 PopupChoice window = new PopupChoice();
                 window.initPopupChoiceWindow(new Stage(), "Warning",
                         "Are you sure you want to leave?\nChanges will not be saved.", 110, 275);
                 if (window.getChoice()) {
                     SelectBook.initSelectBookWindow(stage);
                 }
-            }else{
+            } else {
                 PopupChoice window = new PopupChoice();
                 window.initPopupChoiceWindow(new Stage(), "Warning",
                         "Are you sure you want to leave?", 110, 275);
@@ -82,7 +82,7 @@ class Writing {
         });
         authorizations.setOnAction(e -> AccessAuthorization.initAccessAuthorizationWindow(new Stage()));
         logout.setOnAction(e -> {
-            if(currentAuthorizationLevel != 2) {
+            if (currentAuthorizationLevel != 2) {
                 PopupChoice window = new PopupChoice();
                 window.initPopupChoiceWindow(new Stage(), "Warning",
                         "Are you sure you want to log-out?\nChanges will not be saved.", 110, 275);
@@ -90,7 +90,7 @@ class Writing {
                     Main.client.logout();
                     Login.initLogInWindow(stage);
                 }
-            }else{
+            } else {
                 PopupChoice window = new PopupChoice();
                 window.initPopupChoiceWindow(new Stage(), "Warning",
                         "Are you sure you want to log-out?", 110, 275);
@@ -102,7 +102,7 @@ class Writing {
         });
 
         //Menus
-        if(currentAuthorizationLevel != 2) {
+        if (currentAuthorizationLevel != 2) {
             menuFile.getItems().add(saveBook);
         }
         menuFile.getItems().addAll(manageBooks);
@@ -111,9 +111,9 @@ class Writing {
         menuBar.getMenus().addAll(menuFile, menuEdit, menuUser);
 
         Label statusBar = new Label();
-        if(currentAuthorizationLevel == 2 ){
+        if (currentAuthorizationLevel == 2) {
             statusBar = new Label("Looking at " + currentBook.getTitle());
-        }else{
+        } else {
             statusBar = new Label("Working on " + currentBook.getTitle());
         }
         statusBar.setFont(Font.font(11));

@@ -23,6 +23,7 @@ class SelectBook {
      * Generate and display a window that allows the user to see the
      * books he owns, to manage them, access options, log-out, and select
      * the book he wants to work on.
+     *
      * @param stage the container the window will own
      */
     protected static void initSelectBookWindow(Stage stage) {

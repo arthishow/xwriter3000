@@ -18,6 +18,7 @@ public class Main extends Application {
     /**
      * The starting function of the program. It will run the start() function automatically.
      * It is not expecting any program arguments.
+     *
      * @param args the program arguments
      */
     public static void main(String[] args) {
@@ -26,7 +27,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) {
         Login.initLogInWindow(primaryStage);
         primaryStage.show();
     }

@@ -22,7 +22,8 @@ class AddAuthor {
 
     /**
      * Generate and display a window made to add User to a given TableView of Users.
-     * @param stage the container the window will own
+     *
+     * @param stage   the container the window will own
      * @param authors the TableView of Users to be extended
      */
     static void initAddAuthorWindow(Stage stage, TableView<User> authors) {

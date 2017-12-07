@@ -31,6 +31,7 @@ class Login {
      * this field only needs to be filled if it the first time logging-in on this computer.
      * Once the first log-in has been done, the personal code is stored locally and the
      * application will fill that field automatically (without displaying it).
+     *
      * @param stage the container the window will own
      */
     protected static void initLogInWindow(Stage stage) {
@@ -80,7 +81,7 @@ class Login {
 
         signIn.setOnAction(e -> {
 
-            if(CypherUtil.readSalt(userTextField.getText()) == null){
+            if (CypherUtil.readSalt(userTextField.getText()) == null) {
                 if (personalCodeBox.getText() != null) {
                     CypherUtil.writeSalt(userTextField.getText(), personalCodeBox.getText());
                 }

@@ -28,6 +28,7 @@ class AccessAuthorization {
      * Generate and display the access authorization modification window.
      * When an author is added to the TableView, it is only added to the
      * database once the Save Changes button has been pressed.
+     *
      * @param stage the container the window will own
      */
     protected static void initAccessAuthorizationWindow(Stage stage) {
@@ -94,11 +95,13 @@ class AccessAuthorization {
         addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors));
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
         saveChanges.setOnAction(e -> {
+            String bookId = String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID());
             Map<String, Integer> authorsId = new HashMap<>();
             for (User user : authors.getItems()) {
                 authorsId.put(user.getAuthorId(), user.getAuthorizationLevel());
             }
-            if (Main.client.addAuthorsAuth(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID()), authorsId)) {
+            if (AccessAuthorizationController.removeOldAuthorsFromGivenBook(bookId, authors.getItems()) &&
+                    Main.client.addAuthorsAuth(bookId, authorsId)) {
                 actionText.setFill(Color.GREEN);
                 actionText.setText("Changes saved.");
             } else {

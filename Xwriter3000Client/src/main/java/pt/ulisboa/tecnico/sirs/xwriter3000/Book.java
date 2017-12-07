@@ -24,7 +24,7 @@ public class Book {
         return title;
     }
 
-    public String getText(){
+    public String getText() {
         return text;
     }
 

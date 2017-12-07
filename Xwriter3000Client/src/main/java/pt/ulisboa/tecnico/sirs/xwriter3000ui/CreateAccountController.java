@@ -8,6 +8,7 @@ class CreateAccountController {
     /**
      * Verify if the given password is strong enough
      * by verifying a few constraints.
+     *
      * @param password the given password
      * @return a boolean indicating if it is strong enough or not
      */
@@ -25,6 +26,7 @@ class CreateAccountController {
     /**
      * Verify if the size of the given username is
      * of respectable size.
+     *
      * @param userId the given username
      * @return a boolean indicating if the size is correct or not
      */

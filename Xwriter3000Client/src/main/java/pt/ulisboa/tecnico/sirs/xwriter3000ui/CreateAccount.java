@@ -22,6 +22,7 @@ class CreateAccount {
 
     /**
      * Generate and display a create account window.
+     *
      * @param stage the container the window will own
      */
     protected static void initCreateAccountWindow(Stage stage) {
