@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CommunicationClient {
@@ -31,6 +32,7 @@ public class CommunicationClient {
     private ObjectOutputStream objectOut;
 
     private ObjectInputStream objectIn;
+
 
     public CommunicationClient() {
         cypherUtil = new CypherUtil();

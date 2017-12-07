@@ -69,7 +69,6 @@ public class CypherUtil {
         random.nextBytes(salt);
         try{
             BufferedWriter out = new BufferedWriter(new FileWriter(username + "Salt"));
-            System.out.println(encoder.encodeToString(salt));
             out.write(encoder.encodeToString(salt));
             out.close();
         } catch (IOException e){
@@ -325,20 +324,6 @@ public class CypherUtil {
         return null;
     }
 
-    public PrivateKey getPrivateKeyFromString(String privateKeyString){
-        try{
-            byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyString);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            KeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-            PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
-            return privateKey;
-        } catch (NoSuchAlgorithmException e){
-            e.printStackTrace();
-        } catch (InvalidKeySpecException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public String decypherBookKey(String cypheredMessage){
         try{
@@ -437,10 +422,7 @@ public class CypherUtil {
             SecretKey secretKey = new SecretKeySpec(tempKey.getEncoded(), "AES");
             Cipher aesCipher = Cipher.getInstance(symAlgorithm);
             aesCipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
-            System.out.println("originalKey");
-            System.out.println(new String(simKey.getEncoded()));
             byte[] byteCipherText = aesCipher.doFinal(simKey.getEncoded());
-            System.out.println(encoder.encodeToString(byteCipherText));
             return encoder.encodeToString(byteCipherText);
         } catch (NoSuchAlgorithmException e){
             e.printStackTrace();
@@ -530,20 +512,6 @@ public class CypherUtil {
             e.printStackTrace();
         }
         return null;
-    }
-
-    
-    private String decypherMsg(String msgCifrada, String user){
-        try {
-            byte[] msgBytes = Base64.getDecoder().decode(msgCifrada);
-            Cipher c = Cipher.getInstance(algorithm);
-            c.init(Cipher.DECRYPT_MODE, privateKey);
-            byte[] msgDecifrada = c.doFinal(msgBytes);
-            return Base64.getEncoder().encodeToString(msgDecifrada);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException ex) {
-            System.out.println(ex.getMessage());
-            return "";
-        }
     }
 
 }

@@ -6,7 +6,7 @@ public class Book {
 
     private int bookID;
 
-    private static final AtomicInteger count = new AtomicInteger(20);
+    private static final AtomicInteger count = new AtomicInteger(0);
 
     private String title;
 
@@ -19,12 +19,10 @@ public class Book {
     }
 
     public Book(String title){
-        this.bookID = count.incrementAndGet();
         this.title = title;
     }
 
     public Book(String title, String text){
-        this.bookID = count.incrementAndGet();
         this.title = title;
         this.text = text;
     }

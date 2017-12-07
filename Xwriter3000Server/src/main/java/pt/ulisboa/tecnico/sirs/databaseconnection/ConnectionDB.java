@@ -53,8 +53,6 @@ public class ConnectionDB {
 
                 String enteredPass = cypherUtil.hashPass(password, salt);
 
-                System.out.println(enteredPass);
-
                 if (passHash.equals(enteredPass)){
                     return true;
                 }
@@ -171,10 +169,6 @@ public class ConnectionDB {
             if(firstResult == 1 && resultSet.next()) {
 
                 int bookID = resultSet.getInt("MAX(bookId)");
-
-                System.out.println(bookID);
-
-                System.out.println(title);
 
                 insertAuthStatement.setInt(1, bookID);
 
@@ -378,18 +372,11 @@ public class ConnectionDB {
                         rs = checkAuthStatement.executeQuery();
 
                         if (rs.next()){
-                            //System.out.println("here");
-                            //System.out.println("auth");
-                            //System.out.println(rs.getInt("authorization"));
-                            //System.out.println(authorization);
-
 
                             if(rs.getInt("authorization") != authorization){
-                                //System.out.println("why??");
                                 updateAuthStatement.setInt(1, authorization);
                                 updateAuthStatement.setInt(2, bookID);
                                 updateAuthStatement.setString(3, username);
-                                System.out.println(updateAuthStatement);
                                 int updateResult = updateAuthStatement.executeUpdate();
 
                                 if(updateResult == 1){

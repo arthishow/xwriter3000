@@ -21,7 +21,6 @@ public class ServerThread extends Thread {
 
     private Message message;
 
-    private ActiveUser currentUser;
 
     private ObjectInputStream inFromClient;
 
@@ -43,17 +42,11 @@ public class ServerThread extends Thread {
             inFromClient = new ObjectInputStream(clientSocket.getInputStream());
             outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
             message = (Message) inFromClient.readObject();
-            System.out.println("messageCiphered");
-            System.out.println(message.getMessage());
             String originalMessage = message.getMessage();
             message.setMessage(cypherUtil.decypherMessage(message.getMessage()));
             message = parser.parseType(message);
             ActiveUser activeUser;
             Message secret;
-            System.out.println("original");
-            System.out.println(originalMessage);
-            System.out.println("second");
-            System.out.println(message.getMessage());
             switch (message.getType()) {
                 case "createUser":
                     secret = (Message) inFromClient.readObject();
@@ -138,9 +131,8 @@ public class ServerThread extends Thread {
                     if(activeUser != null) {
                         if (cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
                             Boolean logout = communicationServer.logout(sessionID, activeUser.getUsername());
-                            System.out.println("went");
+
                             if (logout){
-                                System.out.println(logout);
                                 sendSecureMessage(logout.toString(), activeUser);
                             }
                         }
@@ -171,33 +163,26 @@ public class ServerThread extends Thread {
 
     public Boolean remAuthor(ActiveUser activeUser, String bookID, String exiledAuthor) throws IOException, ClassNotFoundException{
         Boolean success = communicationServer.removeUser(bookID, exiledAuthor);
-        System.out.println(success.toString());
         if (success){
             if(communicationServer.checkSymKey(bookID, exiledAuthor)){
-                System.out.println("remSymKey");
                 communicationServer.removeSymKey(bookID, exiledAuthor);
             }
             else if(communicationServer.checkTempKey(bookID, exiledAuthor)){
-                System.out.println("remTempKey");
                 communicationServer.removeTempKey(bookID, exiledAuthor);
             }
 
-            System.out.println("entered?");
             List<String> authors = communicationServer.getAuthorsFromBook(activeUser, bookID);
             for(String author: authors){
-                System.out.println(author);
                 sendPublicKeyMessage(communicationServer.getPublicKey(author), activeUser);
-                System.out.println(communicationServer.getPublicKey(author));
+
                 Message newKey = (Message) inFromClient.readObject();
 
                 if(cypherUtil.verifySignature(newKey.getMessage(), newKey.getSignature(), activeUser.getPublicKey())){
-                    System.out.println("adding keys?");
+
                     if(communicationServer.checkSymKey(bookID, author)){
-                        System.out.println("remSymKey");
                         communicationServer.removeSymKey(bookID, author);
                     }
                     else if(communicationServer.checkTempKey(bookID, author)){
-                        System.out.println("remTempKey");
                         communicationServer.removeTempKey(bookID, author);
                     }
                     communicationServer.storeTempKey(author, bookID, newKey.getMessage());
@@ -239,10 +224,6 @@ public class ServerThread extends Thread {
         List<String> credentials = parser.parseUserInfo(message.getMessage());
         if (credentials != null) {
             ActiveUser activeUser = communicationServer.authenticateUser(credentials.get(0), credentials.get(1));
-            System.out.println(credentials.get(0));
-            System.out.println(credentials.get(1));
-            System.out.println(activeUser.getSessionID());
-
 
             if (Boolean.valueOf(credentials.get(2))){
                 Message secret = new Message(communicationServer.getPrivateKey(activeUser.getUsername()), "");
@@ -283,8 +264,6 @@ public class ServerThread extends Thread {
                 String publicKey = communicationServer.getPublicKey(username);
                 sendPublicKeyMessage(publicKey, activeUser);
                 tempKey = receiveMessage(activeUser);
-                System.out.println("this is tempKey");
-                System.out.println(tempKey);
                 if(!communicationServer.checkTempKey(bookID, username)){
                     communicationServer.storeTempKey(username, bookID,tempKey);
                 }
