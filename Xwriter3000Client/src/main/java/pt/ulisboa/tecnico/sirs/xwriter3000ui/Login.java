@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import pt.ulisboa.tecnico.sirs.xwriter3000client.CypherUtil;
 import pt.ulisboa.tecnico.sirs.xwriter3000client.StorageAccess;
 
 class Login {
@@ -76,13 +77,16 @@ class Login {
         grid.add(actionTarget, 1, 7);
 
         createAccount.setOnAction(e -> CreateAccount.initCreateAccountWindow(new Stage()));
-        //TODO
+
         signIn.setOnAction(e -> {
-            if (personalCodeBox.getText() != null) {
-                StorageAccess.storePersonalCode(personalCodeBox.getText());
+
+            if(CypherUtil.readSalt(userTextField.getText()) == null){
+                if (personalCodeBox.getText() != null) {
+                    CypherUtil.writeSalt(userTextField.getText(), personalCodeBox.getText());
+                }
             }
 
-            if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText())) {
+            if (Main.client.authenticateUser(userTextField.getText(), pwBox.getText(), false)) {
                 actionTarget.setFill(Color.GREEN);
                 actionTarget.setText("Log-in successful.");
                 currentUserId = userTextField.getText();

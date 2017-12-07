@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import pt.ulisboa.tecnico.sirs.xwriter3000client.CypherUtil;
 import pt.ulisboa.tecnico.sirs.xwriter3000client.StorageAccess;
 
 class Options {
@@ -33,7 +34,7 @@ class Options {
         grid.add(displayCode, 0, 0);
 
         displayCode.setOnAction(e -> PopupMessage.initPopupMessageWindow(new Stage(), "Info",
-                "Your personal code is\n" + StorageAccess.getPersonalCode(Login.currentUserId)
+                "Your personal code is\n" + CypherUtil.readSalt(Login.currentUserId)
                         + "\nYou will need it to log-in on another machine.",
                 125, 120));
 

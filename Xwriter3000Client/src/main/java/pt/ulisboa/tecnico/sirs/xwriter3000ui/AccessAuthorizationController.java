@@ -7,7 +7,6 @@ import java.util.List;
 
 class AccessAuthorizationController {
 
-    //TODO update authorization level
     /**
      * Given a book ID, will retrieve the list of Users (userID and authorization level) that are bound to it.
      * @param bookId the given book ID
@@ -17,7 +16,7 @@ class AccessAuthorizationController {
         List<String> userIds = Main.client.getAuthorsFromBook(bookId);
         List<User> users = new ArrayList<>();
         for (String userId : userIds) {
-            users.add(new User(userId, 0));
+            users.add(new User(userId, Main.client.getAuthFromAuthor(bookId, userId)));
         }
         return users;
     }

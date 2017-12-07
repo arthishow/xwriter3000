@@ -4,6 +4,13 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import pt.ulisboa.tecnico.sirs.xwriter3000client.CommunicationClient;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+
 public class Main extends Application {
 
     protected static CommunicationClient client;
@@ -24,10 +31,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    //TODO when the application is closed, it will run stop()
     @Override
     public void stop() {
+        Main.client.logout();
         System.out.println("Stage is closing");
-        //client.logout(null);
     }
 }

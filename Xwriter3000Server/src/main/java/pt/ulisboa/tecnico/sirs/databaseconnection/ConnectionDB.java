@@ -6,6 +6,7 @@
 package pt.ulisboa.tecnico.sirs.databaseconnection;
 
 import pt.ulisboa.tecnico.sirs.xwriter3000server.domain.Book;
+import pt.ulisboa.tecnico.sirs.xwriter3000server.domain.CypherUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,39 +15,47 @@ import java.util.List;
 
 public class ConnectionDB {
     
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/xwriter3000?zeroDateTimeBehavior=convertToNull&useSSL=false";
+    private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private final String DB_URL = "jdbc:mysql://localhost:3306/xwriter3000?zeroDateTimeBehavior=convertToNull&useSSL=false";
 
-    static final String USER = "root";
-    static final String PASS = "Io8JbOCc";
+    private final String USER = "root";
+    private final String PASS = "2ninshL6+5";
 
+    private CypherUtil cypherUtil;
 
+    public ConnectionDB(CypherUtil cypherUtil){
+        this.cypherUtil = cypherUtil;
+    }
 
     public Boolean login(String username, String password){
 
-        String query = "select authorName, authorPass from author " +
-                       "where authorName = ? and authorPass = ?";
+        String query = "select authorName, authorPass from author where authorName = ?";
+
+        String getSalt = "select salt from salt where authorName = ?";
 
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-             PreparedStatement login = conn.prepareStatement(query)){
+             PreparedStatement login = conn.prepareStatement(query);
+             PreparedStatement getSaltStatement = conn.prepareStatement(getSalt)){
 
 
             login.setString(1, username);
 
-            login.setString(2, password);
+            getSaltStatement.setString(1, username);
 
             ResultSet rs = login.executeQuery();
 
-            if(rs.next()){
-                String dataUsername = rs.getString("authorName");
+            ResultSet saltResult = getSaltStatement.executeQuery();
 
-                String dataPassword = rs.getString("authorPass");
+            if(rs.next() && saltResult.next()){
+                String passHash = rs.getString("authorPass");
 
-                conn.close();
+                String salt = saltResult.getString("salt");
 
-                login.close();
+                String enteredPass = cypherUtil.hashPass(password, salt);
 
-                if (username.equals(dataUsername) &&  password.equals(dataPassword)){
+                System.out.println(enteredPass);
+
+                if (passHash.equals(enteredPass)){
                     return true;
                 }
                 else{
@@ -65,70 +74,131 @@ public class ConnectionDB {
         return false;
     }
 
-    public Boolean createAuthor(String username, String password){
+    //fixme return false if username exists
+    public Boolean createAuthor(String username, String password, String secret, String publicKey){
 
         String insert = "INSERT INTO author(authorName, authorPass) VALUES (?, ?)" ;
+        String insertSalt = "INSERT INTO salt(authorName, salt) VALUES (?, ?)" ;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-             PreparedStatement insertAuthor = conn.prepareStatement(insert)){
+        String insertSecretKey = "INSERT INTO authorKeys(authorName, secretKey, keyType) VALUES (?, ?, ?)" ;
 
-            insertAuthor.setString(1, username);
+        String insertPublicKey = "INSERT INTO authorKeys(authorName, secretKey, keyType) VALUES (?, ?, ?)" ;
 
-            insertAuthor.setString(2, password);
+        if (!authorExists(username)) {
 
-            int result = insertAuthor.executeUpdate();
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                 PreparedStatement insertAuthor = conn.prepareStatement(insert);
+                 PreparedStatement insertSaltStat = conn.prepareStatement(insertSalt);
+                 PreparedStatement insertSecretStatement = conn.prepareStatement(insertSecretKey);
+                 PreparedStatement insertPublicStatement = conn.prepareStatement(insertPublicKey)) {
+
+                insertAuthor.setString(1, username);
+
+                insertSaltStat.setString(1, username);
+
+                String salt = cypherUtil.generateSalt();
+
+                String hash = cypherUtil.hashPass(password, salt);
 
 
-            if (result == 1){
-                return true;
-            } else {
+                insertAuthor.setString(2, hash);
+
+                insertSaltStat.setString(2, salt);
+
+                int firstResult = insertAuthor.executeUpdate();
+
+                int secondResult = insertSaltStat.executeUpdate();
+
+                if (firstResult == 1 && secondResult == 1) {
+
+                    insertSecretStatement.setString(1, username);
+
+                    insertSecretStatement.setString(2, secret);
+
+                    insertSecretStatement.setString(3, "secret");
+
+                    insertPublicStatement.setString(1, username);
+
+                    insertPublicStatement.setString(2, publicKey);
+
+                    insertPublicStatement.setString(3, "public");
+
+                    firstResult = insertSecretStatement.executeUpdate();
+
+                    secondResult = insertPublicStatement.executeUpdate();
+
+
+                    if (firstResult == 1 && secondResult == 1){
+                        return true;
+                    }
+                }
                 return false;
-            }
 
-        } catch(SQLException e){
-            e.printStackTrace();
-        } catch(Exception e) {
-            e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
 
-    public int createBook(Book book, String username){
+    public int createBook(String title, String username, String secreyKey){
 
-        String insertBook = "INSERT INTO book(bookId, title, content) VALUES (?, ?, ?)" ;
+        String insertBook = "INSERT INTO book(title, content) VALUES (?, ?)" ;
+
+        String getBookID = "SELECT MAX(bookId) from book";
 
         String insertAuth = "INSERT INTO userbook(bookId, authorName, authorization) VALUES (?, ?, ?)";
 
+        String insertKey = "INSERT INTO authorSymKeys(authorName, bookId, secretKey) VALUES (?, ?, ?)";
+
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
              PreparedStatement insertBookStatement = conn.prepareStatement(insertBook);
-             PreparedStatement insertAuthStatement = conn.prepareStatement(insertAuth)){
-
-            insertBookStatement.setInt(1, book.getBookID());
-
-            insertBookStatement.setString(2, book.getTitle());
-
-            insertBookStatement.setString(3, "");
-
-            insertAuthStatement.setInt(1, book.getBookID());
-
-            insertAuthStatement.setString(2, username);
-
-            insertAuthStatement.setInt(3, 0);
+             PreparedStatement insertAuthStatement = conn.prepareStatement(insertAuth);
+             PreparedStatement insertKeyStatement = conn.prepareStatement(insertKey);
+             PreparedStatement getBookIDStat = conn.prepareStatement(getBookID)){
 
 
+            insertBookStatement.setString(1, title);
+
+            insertBookStatement.setString(2, "");
 
             int firstResult = insertBookStatement.executeUpdate();
 
-            int secondResult = insertAuthStatement.executeUpdate();
+            ResultSet resultSet = getBookIDStat.executeQuery();
+
+            if(firstResult == 1 && resultSet.next()) {
+
+                int bookID = resultSet.getInt("MAX(bookId)");
+
+                System.out.println(bookID);
+
+                System.out.println(title);
+
+                insertAuthStatement.setInt(1, bookID);
+
+                insertAuthStatement.setString(2, username);
+
+                insertAuthStatement.setInt(3, 0);
+
+                insertKeyStatement.setString(1, username);
+
+                insertKeyStatement.setInt(2, bookID);
+
+                insertKeyStatement.setString(3, secreyKey);
 
 
+                int secondResult = insertAuthStatement.executeUpdate();
 
-            //FIXME
-            if (firstResult == 1 && secondResult == 1){
-                return book.getBookID();
+                int thirdResult = insertKeyStatement.executeUpdate();
 
-            } else {
-                return -1;
+
+                if (secondResult == 1 && thirdResult == 1) {
+                    return bookID;
+                } else {
+                    return -1;
+                }
             }
 
         } catch(SQLException e){
@@ -186,15 +256,12 @@ public class ConnectionDB {
     public List<Book> getBookList(String username){
 
         String query = "SELECT DISTINCT B.bookId, title FROM book as B JOIN userbook as U " +
-                        "WHERE authorName = ? AND authorization <= 1 AND B.bookId = U.bookId";
+                        "WHERE authorName = ? AND authorization <= 2 AND B.bookId = U.bookId";
 
         try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
              PreparedStatement bookStatement = conn.prepareStatement(query)){
 
             bookStatement.setString(1, username);
-
-            //String sql = "SELECT DISTINCT B.bookId, title FROM book as B JOIN userbook as U WHERE authorName = '" +
-            //        username + "' AND authorization <= 1 AND B.bookid = U.bookid"  ;
 
 
             ResultSet rs = bookStatement.executeQuery();
@@ -278,10 +345,13 @@ public class ConnectionDB {
         return false;
     }
 
+
     //FIXME
     public Boolean addAuthorAuth(int bookID, String originalAuthor ,String username, int authorization){
 
         String checkOriginal = "select authorization from userbook where bookID = ? and authorName = ?";
+
+        String checkNewAuthor = "select authorization from userbook where bookID = ? and authorName = ?";
 
         String insertAuth = "insert into userbook(bookId, authorName, authorization) values (?, ?, ?)";
 
@@ -289,51 +359,63 @@ public class ConnectionDB {
 
         try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
              PreparedStatement checkAuthStatement = conn.prepareStatement(checkOriginal);
+             PreparedStatement checkNewAuthorStat = conn.prepareStatement(checkNewAuthor);
              PreparedStatement insertAuthStatement = conn.prepareStatement(insertAuth);
              PreparedStatement updateAuthStatement = conn.prepareStatement(updateAuth)){
 
-            checkAuthStatement.setInt(1, bookID);
-            checkAuthStatement.setString(2, originalAuthor);
+                checkAuthStatement.setInt(1, bookID);
+                checkAuthStatement.setString(2, originalAuthor);
 
-            ResultSet rs = checkAuthStatement.executeQuery();
+                ResultSet rs = checkAuthStatement.executeQuery();
 
-            if (rs.next()){
-                if(rs.getInt("authorization") == 0) {
+                if (rs.next()){
 
-                    checkAuthStatement.setString(2, username);
 
-                    rs = checkAuthStatement.executeQuery();
+                    if(rs.getInt("authorization") == 0) {
 
-                    if (rs.next()){
+                        checkAuthStatement.setString(2, username);
 
-                        if(rs.getInt("authorization") == authorization){
-                            updateAuthStatement.setInt(1, authorization);
-                            updateAuthStatement.setInt(2, bookID);
-                            updateAuthStatement.setString(3, username);
+                        rs = checkAuthStatement.executeQuery();
 
-                            int updateResult = updateAuthStatement.executeUpdate();
+                        if (rs.next()){
+                            //System.out.println("here");
+                            //System.out.println("auth");
+                            //System.out.println(rs.getInt("authorization"));
+                            //System.out.println(authorization);
 
-                            if(updateResult == 1){
+
+                            if(rs.getInt("authorization") != authorization){
+                                //System.out.println("why??");
+                                updateAuthStatement.setInt(1, authorization);
+                                updateAuthStatement.setInt(2, bookID);
+                                updateAuthStatement.setString(3, username);
+                                System.out.println(updateAuthStatement);
+                                int updateResult = updateAuthStatement.executeUpdate();
+
+                                if(updateResult == 1){
+                                    return true;
+                                }
+                            }
+                            else{
+                                return true;
+                            }
+
+                        }
+                        else{
+                            insertAuthStatement.setInt(1, bookID);
+                            insertAuthStatement.setString(2, username);
+                            insertAuthStatement.setInt(3, authorization);
+
+                            int insertResult = insertAuthStatement.executeUpdate();
+
+                            if (insertResult == 1) {
                                 return true;
                             }
                         }
 
                     }
-                    else{
-                        insertAuthStatement.setInt(1, bookID);
-                        insertAuthStatement.setString(2, username);
-                        insertAuthStatement.setInt(3, authorization);
-
-                        int insertResult = insertAuthStatement.executeUpdate();
-
-                        if (insertResult == 1) {
-                            return true;
-                        }
-                    }
 
                 }
-
-            }
 
             return false;
 
@@ -410,6 +492,348 @@ public class ConnectionDB {
         }
         return null;
     }
+
+    public String getPublicKey(String username){
+
+        String query = "SELECT secretKey FROM authorKeys WHERE authorName = ? and keyType = 'public' ";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, username);
+
+            ResultSet rs = statement.executeQuery();
+
+
+
+            if(rs.next()){
+                String publicKey = rs.getString("secretKey");
+                return publicKey;
+            }
+
+            return null;
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getPrivateKey(String username){
+
+        String query = "SELECT secretKey FROM authorKeys WHERE authorName = ? and keyType = 'secret' ";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, username);
+
+            ResultSet rs = statement.executeQuery();
+
+
+
+            if(rs.next()){
+                String privateKey = rs.getString("secretKey");
+                return privateKey;
+            }
+
+            return null;
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void storeTempKey(String username, int bookID, String tempKey){
+
+        String query = "insert into tempSymKeys(authorName, bookId, secretKey) values (?, ?, ?)";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, username);
+
+            statement.setInt(2, bookID);
+
+            statement.setString(3, tempKey);
+
+            statement.executeUpdate();
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public String getTempKey(String username, int bookID){
+
+        String query = "SELECT secretKey FROM tempSymKeys WHERE authorName = ? and bookId = ? ";
+
+        String delete = "DELETE FROM tempSymKeys WHERE authorName = ? and bookId = ? ";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query);
+            PreparedStatement deleteStatement = conn.prepareStatement(delete)){
+
+            statement.setString(1, username);
+
+            statement.setInt(2, bookID);
+
+            deleteStatement.setString(1, username);
+
+            deleteStatement.setInt(2, bookID);
+
+            ResultSet rs = statement.executeQuery();
+
+            int result = deleteStatement.executeUpdate();
+
+            if(rs.next() || result == 1 ){
+                String secretKey = rs.getString("secretKey");
+                return secretKey;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public String getSecretKey(String username, int bookID){
+
+        String query = "SELECT secretKey FROM authorSymKeys WHERE authorName = ? and bookId = ? ";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, username);
+
+            statement.setInt(2, bookID);
+
+            ResultSet rs = statement.executeQuery();
+
+
+
+            if(rs.next()){
+                String secretKey = rs.getString("secretKey");
+                return secretKey;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void setSecretKey(String username, int bookID, String symKey){
+
+        String query = "insert into authorSymKeys(authorName, bookId, secretKey) values (?, ?, ?)";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, username);
+
+            statement.setInt(2, bookID);
+
+            statement.setString(3, symKey);
+
+            int result = statement.executeUpdate();
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void updateSecretKey(String username, int bookID, String symKey){
+
+        String query = "update authorSymKeys set secretKey = ? where bookId = ? and authorName = ?";
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, symKey);
+
+            statement.setInt(2, bookID);
+
+            statement.setString(3, username);
+
+
+            int result = statement.executeUpdate();
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public Boolean removeUser(int bookID, String remAuthor){
+
+        String update = "DELETE FROM userbook WHERE authorName = ? and bookId = ? ";
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(update)){
+
+            statement.setString(1, remAuthor);
+
+            statement.setInt(2, bookID);
+
+            int result = statement.executeUpdate();
+
+            if (result == 1){
+                return true;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Boolean removeTempKey(int bookID, String remAuthor){
+
+        String update = "DELETE FROM tempSymKeys WHERE authorName = ? and bookId = ? ";
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(update)){
+
+            statement.setString(1, remAuthor);
+
+            statement.setInt(2, bookID);
+
+            int result = statement.executeUpdate();
+
+            if (result == 1){
+                return true;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Boolean removeSymKey(int bookID, String remAuthor){
+
+        String update = "DELETE FROM authorSymKeys WHERE authorName = ? and bookId = ? ";
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(update)){
+
+            statement.setString(1, remAuthor);
+
+            statement.setInt(2, bookID);
+
+            int result = statement.executeUpdate();
+
+            if (result == 1){
+                return true;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
+    public Boolean checkTempKey(int bookID, String remAuthor){
+
+        String query = "Select * FROM tempSymKeys WHERE authorName = ? and bookId = ? ";
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, remAuthor);
+
+            statement.setInt(2, bookID);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()){
+                return true;
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Boolean checkSymKey(int bookID, String remAuthor){
+
+        String query = "Select * FROM authorSymKeys WHERE authorName = ? and bookId = ? ";
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(query)){
+
+            statement.setString(1, remAuthor);
+
+            statement.setInt(2, bookID);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()){
+                return true;
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Integer getAuthFromBook(int bookID, String username){
+
+        String update = "Select authorization FROM userbook WHERE authorName = ? and bookId = ? ";
+
+        try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement statement = conn.prepareStatement(update)){
+
+            statement.setString(1, username);
+
+            statement.setInt(2, bookID);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()){
+                return result.getInt("authorization");
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 
 
 }

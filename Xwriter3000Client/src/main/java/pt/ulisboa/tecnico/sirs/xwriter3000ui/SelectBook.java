@@ -102,7 +102,10 @@ class SelectBook {
         });
 
         options.setOnAction(e -> Options.initOptionsWindow(new Stage()));
-        logout.setOnAction(e -> WritingController.logout(stage));
+        logout.setOnAction(e -> {
+            Main.client.logout();
+            Login.initLogInWindow(stage);
+        });
 
         bookList.getItems().addAll(Main.client.getBookList());
 

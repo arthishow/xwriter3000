@@ -12,7 +12,7 @@ public class xwriterClientApp {
         CommunicationClient communicationClient = new CommunicationClient();
 
 
-        System.out.println(communicationClient.authenticateUser("d", "es"));
+        System.out.println(communicationClient.authenticateUser("d", "es", false));
 
         System.out.println(communicationClient.getBook("13"));
 

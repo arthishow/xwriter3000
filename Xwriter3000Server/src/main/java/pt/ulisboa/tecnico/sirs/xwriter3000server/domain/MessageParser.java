@@ -1,6 +1,5 @@
 package pt.ulisboa.tecnico.sirs.xwriter3000server.domain;
 
-
 import pt.ulisboa.tecnico.sirs.xwriter3000.Message;
 
 import java.text.DateFormat;
@@ -70,6 +69,21 @@ public class MessageParser {
                 message.setMessage(messageInside.split("getAuthorsFromBook")[1]);
                 return message;
             }
+            else if(messageInside.indexOf("removeAuthor") == 5){
+                message.setType("removeAuthor");
+                message.setMessage(messageInside.split("removeAuthor")[1]);
+                return message;
+            }
+            else if(messageInside.indexOf("logout") == 5){
+                message.setType("logout");
+                message.setMessage(messageInside.split("logout")[1]);
+                return message;
+            }
+            else if(messageInside.indexOf("getAuthFromBook") == 5){
+                message.setType("getAuthFromBook");
+                message.setMessage(messageInside.split("getAuthFromBook")[1]);
+                return message;
+            }
             else if(messageInside.indexOf("alarm") == 5) {
                 message.setType("alarm");
                 message.setMessage(messageInside.substring(11));
@@ -79,16 +93,39 @@ public class MessageParser {
         return null;
     }
 
+    public List<String> parseGetAuthFromBook(String message){
+        String[] array = message.split("(sessionID:|bookID:|username:)");
+        if(array.length == 4){
+            List<String> infoUser = new ArrayList<>();
+            infoUser.add(array[1]);
+            infoUser.add(array[2]);
+            infoUser.add(array[3]);
+            return infoUser;
+        }
+        return null;
+    }
+
+    public List<String> parseCreateUser(String message){
+        String[] array = message.split("(username:|password:|MAC:)");
+        if(array.length == 4){
+            List<String> infoUser = new ArrayList<>();
+            infoUser.add(array[1]);
+            infoUser.add(array[2]);
+            infoUser.add(array[3]);
+            return infoUser;
+        }
+        return null;
+    }
+
     public List<String> parseUserInfo(String message){
-        String username;
-        String password;
-        if (message.startsWith("username:") && message.contains("password:")) {
-            username = message.substring(9, message.indexOf("password:"));
-            password = message.substring(message.indexOf("password:") + 9).toString();
-            List<String> credentials = new ArrayList<>();
-            credentials.add(username);
-            credentials.add(password);
-            return credentials;
+        System.out.println(message);
+        String[] array = message.split("(username:|password:|newMachine:)");
+        if (array.length == 4) {
+            List<String> auth = new ArrayList<>();
+            auth.add(array[1]);
+            auth.add(array[2]);
+            auth.add(array[3]);
+            return auth;
         }
         return null;
     }
@@ -111,15 +148,11 @@ public class MessageParser {
 
     //untested
     public List<String> parseReceiveBookChanges(String message){
-        String sessionID;
-        String bookID;
-        String bookContent;
-        String[] array = message.split("(sessionID:|bookID:|bookContent:)");
-        if (array.length == 4){
+        String[] array = message.split("(sessionID:|bookID:)");
+        if (array.length == 3){
             List<String> info = new ArrayList<>();
             info.add(array[1]);
             info.add(array[2]);
-            info.add(array[3]);
             return info;
         }
         return null;
@@ -163,6 +196,23 @@ public class MessageParser {
         return null;
     }
 
+    public List<String> parseRemoveAuthor(String message){
+        List<String> remAuth = new ArrayList<>();
+        System.out.println(message);
+        String[] array = message.split("sessionID:|bookID:|username:");
+        System.out.println(array.length);
+        if(array.length == 4){
+            System.out.println(array[1]);
+            System.out.println(array[2]);
+            System.out.println(array[3]);
+            remAuth.add(array[1]);
+            remAuth.add(array[2]);
+            remAuth.add(array[3]);
+            return remAuth;
+        }
+        return null;
+    }
+
     public String authorExists(String message) {
         String[] array = message.split("username:");
         if (array.length == 2){
@@ -182,16 +232,24 @@ public class MessageParser {
         return null;
     }
 
+    public String getSessionID(String message){
+        String[] array = message.split("sessionID:");
+        if (array.length == 2){
+            return array[1];
+        }
+        return null;
+    }
+
     public Date parseAlarm(String message){
-            try {
-                DateFormat format = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
-                Date date = format.parse(message);
-                return date;
-            }catch(ParseException e) {
-                System.out.print("Error in parseAlarm");
-                return null;
-            }
+        try {
+            DateFormat format = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+            Date date = format.parse(message);
+            return date;
+        }catch(ParseException e) {
+            System.out.print("Error in parseAlarm");
+            return null;
         }
     }
+}
 
 

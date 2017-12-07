@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 class CreateAccountController {
 
-    //TODO check the field size
     /**
      * Verify if the given password is strong enough
      * by verifying a few constraints.
@@ -20,10 +19,9 @@ class CreateAccountController {
         boolean hasLowercase = !password.equals(password.toUpperCase());
         boolean hasNumber = password.matches(".*\\d+.*");
         boolean hasSpace = password.contains(" ");
-        return length > 5 && length < 129 && m.find() && hasUppercase && hasLowercase && hasNumber && !hasSpace;
+        return length > 5 && length < 101 && m.find() && hasUppercase && hasLowercase && hasNumber && !hasSpace;
     }
 
-    //TODO check the field size
     /**
      * Verify if the size of the given username is
      * of respectable size.
@@ -32,7 +30,7 @@ class CreateAccountController {
      */
     protected static boolean verifyUserId(String userId) {
         int length = userId.length();
-        return length > 3 && length < 129;
+        return length > 3 && length < 101;
     }
 
 }

@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pt.ulisboa.tecnico.sirs.xwriter3000client.StorageAccess;
@@ -31,6 +32,7 @@ class PopupMessage {
         border.setPadding(insets);
 
         Text text = new Text(message);
+        text.setTextAlignment(TextAlignment.CENTER);
         border.setCenter(text);
         BorderPane.setMargin(text, insets);
 

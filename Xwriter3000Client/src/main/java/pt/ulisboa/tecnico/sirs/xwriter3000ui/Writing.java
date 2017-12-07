@@ -16,13 +16,17 @@ class Writing {
     private static int WIDTH = 500;
 
     private static Book currentBook;
+    private static int currentAuthorizationLevel;
 
     /**
      * Generate and display the text editing window.
+     *
      * @param stage the container the window will own
-     * @param book the book to work on
+     * @param book  the book to work on
      */
     protected static void initTextEditingWindow(Stage stage, Book book) {
+        currentBook = book;
+        currentAuthorizationLevel = Main.client.getAuthFromAuthor(String.valueOf(currentBook.getBookID()), Login.currentUserId);
 
         stage.setTitle("Xwriter 3000");
         Scene scene = new Scene(new VBox(), WIDTH, HEIGHT);
@@ -31,7 +35,10 @@ class Writing {
 
         //File Menu
         Menu menuFile = new Menu("File");
-        MenuItem saveBook = new MenuItem("Save to the cloud");
+        MenuItem saveBook = new MenuItem();
+        if(currentAuthorizationLevel != 2) {
+            saveBook = new MenuItem("Save to the cloud");
+        }
         MenuItem manageBooks = new MenuItem("Manage books");
 
         //Edit Menu
@@ -44,19 +51,24 @@ class Writing {
 
         TextArea text = new TextArea();
         text.setWrapText(true);
-        if (book == null) {
-            text.setText("Once upon a time...");
-        } else {
-            currentBook = book;
-            text.setText(Main.client.getBook(String.valueOf(currentBook.getBookID())));
-        }
+        text.setText(Main.client.getBook(String.valueOf(currentBook.getBookID())));
+
 
         manageBooks.setOnAction(e -> {
-            PopupChoice window = new PopupChoice();
-            window.initPopupChoiceWindow(new Stage(), "Warning",
-                    "Are you sure you want to leave?\nChanges will not be saved.", 110, 275);
-            if (window.getChoice()) {
-                SelectBook.initSelectBookWindow(stage);
+            if(currentAuthorizationLevel != 2) {
+                PopupChoice window = new PopupChoice();
+                window.initPopupChoiceWindow(new Stage(), "Warning",
+                        "Are you sure you want to leave?\nChanges will not be saved.", 110, 275);
+                if (window.getChoice()) {
+                    SelectBook.initSelectBookWindow(stage);
+                }
+            }else{
+                PopupChoice window = new PopupChoice();
+                window.initPopupChoiceWindow(new Stage(), "Warning",
+                        "Are you sure you want to leave?", 110, 275);
+                if (window.getChoice()) {
+                    SelectBook.initSelectBookWindow(stage);
+                }
             }
         });
         saveBook.setOnAction(e -> {
@@ -70,21 +82,40 @@ class Writing {
         });
         authorizations.setOnAction(e -> AccessAuthorization.initAccessAuthorizationWindow(new Stage()));
         logout.setOnAction(e -> {
-            PopupChoice window = new PopupChoice();
-            window.initPopupChoiceWindow(new Stage(), "Warning",
-                    "Are you sure you want to log-out?\nChanges will not be saved.", 110, 275);
-            if (window.getChoice()) {
-                WritingController.logout(stage);
+            if(currentAuthorizationLevel != 2) {
+                PopupChoice window = new PopupChoice();
+                window.initPopupChoiceWindow(new Stage(), "Warning",
+                        "Are you sure you want to log-out?\nChanges will not be saved.", 110, 275);
+                if (window.getChoice()) {
+                    Main.client.logout();
+                    Login.initLogInWindow(stage);
+                }
+            }else{
+                PopupChoice window = new PopupChoice();
+                window.initPopupChoiceWindow(new Stage(), "Warning",
+                        "Are you sure you want to log-out?", 110, 275);
+                if (window.getChoice()) {
+                    Main.client.logout();
+                    Login.initLogInWindow(stage);
+                }
             }
         });
 
         //Menus
-        menuFile.getItems().addAll(saveBook, manageBooks);
+        if(currentAuthorizationLevel != 2) {
+            menuFile.getItems().add(saveBook);
+        }
+        menuFile.getItems().addAll(manageBooks);
         menuEdit.getItems().addAll(authorizations);
         menuUser.getItems().addAll(logout);
         menuBar.getMenus().addAll(menuFile, menuEdit, menuUser);
 
-        Label statusBar = new Label("Working on " + currentBook.getTitle());
+        Label statusBar = new Label();
+        if(currentAuthorizationLevel == 2 ){
+            statusBar = new Label("Looking at " + currentBook.getTitle());
+        }else{
+            statusBar = new Label("Working on " + currentBook.getTitle());
+        }
         statusBar.setFont(Font.font(11));
 
         text.setPrefHeight(HEIGHT - 30);

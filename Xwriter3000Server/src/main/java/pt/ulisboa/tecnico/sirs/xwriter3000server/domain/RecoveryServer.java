@@ -14,9 +14,11 @@ public class RecoveryServer {
     private int brotherPort;
     private MessageParser parser;
     private boolean recoveryMode;
+    private CypherUtil cypherUtil;
 
     public RecoveryServer(String brotherIp, int brotherPort) throws Exception{
-        this.communicationServer = new CommunicationServer();
+        this.cypherUtil = new CypherUtil();
+        this.communicationServer = new CommunicationServer(cypherUtil);
         this.brotherIp = brotherIp;
         this.brotherPort = brotherPort;
         this.serverSocket = new ServerSocket();
@@ -35,18 +37,17 @@ public class RecoveryServer {
                 t.join();
                 if(t.getMainServerDown()){
                     switchServer();
-                    adviseFirewall();
+                    //adviseFirewall();
                 }
             }catch (SocketTimeoutException e){
                 System.out.println("Timed out");
                 switchServer();
-                adviseFirewall();
+                //adviseFirewall();
             }
         }
         serverSocket.close();
-        Server server = new Server(brotherPort);
+        Server server = new Server(8005);
         server.run();
-
     }
 
     public void switchServer(){
@@ -54,6 +55,7 @@ public class RecoveryServer {
         recoveryMode = false;
     }
 
+    /*
     public void adviseFirewall(){
         try {
             Socket firewall = new Socket("firewall ip", 8003);
@@ -64,4 +66,5 @@ public class RecoveryServer {
             System.out.println(e.getMessage());
         }
     }
+    */
 }

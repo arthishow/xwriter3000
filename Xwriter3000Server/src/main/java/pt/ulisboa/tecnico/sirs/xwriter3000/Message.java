@@ -37,5 +37,8 @@ public class Message implements Serializable {
         return signature;
     }
 
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
 }
 
