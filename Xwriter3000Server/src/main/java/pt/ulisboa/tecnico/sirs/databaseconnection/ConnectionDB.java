@@ -19,7 +19,7 @@ public class ConnectionDB {
     private final String DB_URL = "jdbc:mysql://localhost:3306/xwriter3000?zeroDateTimeBehavior=convertToNull&useSSL=false";
 
     private final String USER = "root";
-    private final String PASS = "password";
+    private final String PASS = "2ninshL6+5";
 
     private CypherUtil cypherUtil;
 

@@ -94,29 +94,34 @@ class AccessAuthorization {
         grid.add(cancel, 3, 3);
 
         Text actionText = new Text();
-        grid.add(actionText, 2, 4);
+        grid.add(actionText, 1, 4);
 
         addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors));
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
         saveChanges.setOnAction((ActionEvent e) -> {
             String bookId = String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID());
-            Map<String, Integer> authorsId = new HashMap<>();
-            for (User user : authors.getItems()) {
-                authorsId.put(user.getAuthorId(), user.getAuthorizationLevel());
-            }
-            List<User> oldAuthors = createUserListFromGivenBook(bookId);
-            oldAuthors.removeAll(authors.getItems());
-            boolean rem = removeAuthorsFromGivenList(bookId, oldAuthors);
-            boolean add = false;
-            if(authors.getItems().isEmpty()){
-                add = true;
-            }
-            if (rem && add || Main.client.addAuthorsAuth(bookId, authorsId)) {
-                actionText.setFill(Color.GREEN);
-                actionText.setText("Changes saved.");
-            } else {
+            if(Main.client.getAuthFromAuthor(bookId, Login.currentUserId) == 0) {
+                Map<String, Integer> authorsId = new HashMap<>();
+                for (User user : authors.getItems()) {
+                    authorsId.put(user.getAuthorId(), user.getAuthorizationLevel());
+                }
+                List<User> oldAuthors = createUserListFromGivenBook(bookId);
+                oldAuthors.removeAll(authors.getItems());
+                boolean rem = removeAuthorsFromGivenList(bookId, oldAuthors);
+                boolean add = false;
+                if (authors.getItems().isEmpty()) {
+                    add = true;
+                }
+                if (rem && add || Main.client.addAuthorsAuth(bookId, authorsId)) {
+                    actionText.setFill(Color.GREEN);
+                    actionText.setText("Changes saved.");
+                } else {
+                    actionText.setFill(Color.RED);
+                    actionText.setText("An error has occurred.");
+                }
+            }else{
                 actionText.setFill(Color.RED);
-                actionText.setText("An error has occurred.");
+                actionText.setText("You are not the owner.");
             }
         });
         cancel.setOnAction(e -> stage.close());

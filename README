@@ -61,7 +61,12 @@ mvn exec:java
 
 Usage
 -----
+The log-in interface contains three fields: username, password and personal code. You only need to fill the personal code field if you have created an account on a different machine than the one you are using currently. You can find your personal code under Options>Display personal code in the book selection window once you're logged in on the machine you created the account.
 
+Under Manage Authorizations you can give and revoke access to the book selected to other users. A user with a level 2 only has reading rights on your book, a user with a level 1 has reading and writing rights on your book, and a user with a level 0 is the owner of the book and has reading and writing rights on it.
+Only the owner of the book can grant or revoke authorizations, the other authors can only see who has been authorized and with what level.
+
+When creating books you will always need to hit the Refresh button to see them in the list.
 
 
 
