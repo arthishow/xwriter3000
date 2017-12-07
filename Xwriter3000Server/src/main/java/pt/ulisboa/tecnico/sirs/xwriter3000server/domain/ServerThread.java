@@ -196,7 +196,11 @@ public class ServerThread extends Thread {
             if(cypherUtil.verifySignature(authorKey.getMessage(), authorKey.getSignature(), activeUser.getPublicKey())){
                 communicationServer.updateSecretKey(activeUser.getUsername(), bookID, authorKey.getMessage());
             }
+
+            sendSecureMessage(success.toString(), activeUser);
+            return true;
         }
+        sendSecureMessage(success.toString(), activeUser);
         return false;
     }
 
@@ -224,17 +228,17 @@ public class ServerThread extends Thread {
         List<String> credentials = parser.parseUserInfo(message.getMessage());
         if (credentials != null) {
             ActiveUser activeUser = communicationServer.authenticateUser(credentials.get(0), credentials.get(1));
-
-            if (Boolean.valueOf(credentials.get(2))){
-                Message secret = new Message(communicationServer.getPrivateKey(activeUser.getUsername()), "");
-                secret.setSignature(cypherUtil.getSiganture(secret.getMessage()));
-                sendMessage(secret);
-                String replay = activeUser.getSessionID();
-                sendSecureMessage(replay, activeUser);
-            }
-            else {
-                String replay = activeUser.getSessionID();
-                sendSecureMessage(replay, activeUser);
+            if(activeUser != null) {
+                if (Boolean.valueOf(credentials.get(2))) {
+                    Message secret = new Message(communicationServer.getPrivateKey(activeUser.getUsername()), "");
+                    secret.setSignature(cypherUtil.getSiganture(secret.getMessage()));
+                    sendMessage(secret);
+                    String replay = activeUser.getSessionID();
+                    sendSecureMessage(replay, activeUser);
+                } else {
+                    String replay = activeUser.getSessionID();
+                    sendSecureMessage(replay, activeUser);
+                }
             }
         }
     }

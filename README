@@ -1,32 +1,30 @@
-                                    SIRS-PROJECT
-                                Xwriter3000 (Best Book writing app ever)
+                                SIRS-PROJECT
+                                Xwriter3000
 
 Brief Introduction
 ------------------
-
 This project is a cloud-based application for writing books with your friends.
 
 
 System Requirements
 -------------------
-
 Linux 64 bit, Ubuntu 16.04 LTS
 Java version: 1.8.0_151, vendor: Oracle Corporation
 Apache Maven 3.3.9
 mysql  Ver 14.14 Distrib 5.7.20, for Linux (x86_64)
 
 
-Usage
------
+Set-up
+------
 Open a terminal on xwriter3000 directory
 
 Run mysql
 
 Run commands:
 
-First Create database xwriter3000;
+create database xwriter3000;
 
-Use xwriter3000;
+use xwriter3000;
 
 source DatabaseCommands.sql;
 
@@ -34,7 +32,7 @@ Now you have the database needed.
 
 Then open two terminals on Xwriter3000Server directory.
 
-With one of the run:
+With one of them run:
 
 mvn compile
 
@@ -42,13 +40,13 @@ mvn install
 
 Then run on one of the terminals:
 
-mvn exec:java -Dexec.args="recovery"
+mvn exec:java -Dexec.args="main"
 
 and on the other:
 
-mvn exec:java -Dexec.args="main"
+mvn exec:java -Dexec.args="recovery"
 
-The server is running now,
+The main server and the recovery server are running now,
 
 Open another terminal on Xwriter3000Client directory and run:
 
@@ -59,6 +57,11 @@ mvn install
 Then for starting the application run:
 
 mvn exec:java
+
+
+Usage
+-----
+
 
 
 

@@ -82,11 +82,15 @@ public class CommunicationClient {
                             + "newMachine:" + newMachine.toString();
         Message message = new Message(messageContent, "");
         Message replay = sendLogin(message, newMachine);
-        sessionID = replay.getMessage();
+        try {
+            sessionID = replay.getMessage();
             //add check
-        if (sessionID != null) {
-            return true;
-            //add decipher
+            if (sessionID != null) {
+                return true;
+                //add decipher
+            }
+        } catch (NullPointerException e){
+            return false;
         }
         return false;
     }
@@ -414,6 +418,13 @@ public class CommunicationClient {
             Message cipheredKeyMessage = new Message(cipheredKey, cypherUtil.getSignature(cipheredKey));
 
             objectOut.writeObject(cipheredKeyMessage);
+
+            Message success = (Message) objectIn.readObject();
+
+            if(cypherUtil.verifySignature(success.getMessage(), success.getSignature())){
+                success.setMessage(cypherUtil.decypherMessage(success.getMessage()));
+                return Boolean.valueOf(success.getMessage());
+            }
 
         } catch (IOException e){
             e.printStackTrace();

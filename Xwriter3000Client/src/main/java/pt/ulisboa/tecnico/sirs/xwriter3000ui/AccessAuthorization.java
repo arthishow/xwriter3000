@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.sirs.xwriter3000ui;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,6 +19,9 @@ import pt.ulisboa.tecnico.sirs.xwriter3000.User;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static pt.ulisboa.tecnico.sirs.xwriter3000ui.AccessAuthorizationController.createUserListFromGivenBook;
+import static pt.ulisboa.tecnico.sirs.xwriter3000ui.AccessAuthorizationController.removeAuthorsFromGivenList;
 
 class AccessAuthorization {
 
@@ -94,14 +98,20 @@ class AccessAuthorization {
 
         addAuthor.setOnAction(e -> AddAuthor.initAddAuthorWindow(new Stage(), authors));
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
-        saveChanges.setOnAction(e -> {
+        saveChanges.setOnAction((ActionEvent e) -> {
             String bookId = String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID());
             Map<String, Integer> authorsId = new HashMap<>();
             for (User user : authors.getItems()) {
                 authorsId.put(user.getAuthorId(), user.getAuthorizationLevel());
             }
-            if (AccessAuthorizationController.removeOldAuthorsFromGivenBook(bookId, authors.getItems()) &&
-                    Main.client.addAuthorsAuth(bookId, authorsId)) {
+            List<User> oldAuthors = createUserListFromGivenBook(bookId);
+            oldAuthors.removeAll(authors.getItems());
+            boolean rem = removeAuthorsFromGivenList(bookId, oldAuthors);
+            boolean add = false;
+            if(authors.getItems().isEmpty()){
+                add = true;
+            }
+            if (rem && add || Main.client.addAuthorsAuth(bookId, authorsId)) {
                 actionText.setFill(Color.GREEN);
                 actionText.setText("Changes saved.");
             } else {
@@ -112,11 +122,11 @@ class AccessAuthorization {
         cancel.setOnAction(e -> stage.close());
 
         if (comboBox.getSelectionModel().getSelectedItem() != null) {
-            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
+            authors.getItems().addAll(createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
         }
         comboBox.valueProperty().addListener(e -> {
             authors.getItems().clear();
-            authors.getItems().addAll(AccessAuthorizationController.createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
+            authors.getItems().addAll(createUserListFromGivenBook(String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID())));
         });
 
         Scene scene = new Scene(grid, WIDTH, HEIGHT);

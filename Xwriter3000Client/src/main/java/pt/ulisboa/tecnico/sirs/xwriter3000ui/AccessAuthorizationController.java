@@ -28,12 +28,10 @@ class AccessAuthorizationController {
      * list of authorized users assigned to the given book
      *
      * @param bookId     the given book ID
-     * @param newAuthors the new list of authors
+     * @param oldAuthors the new list of authors
      * @return a boolean if the action was completed successfully or not
      */
-    protected static boolean removeOldAuthorsFromGivenBook(String bookId, ObservableList<User> newAuthors) {
-        List<User> oldAuthors = createUserListFromGivenBook(bookId);
-        oldAuthors.removeAll(newAuthors);
+    protected static boolean removeAuthorsFromGivenList(String bookId, List<User> oldAuthors) {
         boolean ret = true;
         for (User u : oldAuthors) {
             if (!Main.client.removeAuthor(String.valueOf(bookId), u.getAuthorId())) {
