@@ -114,7 +114,7 @@ public class CommunicationClient {
         messageContent = "type:" + "getBook" + "sessionID:" + sessionID + "bookID:" + bookID;
         Message message = new Message(messageContent, "");
         Message replay = getBookMessage(message);
-        System.out.println(replay.getMessage());
+
         String[] array = replay.getMessage().split("(sendBook:|tempKey:)");
 
         if (array.length == 3){
@@ -130,7 +130,6 @@ public class CommunicationClient {
                 Message secretKey = new Message(cipheredKey, cypherUtil.getSignature(cipheredKey));
 
 
-                System.out.println(cipheredKey);
                 sendMessage(secretKey);
                 return bookContent;
             }
@@ -324,7 +323,6 @@ public class CommunicationClient {
             if (newMachine){
                 Message secret = (Message) objectIn.readObject();
                 if (cypherUtil.verifySignature(secret.getMessage(), secret.getSignature())){
-                    System.out.println(secret.getMessage());
                     cypherUtil.decipherPrivate(username, password, salt, secret.getMessage());
                 }
 
@@ -372,8 +370,6 @@ public class CommunicationClient {
 
         String content = getBook(bookID);
 
-        System.out.println(content);
-
         List<String> authors = getAuthorsFromBook(bookID);
 
         authors.remove(username);
@@ -381,9 +377,8 @@ public class CommunicationClient {
         String messageContent = "type:" + "removeAuthor" + "sessionID:" + sessionID +
                                 "bookID:" + bookID + "username:" + username;
 
-        System.out.println(messageContent);
         Message request = new Message(cypherUtil.cypherMessage(messageContent), "");
-        System.out.println(request.getMessage());
+
         request.setSignature(cypherUtil.getSignature(request.getMessage()));
 
         try {
@@ -392,14 +387,11 @@ public class CommunicationClient {
             ObjectOutputStream objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
             objectOut.writeObject(request);
             ObjectInputStream objectIn = new ObjectInputStream(clientSocket.getInputStream());
-            System.out.println("here");
+
             SecretKey secretKey = cypherUtil.generateSecretKey();
             for (String author : authors) {
-                System.out.println(author);
                 Message publicKey = (Message) objectIn.readObject();
-                System.out.println("passou");
                 if (cypherUtil.verifySignature(publicKey.getMessage(), publicKey.getSignature())) {
-                    System.out.println("why");
                     String cipheredKey = cypherUtil.cipherBookKey(secretKey, publicKey.getMessage());
                     String keySignature = cypherUtil.getSignature(cipheredKey);
                     Message secretMessage = new Message(cipheredKey, keySignature);
@@ -414,13 +406,13 @@ public class CommunicationClient {
                 bookNewCipher = new Message("", "");
             }
             bookNewCipher.setSignature(cypherUtil.getSignature(bookNewCipher.getMessage()));
-            System.out.println("block1");
+
             objectOut.writeObject(bookNewCipher);
-            System.out.println("block2");
+
             String cipheredKey = cypherUtil.cypherSecretKey(password, salt, secretKey);
-            System.out.println("block3");
+
             Message cipheredKeyMessage = new Message(cipheredKey, cypherUtil.getSignature(cipheredKey));
-            System.out.println("block4");
+
             objectOut.writeObject(cipheredKeyMessage);
 
         } catch (IOException e){

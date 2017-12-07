@@ -444,7 +444,6 @@ public class CypherUtil {
 
     public SecretKey decypherSecretKey(String cipheredKey, String password, String salt){
         try {
-            System.out.println(cipheredKey);
             byte[] saltBytes = decoder.decode(salt);
             KeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, 65536, 128);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
@@ -453,8 +452,6 @@ public class CypherUtil {
             Cipher aesCipher = Cipher.getInstance(symAlgorithm);
             aesCipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
             byte[] secretKetBytes = aesCipher.doFinal(decoder.decode(cipheredKey));
-            System.out.println("decipheredSecretKeyBytes");
-            System.out.println(new String(secretKetBytes));
             return new SecretKeySpec(secretKetBytes, 0, secretKetBytes.length, "AES");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

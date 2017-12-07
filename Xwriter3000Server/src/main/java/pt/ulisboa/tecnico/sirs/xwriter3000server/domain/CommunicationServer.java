@@ -57,7 +57,6 @@ public class CommunicationServer {
 
         String tempKey = database.getTempKey(activeUser.getUsername(), Integer.valueOf(bookID));
 
-        System.out.println(bookContent);
 
         if(tempKey == null){
             String key = database.getSecretKey(activeUser.getUsername(), Integer.valueOf(bookID));
@@ -121,7 +120,6 @@ public class CommunicationServer {
                 removeIndex = i;
             }
         }
-        System.out.println(removeIndex);
         if (removeIndex != -1){
             activeUsers.remove(removeIndex);
             return true;

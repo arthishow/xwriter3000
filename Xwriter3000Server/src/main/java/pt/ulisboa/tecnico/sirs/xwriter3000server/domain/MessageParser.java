@@ -118,7 +118,6 @@ public class MessageParser {
     }
 
     public List<String> parseUserInfo(String message){
-        System.out.println(message);
         String[] array = message.split("(username:|password:|newMachine:)");
         if (array.length == 4) {
             List<String> auth = new ArrayList<>();
@@ -198,13 +197,8 @@ public class MessageParser {
 
     public List<String> parseRemoveAuthor(String message){
         List<String> remAuth = new ArrayList<>();
-        System.out.println(message);
         String[] array = message.split("sessionID:|bookID:|username:");
-        System.out.println(array.length);
         if(array.length == 4){
-            System.out.println(array[1]);
-            System.out.println(array[2]);
-            System.out.println(array[3]);
             remAuth.add(array[1]);
             remAuth.add(array[2]);
             remAuth.add(array[3]);
