@@ -340,12 +340,10 @@ public class ConnectionDB {
     }
 
 
-    //FIXME
+
     public Boolean addAuthorAuth(int bookID, String originalAuthor ,String username, int authorization){
 
         String checkOriginal = "select authorization from userbook where bookID = ? and authorName = ?";
-
-        String checkNewAuthor = "select authorization from userbook where bookID = ? and authorName = ?";
 
         String insertAuth = "insert into userbook(bookId, authorName, authorization) values (?, ?, ?)";
 
@@ -353,7 +351,6 @@ public class ConnectionDB {
 
         try (Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
              PreparedStatement checkAuthStatement = conn.prepareStatement(checkOriginal);
-             PreparedStatement checkNewAuthorStat = conn.prepareStatement(checkNewAuthor);
              PreparedStatement insertAuthStatement = conn.prepareStatement(insertAuth);
              PreparedStatement updateAuthStatement = conn.prepareStatement(updateAuth)){
 
@@ -677,23 +674,39 @@ public class ConnectionDB {
         }
     }
 
-    public Boolean removeUser(int bookID, String remAuthor){
+    public Boolean removeUser(String author, int bookID, String remAuthor){
 
         String update = "DELETE FROM userbook WHERE authorName = ? and bookId = ? ";
 
+        String checkOriginal = "select authorization from userbook where bookID = ? and authorName = ?";
+
+
         try(Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
-            PreparedStatement statement = conn.prepareStatement(update)){
+            PreparedStatement statement = conn.prepareStatement(update);
+            PreparedStatement checkAuth = conn.prepareStatement(checkOriginal)){
 
-            statement.setString(1, remAuthor);
+            checkAuth.setInt(1, bookID);
 
-            statement.setInt(2, bookID);
+            checkAuth.setString(2, author);
 
-            int result = statement.executeUpdate();
+            ResultSet rs = checkAuth.executeQuery();
 
-            if (result == 1){
-                return true;
+            if (rs.next()) {
+
+
+                if (rs.getInt("authorization") == 0) {
+
+                    statement.setString(1, remAuthor);
+
+                    statement.setInt(2, bookID);
+
+                    int result = statement.executeUpdate();
+
+                    if (result == 1) {
+                        return true;
+                    }
+                }
             }
-
 
         } catch(SQLException e){
             e.printStackTrace();

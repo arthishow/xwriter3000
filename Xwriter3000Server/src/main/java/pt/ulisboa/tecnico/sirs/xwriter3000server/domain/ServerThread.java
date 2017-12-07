@@ -162,7 +162,7 @@ public class ServerThread extends Thread {
     }
 
     public Boolean remAuthor(ActiveUser activeUser, String bookID, String exiledAuthor) throws IOException, ClassNotFoundException{
-        Boolean success = communicationServer.removeUser(bookID, exiledAuthor);
+        Boolean success = communicationServer.removeUser(activeUser.getUsername(), bookID, exiledAuthor);
         if (success){
             if(communicationServer.checkSymKey(bookID, exiledAuthor)){
                 communicationServer.removeSymKey(bookID, exiledAuthor);

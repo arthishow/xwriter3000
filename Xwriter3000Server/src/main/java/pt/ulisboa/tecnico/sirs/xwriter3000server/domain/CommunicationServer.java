@@ -154,8 +154,8 @@ public class CommunicationServer {
         database.updateSecretKey(username, Integer.valueOf(bookID), symKey);
     }
 
-    public Boolean removeUser(String bookID, String remAuthor){
-        return database.removeUser(Integer.valueOf(bookID), remAuthor);
+    public Boolean removeUser(String author, String bookID, String remAuthor){
+        return database.removeUser(author, Integer.valueOf(bookID), remAuthor);
     }
 
     public Boolean removeTempKey(String bookID, String remAuthor){
