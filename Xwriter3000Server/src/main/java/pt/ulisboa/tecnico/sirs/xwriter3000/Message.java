@@ -12,7 +12,7 @@ public class Message implements Serializable {
 
     private String signature;
 
-    public Message(String message, String signature){
+    public Message(String message, String signature) {
         this.message = message;
         this.signature = signature;
     }

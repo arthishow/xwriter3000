@@ -20,34 +20,34 @@ public class RecoveryServerThread extends Thread {
         mainServerDown = false;
     }
 
-            public void run() {
-                try {
-                    ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
-                    //message = (Message) CypherUtil.decypher(stream.readObject());
-                    message = (Message) inFromClient.readObject();
-                    message = parser.parseType(message);
-                    switch (message.getType()) {
-                        case "alarm":
-                            checkAlarm(message);
-                            break;
-                    }
-                } catch (IOException e) {
-                    System.out.println("Problem1");
-                } catch (ClassNotFoundException e) {
-                    System.out.println("Problem2");
-                }catch (ClassCastException e){
-                    System.out.println("Problem3");
-                } finally {
-                    try{
-                        clientSocket.close();
-                    }catch (IOException e){
-                        System.out.println("Problem4");
-                    }
-                }
+    public void run() {
+        try {
+            ObjectInputStream inFromClient = new ObjectInputStream(clientSocket.getInputStream());
+            //message = (Message) CypherUtil.decypher(stream.readObject());
+            message = (Message) inFromClient.readObject();
+            message = parser.parseType(message);
+            switch (message.getType()) {
+                case "alarm":
+                    checkAlarm(message);
+                    break;
             }
+        } catch (IOException e) {
+            System.out.println("Problem1");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Problem2");
+        } catch (ClassCastException e) {
+            System.out.println("Problem3");
+        } finally {
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                System.out.println("Problem4");
+            }
+        }
+    }
 
 
-    public void checkAlarm(Message message){
+    public void checkAlarm(Message message) {
         Date alarmDate = parser.parseAlarm(message.getMessage());
         Date currentDate = new Date();
         long timeDifference = currentDate.getTime() - alarmDate.getTime();
@@ -58,7 +58,7 @@ public class RecoveryServerThread extends Thread {
         }
     }
 
-    public boolean getMainServerDown(){
+    public boolean getMainServerDown() {
         return mainServerDown;
     }
 }

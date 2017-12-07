@@ -5,24 +5,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Book {
 
     private int bookID;
-
     private static final AtomicInteger count = new AtomicInteger(0);
-
     private String title;
-
     private String text;
 
-
-    public Book(int bookID, String title){
+    public Book(int bookID, String title) {
         this.bookID = bookID;
         this.title = title;
     }
 
-    public Book(String title){
+    public Book(String title) {
         this.title = title;
     }
 
-    public Book(String title, String text){
+    public Book(String title, String text) {
         this.title = title;
         this.text = text;
     }

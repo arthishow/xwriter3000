@@ -8,7 +8,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pt.ulisboa.tecnico.sirs.xwriter3000client.CypherUtil;
-import pt.ulisboa.tecnico.sirs.xwriter3000client.StorageAccess;
 
 class Options {
 

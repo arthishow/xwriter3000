@@ -100,7 +100,7 @@ class AccessAuthorization {
         removeAuthor.setOnAction(e -> authors.getItems().remove(authors.getSelectionModel().getSelectedItem()));
         saveChanges.setOnAction((ActionEvent e) -> {
             String bookId = String.valueOf(comboBox.getSelectionModel().getSelectedItem().getBookID());
-            if(Main.client.getAuthFromAuthor(bookId, Login.currentUserId) == 0) {
+            if (Main.client.getAuthFromAuthor(bookId, Login.currentUserId) == 0) {
                 Map<String, Integer> authorsId = new HashMap<>();
                 for (User user : authors.getItems()) {
                     authorsId.put(user.getAuthorId(), user.getAuthorizationLevel());
@@ -119,7 +119,7 @@ class AccessAuthorization {
                     actionText.setFill(Color.RED);
                     actionText.setText("An error has occurred.");
                 }
-            }else{
+            } else {
                 actionText.setFill(Color.RED);
                 actionText.setText("You are not the owner.");
             }

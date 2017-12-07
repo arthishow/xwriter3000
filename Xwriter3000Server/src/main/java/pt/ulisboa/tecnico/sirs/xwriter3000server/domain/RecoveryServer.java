@@ -16,7 +16,7 @@ public class RecoveryServer {
     private boolean recoveryMode;
     private CypherUtil cypherUtil;
 
-    public RecoveryServer(String brotherIp, int brotherPort) throws Exception{
+    public RecoveryServer(String brotherIp, int brotherPort) throws Exception {
         this.cypherUtil = new CypherUtil();
         this.communicationServer = new CommunicationServer(cypherUtil);
         this.brotherIp = brotherIp;
@@ -29,17 +29,17 @@ public class RecoveryServer {
     public void run() throws Exception {
         serverSocket.bind(new InetSocketAddress(brotherIp, brotherPort));
         serverSocket.setSoTimeout(15000);
-        while(recoveryMode){
+        while (recoveryMode) {
             try {
                 Socket brother = serverSocket.accept();
                 RecoveryServerThread t = new RecoveryServerThread(brother);
                 new Thread(t).start();
                 t.join();
-                if(t.getMainServerDown()){
+                if (t.getMainServerDown()) {
                     switchServer();
                     //adviseFirewall();
                 }
-            }catch (SocketTimeoutException e){
+            } catch (SocketTimeoutException e) {
                 System.out.println("Timed out");
                 switchServer();
                 //adviseFirewall();
@@ -50,7 +50,7 @@ public class RecoveryServer {
         server.run();
     }
 
-    public void switchServer(){
+    public void switchServer() {
         System.out.println("Let's switch servers");
         recoveryMode = false;
     }

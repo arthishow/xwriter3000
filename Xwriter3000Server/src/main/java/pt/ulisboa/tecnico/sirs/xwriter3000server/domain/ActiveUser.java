@@ -6,14 +6,9 @@ import java.util.Date;
 public class ActiveUser {
 
     private String sessionID;
-
     private String username;
-
     private PublicKey publicKey;
-
     private Date timestamp;
-
-    //README: this class might need something like the ip from the user
 
     public ActiveUser(String sessionID, String username) {
         this.sessionID = sessionID;
@@ -27,7 +22,6 @@ public class ActiveUser {
         this.publicKey = publicKey;
         timestamp = new Date();
     }
-
 
     public String getSessionID() {
         return sessionID;

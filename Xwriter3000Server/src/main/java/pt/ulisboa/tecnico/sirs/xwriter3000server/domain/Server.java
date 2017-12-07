@@ -14,13 +14,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Server {
 
-    CommunicationServer communicationServer;
-
-    ServerSocket serverSocket;
-
-    CypherUtil cypherUtil;
-    String brotherIp;
-    int brotherPort;
+    private CommunicationServer communicationServer;
+    private ServerSocket serverSocket;
+    private CypherUtil cypherUtil;
+    private String brotherIp;
+    private int brotherPort;
 
 
     public Server(int port, String brotherIp, int brotherPort) throws Exception {
@@ -40,8 +38,8 @@ public class Server {
     }
 
 
-    public void run() throws Exception{
-        if(brotherPort != -1 && brotherIp != null) {
+    public void run() throws Exception {
+        if (brotherPort != -1 && brotherIp != null) {
             alertEveryGivenSeconds(5);
         }
 
@@ -57,7 +55,7 @@ public class Server {
 
     }
 
-    private void alertEveryGivenSeconds(int seconds){
+    private void alertEveryGivenSeconds(int seconds) {
         Runnable alive = new Runnable() {
             public void run() {
                 try {

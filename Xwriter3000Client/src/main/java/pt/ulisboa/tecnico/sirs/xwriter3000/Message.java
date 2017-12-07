@@ -5,11 +5,8 @@ import java.io.Serializable;
 public class Message implements Serializable {
 
     private static final long serialVersionUID = 5950198465489512354L;
-
     private String type;
-
     private String message;
-
     private String signature;
 
     public Message(String message, String signature) {

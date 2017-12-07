@@ -27,7 +27,7 @@ public class ServerThread extends Thread {
     private ObjectOutputStream outToClient;
 
 
-    public ServerThread(Socket clientSocket, CommunicationServer communicationServer, CypherUtil cypherUtil){
+    public ServerThread(Socket clientSocket, CommunicationServer communicationServer, CypherUtil cypherUtil) {
         this.clientSocket = clientSocket;
         this.communicationServer = communicationServer;
         this.cypherUtil = cypherUtil;
@@ -36,7 +36,7 @@ public class ServerThread extends Thread {
 
     }
 
-    public void run(){
+    public void run() {
 
         try {
             inFromClient = new ObjectInputStream(clientSocket.getInputStream());
@@ -60,9 +60,9 @@ public class ServerThread extends Thread {
                     secret = (Message) inFromClient.readObject();
                     List<String> newBook = parser.parseNewBook(message.getMessage());
                     activeUser = communicationServer.activeUser(newBook.get(0));
-                    if(activeUser != null){
-                        if(cypherUtil.verifySignature(secret.getMessage(), secret.getSignature(), activeUser.getPublicKey()) &&
-                                cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())){
+                    if (activeUser != null) {
+                        if (cypherUtil.verifySignature(secret.getMessage(), secret.getSignature(), activeUser.getPublicKey()) &&
+                                cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
                             String secretKey = cypherUtil.decypherMessage(secret.getMessage());
                             createBook(activeUser, newBook, secretKey);
                         }
@@ -71,7 +71,7 @@ public class ServerThread extends Thread {
                 case "getBook":
                     List<String> bookInfo = parser.parseGetBook(message.getMessage());
                     activeUser = communicationServer.activeUser(bookInfo.get(0));
-                    if(activeUser != null) {
+                    if (activeUser != null) {
                         if (cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
                             getBook(activeUser, bookInfo);
                         }
@@ -80,7 +80,7 @@ public class ServerThread extends Thread {
                 case "receiveBookChanges":
                     List<String> bookChanges = parser.parseReceiveBookChanges(message.getMessage());
                     activeUser = communicationServer.activeUser(bookChanges.get(0));
-                    if(activeUser != null) {
+                    if (activeUser != null) {
                         if (cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
                             receiveBookChanges(activeUser, bookChanges);
                         }
@@ -89,7 +89,7 @@ public class ServerThread extends Thread {
                 case "getBookList":
                     String sessionID = parser.parseGetBookList(message.getMessage());
                     activeUser = communicationServer.activeUser(sessionID);
-                    if(activeUser != null) {
+                    if (activeUser != null) {
                         if (cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
                             getBookList(activeUser);
                         }
@@ -98,8 +98,8 @@ public class ServerThread extends Thread {
                 case "addAuthorsAuth":
                     List<String> bookAuthorsAuth = parser.parseAddAuthorAuth(message.getMessage());
                     activeUser = communicationServer.activeUser(bookAuthorsAuth.get(0));
-                    if (activeUser != null){
-                        if(cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())){
+                    if (activeUser != null) {
+                        if (cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
                             addAuthorAuth(activeUser, bookAuthorsAuth);
                         }
                     }
@@ -110,8 +110,8 @@ public class ServerThread extends Thread {
                 case "getAuthorsFromBook":
                     List<String> userAndBook = parser.getAuthorsFromBook(message.getMessage());
                     activeUser = communicationServer.activeUser(userAndBook.get(0));
-                    if (activeUser != null){
-                        if(cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())){
+                    if (activeUser != null) {
+                        if (cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
                             getAuthorsFromBook(activeUser, userAndBook);
                         }
                     }
@@ -119,7 +119,7 @@ public class ServerThread extends Thread {
                 case "removeAuthor":
                     List<String> bookRemove = parser.parseRemoveAuthor(message.getMessage());
                     activeUser = communicationServer.activeUser(bookRemove.get(0));
-                    if(activeUser != null) {
+                    if (activeUser != null) {
                         if (cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
                             remAuthor(activeUser, bookRemove.get(1), bookRemove.get(2));
                         }
@@ -128,11 +128,11 @@ public class ServerThread extends Thread {
                 case "logout":
                     sessionID = parser.getSessionID(message.getMessage());
                     activeUser = communicationServer.activeUser(sessionID);
-                    if(activeUser != null) {
+                    if (activeUser != null) {
                         if (cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
                             Boolean logout = communicationServer.logout(sessionID, activeUser.getUsername());
 
-                            if (logout){
+                            if (logout) {
                                 sendSecureMessage(logout.toString(), activeUser);
                             }
                         }
@@ -141,7 +141,7 @@ public class ServerThread extends Thread {
                 case "getAuthFromBook":
                     List<String> bookAuth = parser.parseRemoveAuthor(message.getMessage());
                     activeUser = communicationServer.activeUser(bookAuth.get(0));
-                    if(activeUser != null) {
+                    if (activeUser != null) {
                         if (cypherUtil.verifySignature(originalMessage, message.getSignature(), activeUser.getPublicKey())) {
                             getAuthFromBook(activeUser, bookAuth.get(1), bookAuth.get(2));
                         }
@@ -151,49 +151,47 @@ public class ServerThread extends Thread {
             clientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void getAuthFromBook(ActiveUser activeUser, String bookID, String username){
+    public void getAuthFromBook(ActiveUser activeUser, String bookID, String username) {
         Integer auth = communicationServer.getAuthFromBook(bookID, username);
         sendSecureMessage(auth.toString(), activeUser);
     }
 
-    public Boolean remAuthor(ActiveUser activeUser, String bookID, String exiledAuthor) throws IOException, ClassNotFoundException{
+    public Boolean remAuthor(ActiveUser activeUser, String bookID, String exiledAuthor) throws IOException, ClassNotFoundException {
         Boolean success = communicationServer.removeUser(activeUser.getUsername(), bookID, exiledAuthor);
-        if (success){
-            if(communicationServer.checkSymKey(bookID, exiledAuthor)){
+        if (success) {
+            if (communicationServer.checkSymKey(bookID, exiledAuthor)) {
                 communicationServer.removeSymKey(bookID, exiledAuthor);
-            }
-            else if(communicationServer.checkTempKey(bookID, exiledAuthor)){
+            } else if (communicationServer.checkTempKey(bookID, exiledAuthor)) {
                 communicationServer.removeTempKey(bookID, exiledAuthor);
             }
 
             List<String> authors = communicationServer.getAuthorsFromBook(activeUser, bookID);
-            for(String author: authors){
+            for (String author : authors) {
                 sendPublicKeyMessage(communicationServer.getPublicKey(author), activeUser);
 
                 Message newKey = (Message) inFromClient.readObject();
 
-                if(cypherUtil.verifySignature(newKey.getMessage(), newKey.getSignature(), activeUser.getPublicKey())){
+                if (cypherUtil.verifySignature(newKey.getMessage(), newKey.getSignature(), activeUser.getPublicKey())) {
 
-                    if(communicationServer.checkSymKey(bookID, author)){
+                    if (communicationServer.checkSymKey(bookID, author)) {
                         communicationServer.removeSymKey(bookID, author);
-                    }
-                    else if(communicationServer.checkTempKey(bookID, author)){
+                    } else if (communicationServer.checkTempKey(bookID, author)) {
                         communicationServer.removeTempKey(bookID, author);
                     }
                     communicationServer.storeTempKey(author, bookID, newKey.getMessage());
                 }
             }
             Message book = (Message) inFromClient.readObject();
-            if(cypherUtil.verifySignature(book.getMessage(), book.getSignature(), activeUser.getPublicKey())){
+            if (cypherUtil.verifySignature(book.getMessage(), book.getSignature(), activeUser.getPublicKey())) {
                 communicationServer.receiveBookChanges(activeUser, bookID, book.getMessage());
             }
             Message authorKey = (Message) inFromClient.readObject();
-            if(cypherUtil.verifySignature(authorKey.getMessage(), authorKey.getSignature(), activeUser.getPublicKey())){
+            if (cypherUtil.verifySignature(authorKey.getMessage(), authorKey.getSignature(), activeUser.getPublicKey())) {
                 communicationServer.updateSecretKey(activeUser.getUsername(), bookID, authorKey.getMessage());
             }
 
@@ -205,7 +203,7 @@ public class ServerThread extends Thread {
     }
 
 
-    public void createUser(Message message, Message secret, Message publicKey){
+    public void createUser(Message message, Message secret, Message publicKey) {
         List<String> userInfo = parser.parseCreateUser(message.getMessage());
         if (userInfo != null) {
             Boolean success = false;
@@ -214,8 +212,8 @@ public class ServerThread extends Thread {
             SecretKey macKey = new SecretKeySpec(macKeyBytes, 0, macKeyBytes.length, "HmacSHA512");
 
 
-            if(cypherUtil.checkHmac(secret.getMessage(), secret.getSignature(), macKey) &&
-                    cypherUtil.checkHmac(publicKey.getMessage(), publicKey.getSignature(), macKey)){
+            if (cypherUtil.checkHmac(secret.getMessage(), secret.getSignature(), macKey) &&
+                    cypherUtil.checkHmac(publicKey.getMessage(), publicKey.getSignature(), macKey)) {
                 success = communicationServer.createUser(userInfo.get(0), userInfo.get(1), secret.getMessage(), publicKey.getMessage());
             }
 
@@ -224,11 +222,11 @@ public class ServerThread extends Thread {
         }
     }
 
-    public void authenticateUser(Message message){
+    public void authenticateUser(Message message) {
         List<String> credentials = parser.parseUserInfo(message.getMessage());
         if (credentials != null) {
             ActiveUser activeUser = communicationServer.authenticateUser(credentials.get(0), credentials.get(1));
-            if(activeUser != null) {
+            if (activeUser != null) {
                 if (Boolean.valueOf(credentials.get(2))) {
                     Message secret = new Message(communicationServer.getPrivateKey(activeUser.getUsername()), "");
                     secret.setSignature(cypherUtil.getSiganture(secret.getMessage()));
@@ -243,14 +241,14 @@ public class ServerThread extends Thread {
         }
     }
 
-    public void createBook(ActiveUser activeUser, List<String> newBook, String secretKey){
-        if (newBook != null){
+    public void createBook(ActiveUser activeUser, List<String> newBook, String secretKey) {
+        if (newBook != null) {
             int bookID = communicationServer.createBook(activeUser, newBook.get(1), secretKey);
             sendSecureMessage(String.valueOf(bookID), activeUser);
         }
     }
 
-    public void addAuthorAuth(ActiveUser activeUser, List<String> bookAuthorsAuth){
+    public void addAuthorAuth(ActiveUser activeUser, List<String> bookAuthorsAuth) {
         if (bookAuthorsAuth != null && activeUser != null) {
             String bookID = bookAuthorsAuth.get(1);
             Map<String, Integer> authorAuth = new HashMap<>();
@@ -268,8 +266,8 @@ public class ServerThread extends Thread {
                 String publicKey = communicationServer.getPublicKey(username);
                 sendPublicKeyMessage(publicKey, activeUser);
                 tempKey = receiveMessage(activeUser);
-                if(!communicationServer.checkTempKey(bookID, username)){
-                    communicationServer.storeTempKey(username, bookID,tempKey);
+                if (!communicationServer.checkTempKey(bookID, username)) {
+                    communicationServer.storeTempKey(username, bookID, tempKey);
                 }
             }
 
@@ -277,31 +275,31 @@ public class ServerThread extends Thread {
         }
     }
 
-    public String receiveMessage(ActiveUser activeUser){
-        try{
+    public String receiveMessage(ActiveUser activeUser) {
+        try {
             Message message = (Message) inFromClient.readObject();
-            if (message != null){
-                if (cypherUtil.verifySignature(message.getMessage(), message.getSignature(), activeUser.getPublicKey())){
+            if (message != null) {
+                if (cypherUtil.verifySignature(message.getMessage(), message.getSignature(), activeUser.getPublicKey())) {
                     return message.getMessage();
                 }
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void getBook(ActiveUser activeUser, List<String> bookInfo){
+    public void getBook(ActiveUser activeUser, List<String> bookInfo) {
         if (bookInfo != null) {
             String book = communicationServer.sendBook(activeUser, bookInfo.get(1));
-            if(book.contains("tempKey")){
+            if (book.contains("tempKey")) {
                 try {
                     Message message = new Message(book, cypherUtil.getSiganture(book));
                     sendMessage(message);
                     Message newKey = (Message) inFromClient.readObject();
-                    if (cypherUtil.verifySignature(newKey.getMessage(), newKey.getSignature(), activeUser.getPublicKey())){
+                    if (cypherUtil.verifySignature(newKey.getMessage(), newKey.getSignature(), activeUser.getPublicKey())) {
                         String symKey = cypherUtil.decypherMessage(newKey.getMessage());
                         communicationServer.setSecretKey(activeUser.getUsername(), bookInfo.get(1), symKey);
                     }
@@ -310,47 +308,46 @@ public class ServerThread extends Thread {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
+            } else {
                 Message message = new Message(book, cypherUtil.getSiganture(book));
                 sendMessage(message);
             }
         }
     }
 
-    public void receiveBookChanges(ActiveUser activeUser, List<String> bookChanges){
+    public void receiveBookChanges(ActiveUser activeUser, List<String> bookChanges) {
         try {
             if (bookChanges != null) {
                 Message book = (Message) inFromClient.readObject();
-                if(book != null || cypherUtil.verifySignature(book.getMessage(), book.getSignature(), activeUser.getPublicKey())) {
+                if (book != null || cypherUtil.verifySignature(book.getMessage(), book.getSignature(), activeUser.getPublicKey())) {
                     Boolean success = communicationServer.receiveBookChanges(activeUser, bookChanges.get(1), book.getMessage());
                     sendSecureMessage(success.toString(), activeUser);
                 }
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void getBookList(ActiveUser activeUser){
-        if (activeUser != null){
+    public void getBookList(ActiveUser activeUser) {
+        if (activeUser != null) {
             List<Book> bookList = new ArrayList<>();
             bookList.addAll(communicationServer.getBookList(activeUser));
             String replayMessage = "";
 
-            for (Book book: bookList){
+            for (Book book : bookList) {
                 replayMessage += "bookID:" + book.getBookID() + "bookTitle:" + book.getTitle();
             }
             sendSecureMessage(replayMessage, activeUser);
         }
     }
 
-    public void authorExists(Message message){
+    public void authorExists(Message message) {
         String username = parser.authorExists(message.getMessage());
 
-        if (username != null){
+        if (username != null) {
             Boolean success = communicationServer.authorExists(username);
             Message replay = new Message(success.toString(), cypherUtil.getSiganture(success.toString()));
             sendMessage(replay);
@@ -358,14 +355,14 @@ public class ServerThread extends Thread {
 
     }
 
-    public void getAuthorsFromBook(ActiveUser activeUser, List<String> userAndBook){
+    public void getAuthorsFromBook(ActiveUser activeUser, List<String> userAndBook) {
         if (userAndBook != null) {
             List<String> authors = new ArrayList<>();
             authors.addAll(communicationServer.getAuthorsFromBook(activeUser, userAndBook.get(1)));
 
             String replayMessage = "";
 
-            for (String author: authors){
+            for (String author : authors) {
                 replayMessage += "username:" + author;
             }
             sendSecureMessage(replayMessage, activeUser);
@@ -373,7 +370,7 @@ public class ServerThread extends Thread {
     }
 
 
-    public void sendMessage(Message message){
+    public void sendMessage(Message message) {
         try {
             outToClient.writeObject(message);
         } catch (IOException e) {
@@ -381,7 +378,7 @@ public class ServerThread extends Thread {
         }
     }
 
-    public void sendSecureMessage(String replay, ActiveUser activeUser){
+    public void sendSecureMessage(String replay, ActiveUser activeUser) {
         try {
             replay = cypherUtil.cypherMessage(replay, activeUser.getPublicKey());
             String signature = cypherUtil.getSiganture(replay);
@@ -392,7 +389,7 @@ public class ServerThread extends Thread {
         }
     }
 
-    public void sendPublicKeyMessage(String publicKey, ActiveUser activeUser){
+    public void sendPublicKeyMessage(String publicKey, ActiveUser activeUser) {
         try {
             String signature = cypherUtil.getSiganture(publicKey);
             Message message = new Message(publicKey, signature);

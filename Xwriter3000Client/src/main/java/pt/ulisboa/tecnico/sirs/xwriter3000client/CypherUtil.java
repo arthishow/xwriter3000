@@ -12,14 +12,12 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class CypherUtil {
-    
+
     private PrivateKey privateKey;
     private PublicKey publicKey;
 
 
     private PublicKey serverPublicKey;
-
-
 
 
     private final String algorithm = "RSA";
@@ -31,7 +29,7 @@ public class CypherUtil {
     private Base64.Decoder decoder;
     private Base64.Encoder encoder;
 
-    
+
     public CypherUtil() {
         decoder = Base64.getDecoder();
         encoder = Base64.getEncoder();
@@ -43,52 +41,52 @@ public class CypherUtil {
             KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA512");
             SecretKey secretKey = keyGenerator.generateKey();
             return secretKey;
-        } catch(NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String MAC(String message, SecretKey secretKey){
-        try{
+    public String MAC(String message, SecretKey secretKey) {
+        try {
             byte[] messageBytes = message.getBytes();
             Mac mac = Mac.getInstance("HmacSHA512");
             mac.init(secretKey);
             byte[] messageMac = mac.doFinal(messageBytes);
             return Base64.getEncoder().encodeToString(messageMac);
-        } catch(NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch(InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String generateSalt(String username){
+    public String generateSalt(String username) {
         byte[] salt = new byte[16];
         random.nextBytes(salt);
-        try{
+        try {
             BufferedWriter out = new BufferedWriter(new FileWriter(username + "Salt"));
             out.write(encoder.encodeToString(salt));
             out.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return encoder.encodeToString(salt);
     }
 
-    public static void writeSalt(String username, String salt){
-        try{
+    public static void writeSalt(String username, String salt) {
+        try {
             BufferedWriter out = new BufferedWriter(new FileWriter(username + "Salt"));
             out.write(salt);
             out.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static String readSalt(String username){
-        try{
+    public static String readSalt(String username) {
+        try {
             BufferedReader in = new BufferedReader(new FileReader(username + "Salt"));
             String salt = "";
             String line = in.readLine();
@@ -98,7 +96,7 @@ public class CypherUtil {
             }
             in.close();
             return salt;
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -120,23 +118,23 @@ public class CypherUtil {
             return encoder.encodeToString(byteCipherText);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidKeySpecException e){
+        } catch (InvalidKeySpecException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e){
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e){
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void decipherPrivate(String username, String password, String salt, String cipheredKey){
+    public void decipherPrivate(String username, String password, String salt, String cipheredKey) {
         try {
             byte[] saltBytes = Base64.getDecoder().decode(salt);
             KeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, 65536, 128);
@@ -150,21 +148,21 @@ public class CypherUtil {
             privateKey = fact.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
 
             RSAPrivateKeySpec priv = fact.getKeySpec(privateKey, RSAPrivateKeySpec.class);
-            saveToFile(username+ "Priv", priv.getModulus(), priv.getPrivateExponent());
+            saveToFile(username + "Priv", priv.getModulus(), priv.getPrivateExponent());
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidKeySpecException e){
+        } catch (InvalidKeySpecException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e){
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e){
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         }
     }
@@ -184,7 +182,7 @@ public class CypherUtil {
             saveToFile(username + "Pub", pub.getModulus(), pub.getPublicExponent());
 
             RSAPrivateKeySpec priv = fact.getKeySpec(keyPair.getPrivate(), RSAPrivateKeySpec.class);
-            saveToFile(username+ "Priv", priv.getModulus(), priv.getPrivateExponent());
+            saveToFile(username + "Priv", priv.getModulus(), priv.getPrivateExponent());
 
             keys.add(encoder.encodeToString(publicKey.getEncoded()));
 
@@ -193,7 +191,7 @@ public class CypherUtil {
             return keys;
         } catch (NoSuchAlgorithmException ex) {
             System.out.println(ex.getMessage());
-        } catch (InvalidKeySpecException ex){
+        } catch (InvalidKeySpecException ex) {
             System.out.println(ex.getMessage());
         }
 
@@ -213,7 +211,7 @@ public class CypherUtil {
         }
     }
 
-    public Boolean readFromFile(String username){
+    public Boolean readFromFile(String username) {
         try {
             InputStream in = new FileInputStream(username + "Priv");
             ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(in));
@@ -223,15 +221,15 @@ public class CypherUtil {
             KeyFactory fact = KeyFactory.getInstance("RSA");
             privateKey = fact.generatePrivate(keySpec);
             oin.close();
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             return false;
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidKeySpecException e){
+        } catch (InvalidKeySpecException e) {
             e.printStackTrace();
         }
         return true;
@@ -263,119 +261,119 @@ public class CypherUtil {
         }
     }
 
-    public String cypherMessage(String msg){
+    public String cypherMessage(String msg) {
         try {
             Cipher cipher = Cipher.getInstance(algorithm);
             cipher.init(Cipher.ENCRYPT_MODE, serverPublicKey);
             byte[] cipheredMsg = cipher.doFinal(msg.getBytes());
             return Base64.getEncoder().encodeToString(cipheredMsg);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e){
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String cipherBookKey(SecretKey simKey, String publicKey){
+    public String cipherBookKey(SecretKey simKey, String publicKey) {
         try {
             PublicKey authorKey = getPublicKeyFromString(publicKey);
             Cipher cipher = Cipher.getInstance(algorithm);
             cipher.init(Cipher.ENCRYPT_MODE, authorKey);
             byte[] cipheredKey = cipher.doFinal(simKey.getEncoded());
             return encoder.encodeToString(cipheredKey);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e){
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public SecretKey stringToKey(String keyString){
+    public SecretKey stringToKey(String keyString) {
         byte[] secretKetBytes = decoder.decode(keyString);
         return new SecretKeySpec(secretKetBytes, 0, secretKetBytes.length, "AES");
     }
 
 
-    public PublicKey getPublicKeyFromString(String publicKeyString){
-        try{
+    public PublicKey getPublicKeyFromString(String publicKeyString) {
+        try {
             byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyString);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(publicKeyBytes);
             return keyFactory.generatePublic(X509publicKey);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidKeySpecException e){
+        } catch (InvalidKeySpecException e) {
             e.printStackTrace();
         }
         return null;
     }
 
 
-    public String decypherBookKey(String cypheredMessage){
-        try{
+    public String decypherBookKey(String cypheredMessage) {
+        try {
             Cipher cipher = Cipher.getInstance(algorithm);
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] cypheredBytes = Base64.getDecoder().decode(cypheredMessage);
             byte[] decypheredBytes = cipher.doFinal(cypheredBytes);
             return encoder.encodeToString(decypheredBytes);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e){
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String decypherMessage(String cypheredMessage){
-        try{
+    public String decypherMessage(String cypheredMessage) {
+        try {
             Cipher cipher = Cipher.getInstance(algorithm);
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] cypheredBytes = Base64.getDecoder().decode(cypheredMessage);
             byte[] decypheredBytes = cipher.doFinal(cypheredBytes);
             return new String(decypheredBytes);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e){
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String getSignature(String message){
-        try{
+    public String getSignature(String message) {
+        try {
             Signature signature = Signature.getInstance(signAlgorithm);
             signature.initSign(privateKey);
             byte[] messageBytes = message.getBytes();
             signature.update(messageBytes);
             byte[] signatureResult = signature.sign();
             return Base64.getEncoder().encodeToString(signatureResult);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeyException e) {
             e.printStackTrace();
@@ -384,36 +382,36 @@ public class CypherUtil {
         }
         return null;
     }
-    
-    public Boolean verifySignature(String message, String sign){
-        try{
+
+    public Boolean verifySignature(String message, String sign) {
+        try {
             Signature signature = Signature.getInstance(signAlgorithm);
             signature.initVerify(serverPublicKey);
             signature.update(message.getBytes());
             return signature.verify(decoder.decode(sign));
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (SignatureException e){
+        } catch (SignatureException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public SecretKey generateSecretKey(){
-        try{
+    public SecretKey generateSecretKey() {
+        try {
             KeyGenerator keyGen = KeyGenerator.getInstance("AES");
             keyGen.init(128);
             SecretKey secretKey = keyGen.generateKey();
             return secretKey;
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String cypherSecretKey(String password, String salt, SecretKey simKey){
+    public String cypherSecretKey(String password, String salt, SecretKey simKey) {
         try {
             byte[] saltBytes = decoder.decode(salt);
             KeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, 65536, 128);
@@ -424,25 +422,25 @@ public class CypherUtil {
             aesCipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(saltBytes));
             byte[] byteCipherText = aesCipher.doFinal(simKey.getEncoded());
             return encoder.encodeToString(byteCipherText);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidKeySpecException e){
+        } catch (InvalidKeySpecException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e){
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
         } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public SecretKey decypherSecretKey(String cipheredKey, String password, String salt){
+    public SecretKey decypherSecretKey(String cipheredKey, String password, String salt) {
         try {
             byte[] saltBytes = decoder.decode(salt);
             KeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, 65536, 128);
@@ -455,55 +453,55 @@ public class CypherUtil {
             return new SecretKeySpec(secretKetBytes, 0, secretKetBytes.length, "AES");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidKeySpecException e){
+        } catch (InvalidKeySpecException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e){
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e){
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String cypherBook(String bookContent, SecretKey secretKey){
+    public String cypherBook(String bookContent, SecretKey secretKey) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             byte[] cypheredBook = cipher.doFinal(bookContent.getBytes());
             return encoder.encodeToString(cypheredBook);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String decypherBook(String bookContent, SecretKey secretKey){
+    public String decypherBook(String bookContent, SecretKey secretKey) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] decypheredBook = cipher.doFinal(decoder.decode(bookContent));
             return new String(decypheredBook);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
         } catch (BadPaddingException e) {
             e.printStackTrace();

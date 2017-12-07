@@ -44,27 +44,27 @@ public class CypherUtil {
         }
     }
 
-    public String cypherMessage(String msg, PublicKey publicKey){
+    public String cypherMessage(String msg, PublicKey publicKey) {
         try {
             Cipher cipher = Cipher.getInstance(algorithm);
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] cipheredMsg = cipher.doFinal(msg.getBytes());
             return Base64.getEncoder().encodeToString(cipheredMsg);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e){
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String decypherMessage(String cipheredMsg){
+    public String decypherMessage(String cipheredMsg) {
         try {
             byte[] msgBytes = Base64.getDecoder().decode(cipheredMsg);
             Cipher c = Cipher.getInstance(algorithm);
@@ -72,21 +72,21 @@ public class CypherUtil {
             byte[] decipheredBytes = c.doFinal(msgBytes);
             String message = new String(decipheredBytes);
             return message;
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (NoSuchPaddingException e){
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (IllegalBlockSizeException e){
+        } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        } catch (BadPaddingException e){
+        } catch (BadPaddingException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String generateSalt(){
+    public String generateSalt() {
         byte[] salt = new byte[16];
         random.nextBytes(salt);
         return Base64.getEncoder().encodeToString(salt);
@@ -98,44 +98,43 @@ public class CypherUtil {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
             byte[] hash = factory.generateSecret(spec).getEncoded();
             return Base64.getEncoder().encodeToString(hash);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidKeySpecException e){
+        } catch (InvalidKeySpecException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public Boolean checkHmac(String message, String messageMac, SecretKey macKey){
+    public Boolean checkHmac(String message, String messageMac, SecretKey macKey) {
         try {
             byte[] messageBytes = message.getBytes();
             Mac mac = Mac.getInstance("HmacSHA512");
             mac.init(macKey);
             byte[] realMac = mac.doFinal(messageBytes);
             byte[] messageMacBytes = Base64.getDecoder().decode(messageMac);
-            if (Arrays.equals(realMac, messageMacBytes)){
+            if (Arrays.equals(realMac, messageMacBytes)) {
                 return true;
-            }
-            else{
+            } else {
                 return false;
             }
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public PublicKey getPublicKeyFromString(String publicKeyString){
-        try{
+    public PublicKey getPublicKeyFromString(String publicKeyString) {
+        try {
             byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyString);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(publicKeyBytes);
             return keyFactory.generatePublic(X509publicKey);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidKeySpecException e){
+        } catch (InvalidKeySpecException e) {
             e.printStackTrace();
         }
         return null;
@@ -164,15 +163,15 @@ public class CypherUtil {
         }
     }
 
-    public String getSiganture(String message){
-        try{
+    public String getSiganture(String message) {
+        try {
             Signature signature = Signature.getInstance(signAlgorithm);
             signature.initSign(privateKey);
             byte[] messageBytes = message.getBytes();
             signature.update(messageBytes);
             byte[] signatureResult = signature.sign();
             return Base64.getEncoder().encodeToString(signatureResult);
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeyException e) {
             e.printStackTrace();
@@ -182,17 +181,17 @@ public class CypherUtil {
         return null;
     }
 
-    public Boolean verifySignature(String message, String sign, PublicKey publicKey){
-        try{
+    public Boolean verifySignature(String message, String sign, PublicKey publicKey) {
+        try {
             Signature signature = Signature.getInstance(signAlgorithm);
             signature.initVerify(publicKey);
             signature.update(message.getBytes());
             return signature.verify(Base64.getDecoder().decode(sign));
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
-        } catch (SignatureException e){
+        } catch (SignatureException e) {
             e.printStackTrace();
         }
         return false;
